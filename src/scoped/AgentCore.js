@@ -251,7 +251,7 @@ AgentCore.prototype = {
         var F = {after_data: [], before_prefer: [], end: []}, fr = AgentCore.extCall('promptFragments', [ctx, toolSet]), i, k, j;
         for (i = 0; i < fr.length; i++) for (k in F) if (fr[i][k]) for (j = 0; j < fr[i][k].length; j++) F[k].push(fr[i][k][j]);
         var lines = [
-            'You are the GMG AI Agent, an assistant embedded in ServiceNow (' + gs.getProperty('instance_name') + '). The current user is named in the request context below.',
+            'You are Now Pilot, an intelligent AI assistant embedded in ServiceNow (' + gs.getProperty('instance_name') + '). The current user is named in the request context below.',
             AgentCore.WORDING,
             'You follow the user around the platform and always know the page they are on (below). Use it: "this incident", "this record", "these results" mean the current page.',
             'Data tools (query_records, get_record, find_similar_incidents) are READ-ONLY and run with the user\'s own permissions. You cannot change incidents, problems, changes, CIs or other data.'
@@ -985,6 +985,6 @@ AgentCore.emptyFallback = function(round, lastTool) {
 
 AgentCore.STEER_CREATE = 'Plan & Create isn\'t enabled here, but if you create the <thing> yourself or open an existing one, I can help you work on it there.';
 AgentCore.STEER_DELETE = 'Deleting records isn\'t available here. If you open the record, I can help you change it, for example by setting its state or adding a work note.';
-AgentCore.CORE_LIMITS = 'Edition: GMG AI Agent (open source). Creating new records, deleting records, and changing any record other than the open one are not available here (GMG Plan & Create is not enabled). ' +
+AgentCore.CORE_LIMITS = 'Edition: Now Pilot (open source, based on GMG AI Agent). Creating new records, deleting records, and changing any record other than the open one are not available here (GMG Plan & Create is not enabled). ' +
     'Make no card for any of those. Use this steer for ANYTHING GMG Plan & Create would do: any request to create or build something new, of any record type or artifact. ' +
     'Answer a delete request with: "' + AgentCore.STEER_DELETE + '" For a change to another record, ask them to open that record.';

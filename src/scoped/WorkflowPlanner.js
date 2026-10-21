@@ -221,7 +221,7 @@ WorkflowPlanner.prototype = {
                     incident_id: incId,
                     table: 'incident',
                     close_code: closeCode,
-                    close_notes: params.close_notes || 'Resolved via GMG AI Agent Incident Investigation workflow.'
+                    close_notes: params.close_notes || 'Resolved via Now Pilot Incident Investigation workflow.'
                 },
                 read_only: false,
                 requires_approval: true,
