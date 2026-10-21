@@ -30,6 +30,10 @@
   <a href="LICENSE">License</a>
 </p>
 
+<p align="center">
+  <img src="src/assets/now_pilot_landing_mockup.jpg" alt="Now Pilot for ServiceNow Platform Showcase" width="850" />
+</p>
+
 </div>
 
 ---
