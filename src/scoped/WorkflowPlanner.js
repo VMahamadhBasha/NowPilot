@@ -39,6 +39,22 @@ WorkflowPlanner.WRITE_TOOLS = [
     'propose_journal_entry'
 ];
 
+WorkflowPlanner.ALLOWED_TARGET_TABLES = [
+    'incident',
+    'change_request',
+    'problem',
+    'kb_knowledge',
+    'sys_script',
+    'sys_script_include',
+    'sys_ui_action',
+    'sys_ui_policy'
+];
+
+WorkflowPlanner.isTableAllowed = function(table) {
+    if (!table || typeof table !== 'string') return false;
+    return WorkflowPlanner.ALLOWED_TARGET_TABLES.indexOf(String(table).trim().toLowerCase()) >= 0;
+};
+
 WorkflowPlanner.STATUSES = [
     'planned',
     'running',
@@ -148,6 +164,8 @@ WorkflowPlanner.prototype = {
         params = params || {};
         var incId = params.incident_id || params.incident_number || params.number || params.sys_id || '';
         var query = params.query || (incId ? 'incident ' + incId : goal);
+        var defaultClose = (typeof gs !== 'undefined' && gs.getProperty) ? gs.getProperty('x_gmg_ai.default_close_code', 'Solved (Permanently)') : 'Solved (Permanently)';
+        var closeCode = params.close_code || defaultClose;
 
         var steps = [
             {
@@ -201,7 +219,8 @@ WorkflowPlanner.prototype = {
                 tool: 'propose_resolution',
                 params: {
                     incident_id: incId,
-                    close_code: params.close_code || 'Solved (Permanently)',
+                    table: 'incident',
+                    close_code: closeCode,
                     close_notes: params.close_notes || 'Resolved via GMG AI Agent Incident Investigation workflow.'
                 },
                 read_only: false,
@@ -320,6 +339,7 @@ WorkflowPlanner.prototype = {
                 name: 'Propose Reviewed Code Correction',
                 tool: 'propose_current_record_update',
                 params: {
+                    table: params.table || (artifactType === 'script_include' ? 'sys_script_include' : 'sys_script'),
                     summary: 'ServiceNow Development Assistant code correction for ' + artifactType,
                     fields: { script: params.corrected_code || code }
                 },
@@ -347,6 +367,14 @@ WorkflowPlanner.prototype = {
      * Create a concrete plan based on goal text or structured request
      */
     plan: function(goal, params, context, userId) {
+        if (params && params.table && !WorkflowPlanner.isTableAllowed(params.table)) {
+            return {
+                ok: false,
+                error: 'Target table "' + params.table + '" is not authorized for workflow automation. Supported tables: ' + WorkflowPlanner.ALLOWED_TARGET_TABLES.join(', '),
+                rejected: true
+            };
+        }
+
         var classification = this.classifyGoal(goal, context);
         if (!classification.ok) {
             return classification;
@@ -433,6 +461,13 @@ WorkflowPlanner.prototype = {
             } else {
                 if (step.read_only !== true) {
                     return { ok: false, error: 'Step "' + step.id + '" uses read-only tool "' + step.tool + '" but declares read_only: false.' };
+                }
+            }
+
+            // Validate table if specified in params
+            if (step.params && step.params.table) {
+                if (!WorkflowPlanner.isTableAllowed(step.params.table)) {
+                    return { ok: false, error: 'Step "' + step.id + '" targets unauthorized table "' + step.params.table + '". Allowed tables: ' + WorkflowPlanner.ALLOWED_TARGET_TABLES.join(', ') };
                 }
             }
 

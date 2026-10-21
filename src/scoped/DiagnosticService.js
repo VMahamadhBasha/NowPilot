@@ -51,6 +51,62 @@ DiagnosticService.redact = function(s) {
 };
 
 /**
+ * Check if outbound PII redaction is enabled via system property
+ * Default: true
+ */
+DiagnosticService.isPIIRedactionEnabled = function() {
+    try {
+        if (typeof gs !== 'undefined' && gs.getProperty) {
+            return String(gs.getProperty('x_gmg_ai.redact_outbound_pii', 'true')) !== 'false';
+        }
+    } catch (e) {}
+    return true;
+};
+
+/**
+ * Comprehensive outbound PII and credential sanitizer.
+ * Protects emails, phone numbers, SSNs, credit cards, API keys, and credentials
+ * before payloads are sent to external LLM providers or recorded in logs.
+ * ServiceNow platform records remain completely unchanged.
+ */
+DiagnosticService.redactPII = function(s) {
+    if (s === null || s === undefined) return '';
+    if (!DiagnosticService.isPIIRedactionEnabled()) return String(s);
+
+    return String(s)
+        // Redact bearer tokens and authorization headers
+        .replace(/\b(Bearer|Basic)\s+[A-Za-z0-9._~+\/=-]{8,}/gi, '$1 [redacted_token]')
+        // Redact standard provider API keys
+        .replace(/\b(sk|xai|pk|rk|ghp|glpat|xoxb|xoxp)-[A-Za-z0-9_-]{8,}/gi, '[redacted_key]')
+        // Redact credential parameters / assignments
+        .replace(/\b(api[_-]?key|x-api-key|password|passwd|secret|token|authorization)(["']?\s*[:=]\s*["']?)[^\s"',;&]+/gi, '$1$2[redacted]')
+        // Redact URL credential query parameters
+        .replace(/([?&](?:key|api_key|token|password)=)[^&#\s]+/gi, '$1[redacted]')
+        // Redact email addresses
+        .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, '[redacted_email]')
+        // Redact phone numbers (international, US standard, dashed, parenthesized)
+        .replace(/\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, '[redacted_phone]')
+        // Redact US Social Security Numbers (SSN)
+        .replace(/\b\d{3}-\d{2}-\d{4}\b/g, '[redacted_ssn]')
+        // Redact 16-digit credit card / payment card numbers
+        .replace(/\b(?:\d{4}[- ]?){3}\d{4}\b/g, '[redacted_card]');
+};
+
+/**
+ * Calculate bounded exponential backoff with jitter and Retry-After support
+ */
+DiagnosticService.calculateBackoff = function(attempt, retryAfterSec, maxBackoffMs) {
+    maxBackoffMs = maxBackoffMs || 3000;
+    var base = Math.min(maxBackoffMs, 200 * Math.pow(2, attempt || 1));
+    var jitter = Math.floor(Math.random() * 150);
+    var delay = base + jitter;
+    if (retryAfterSec && retryAfterSec > 0 && retryAfterSec <= 10) {
+        delay = Math.max(delay, (retryAfterSec * 1000) + Math.floor(Math.random() * 100));
+    }
+    return Math.min(delay, maxBackoffMs + 200);
+};
+
+/**
  * Generate a server-side authoritative correlation ID
  */
 DiagnosticService.generateCorrelationId = function() {

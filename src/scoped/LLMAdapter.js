@@ -357,19 +357,20 @@ LLMAdapter.prototype = {
 
     _openai: function(system, messages, tools, opts, pCfg) {
         pCfg = pCfg || this.p;
-        var msgs = [{role: 'system', content: system}];
+        var cleanSystem = LLMAdapter.systemText(system);
+        var msgs = [{role: 'system', content: cleanSystem}];
         messages.forEach(function(m) {
             if (m.role == 'tool') {
-                msgs.push({role: 'tool', tool_call_id: m.tool_call_id, content: m.content});
+                msgs.push({role: 'tool', tool_call_id: m.tool_call_id, content: LLMAdapter.sanitizeOutboundText(m.content)});
             } else if (m.role == 'assistant' && m.tool_calls && m.tool_calls.length) {
-                msgs.push({role: 'assistant', content: m.content || '', tool_calls: m.tool_calls.map(function(t) {
+                msgs.push({role: 'assistant', content: LLMAdapter.sanitizeOutboundText(m.content || ''), tool_calls: m.tool_calls.map(function(t) {
                     return {id: t.id, type: 'function', 'function': {name: t.name, arguments: JSON.stringify(t.arguments || {})}};
                 })});
             } else {
-                msgs.push({role: m.role, content: m.content});
+                msgs.push({role: m.role, content: LLMAdapter.sanitizeOutboundText(m.content)});
             }
         });
-        if (opts && opts.final_note) msgs.push({role: 'user', content: opts.final_note});
+        if (opts && opts.final_note) msgs.push({role: 'user', content: LLMAdapter.sanitizeOutboundText(opts.final_note)});
         var body = {model: pCfg.model, messages: msgs, max_tokens: pCfg.max_tokens};
         if (tools && tools.length) {
             body.tools = tools.map(function(t) {
@@ -413,7 +414,7 @@ LLMAdapter.prototype = {
         var msgs = [];
         messages.forEach(function(m) {
             if (m.role == 'tool') {
-                var block = {type: 'tool_result', tool_use_id: m.tool_call_id, content: m.content};
+                var block = {type: 'tool_result', tool_use_id: m.tool_call_id, content: LLMAdapter.sanitizeOutboundText(m.content)};
                 var last = msgs[msgs.length - 1];
                 if (last && last.role == 'user' && Array.isArray(last.content) && last.content.length && last.content[0].type == 'tool_result') last.content.push(block);
                 else msgs.push({role: 'user', content: [block]});
@@ -421,18 +422,19 @@ LLMAdapter.prototype = {
                 msgs.push({role: 'assistant', content: m.raw});
             } else if (m.role == 'assistant' && m.tool_calls && m.tool_calls.length) {
                 var c = [];
-                if (m.content) c.push({type: 'text', text: m.content});
+                if (m.content) c.push({type: 'text', text: LLMAdapter.sanitizeOutboundText(m.content)});
                 m.tool_calls.forEach(function(t) { c.push({type: 'tool_use', id: t.id, name: t.name, input: t.arguments || {}}); });
                 msgs.push({role: 'assistant', content: c});
             } else {
-                msgs.push({role: m.role, content: m.content});
+                msgs.push({role: m.role, content: LLMAdapter.sanitizeOutboundText(m.content)});
             }
         });
         if (opts && opts.final_note) {
+            var cleanNote = LLMAdapter.sanitizeOutboundText(opts.final_note);
             var lu = msgs[msgs.length - 1];
-            if (lu && lu.role == 'user' && Array.isArray(lu.content)) lu.content.push({type: 'text', text: opts.final_note});
-            else if (lu && lu.role == 'user') lu.content = [{type: 'text', text: String(lu.content || '')}, {type: 'text', text: opts.final_note}];
-            else msgs.push({role: 'user', content: opts.final_note});
+            if (lu && lu.role == 'user' && Array.isArray(lu.content)) lu.content.push({type: 'text', text: cleanNote});
+            else if (lu && lu.role == 'user') lu.content = [{type: 'text', text: String(lu.content || '')}, {type: 'text', text: cleanNote}];
+            else msgs.push({role: 'user', content: cleanNote});
         }
         var body = {model: pCfg.model, system: LLMAdapter.systemText(system), messages: msgs, max_tokens: pCfg.max_tokens};
         if (tools && tools.length) body.tools = tools.map(function(t) { return {name: t.name, description: t.description, input_schema: t.parameters}; });
@@ -487,9 +489,19 @@ LLMAdapter.MAX_BREAKPOINTS = 4;
 LLMAdapter.LOOKBACK = 20;
 LLMAdapter.CACHEABLE = {text: 1, tool_use: 1, tool_result: 1, image: 1, document: 1};
 
+LLMAdapter.sanitizeOutboundText = function(text) {
+    if (text === null || text === undefined) return '';
+    if (typeof DiagnosticService !== 'undefined' && typeof DiagnosticService.redactPII === 'function') {
+        return DiagnosticService.redactPII(text);
+    }
+    return String(text);
+};
+
 LLMAdapter.systemText = function(system) {
-    if (system && typeof system == 'object') return String(system['static'] || '') + (system.dynamic ? '\n\n' + system.dynamic : '');
-    return String(system || '');
+    var raw = '';
+    if (system && typeof system == 'object') raw = String(system['static'] || '') + (system.dynamic ? '\n\n' + system.dynamic : '');
+    else raw = String(system || '');
+    return LLMAdapter.sanitizeOutboundText(raw);
 };
 
 LLMAdapter.hash = function(s) {

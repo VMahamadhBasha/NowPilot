@@ -35,6 +35,22 @@ WorkflowEngine.WRITE_TOOLS = [
     'propose_journal_entry'
 ];
 
+WorkflowEngine.ALLOWED_TARGET_TABLES = [
+    'incident',
+    'change_request',
+    'problem',
+    'kb_knowledge',
+    'sys_script',
+    'sys_script_include',
+    'sys_ui_action',
+    'sys_ui_policy'
+];
+
+WorkflowEngine.isTableAllowed = function(table) {
+    if (!table || typeof table !== 'string') return false;
+    return WorkflowEngine.ALLOWED_TARGET_TABLES.indexOf(String(table).trim().toLowerCase()) >= 0;
+};
+
 WorkflowEngine.VALID_TRANSITIONS = {
     'planned': ['running', 'rejected'],
     'running': ['waiting_approval', 'completed', 'failed'],
@@ -156,8 +172,20 @@ WorkflowEngine.prototype = {
         var result = null;
         try {
             if (step.tool === 'get_record') {
+                if (!p.table || typeof p.table !== 'string') {
+                    return { ok: false, error: 'Target table is required for tool "get_record" and cannot be omitted.', rejected: true };
+                }
+                if (!WorkflowEngine.isTableAllowed(p.table)) {
+                    return { ok: false, error: 'Target table "' + p.table + '" is not authorized for workflow execution. Allowed tables: ' + WorkflowEngine.ALLOWED_TARGET_TABLES.join(', '), rejected: true };
+                }
                 result = this.tools.getRecord(p);
             } else if (step.tool === 'query_records') {
+                if (!p.table || typeof p.table !== 'string') {
+                    return { ok: false, error: 'Target table is required for tool "query_records" and cannot be omitted.', rejected: true };
+                }
+                if (!WorkflowEngine.isTableAllowed(p.table)) {
+                    return { ok: false, error: 'Target table "' + p.table + '" is not authorized for workflow execution. Allowed tables: ' + WorkflowEngine.ALLOWED_TARGET_TABLES.join(', '), rejected: true };
+                }
                 result = this.tools.queryRecords(p);
             } else if (step.tool === 'get_current_record') {
                 var rt = new RecordTools(context);
@@ -225,15 +253,58 @@ WorkflowEngine.prototype = {
         }
 
         // Determine target table and target sys_id
-        var targetTable = params.table || (context && context.table) || (context && context.bound && context.bound.table) || 'incident';
+        var targetTable = params.table || (context && context.table) || (context && context.bound && context.bound.table);
         var targetSysId = params.sys_id || (context && context.sys_id) || (context && context.bound && context.bound.sys_id) || '';
 
-        // If target is an incident number, resolve sys_id
-        if (params.incident_id && !targetSysId) {
-            var incGr = this.tools._find('incident', params.incident_id, params.incident_id);
-            if (incGr) {
-                targetTable = 'incident';
-                targetSysId = incGr.getUniqueValue();
+        // If target is an incident number, resolve sys_id and default table to incident if appropriate
+        if (params.incident_id) {
+            if (!targetTable) targetTable = 'incident';
+            if (!targetSysId) {
+                var incGr = this.tools._find('incident', params.incident_id, params.incident_id);
+                if (incGr) {
+                    targetTable = 'incident';
+                    targetSysId = incGr.getUniqueValue();
+                }
+            }
+        }
+
+        if (!targetTable && workflow && workflow.type === 'development_review') {
+            targetTable = 'sys_script';
+        }
+
+        // Validate table existence and authorization - NEVER silently default to incident!
+        if (!targetTable) {
+            return {
+                ok: false,
+                error: 'Target table is required for workflow execution and cannot be omitted. Workflows will never silently default to incident.',
+                rejected: true
+            };
+        }
+
+        if (!WorkflowEngine.isTableAllowed(targetTable)) {
+            return {
+                ok: false,
+                error: 'Target table "' + targetTable + '" is not authorized for workflow automation. Allowed tables: ' + WorkflowEngine.ALLOWED_TARGET_TABLES.join(', '),
+                rejected: true
+            };
+        }
+
+        // Enforce ACLs and record ownership before generating proposal
+        if (targetSysId && typeof GlideRecordSecure !== 'undefined') {
+            var checkGr = new GlideRecordSecure(targetTable);
+            if (!checkGr.get(targetSysId)) {
+                return {
+                    ok: false,
+                    error: 'Target record (' + targetSysId + ') not found in table "' + targetTable + '" or caller lacks ACL permissions to access it.',
+                    rejected: true
+                };
+            }
+            if (typeof checkGr.canWrite === 'function' && !checkGr.canWrite()) {
+                return {
+                    ok: false,
+                    error: 'User lacks write ACL permissions on ' + targetTable + ':' + targetSysId + '.',
+                    rejected: true
+                };
             }
         }
 
@@ -254,7 +325,34 @@ WorkflowEngine.prototype = {
         };
 
         if (step.tool === 'propose_resolution') {
-            payloadObj.spec.fields.close_code = params.close_code || 'Solved (Permanently)';
+            var defaultClose = (typeof gs !== 'undefined' && gs.getProperty) ? gs.getProperty('x_gmg_ai.default_close_code', 'Solved (Permanently)') : 'Solved (Permanently)';
+            var closeCode = params.close_code || defaultClose;
+
+            // Validate close code against instance choices if ITSMAssistant is available
+            if (typeof ITSMAssistant !== 'undefined' && typeof ITSMAssistant.isValidCloseCode === 'function') {
+                if (!ITSMAssistant.isValidCloseCode(targetTable, closeCode)) {
+                    return {
+                        ok: false,
+                        error: 'Invalid close_code "' + closeCode + '" for table "' + targetTable + '".',
+                        rejected: true
+                    };
+                }
+            }
+
+            // Validate target incident state
+            if (targetSysId && typeof GlideRecordSecure !== 'undefined') {
+                var incStateCheck = new GlideRecordSecure(targetTable);
+                if (incStateCheck.get(targetSysId)) {
+                    if (typeof ITSMAssistant !== 'undefined' && typeof ITSMAssistant.validateIncidentForResolution === 'function') {
+                        var stateVal = ITSMAssistant.validateIncidentForResolution(incStateCheck);
+                        if (!stateVal.ok) {
+                            return { ok: false, error: stateVal.error, rejected: true };
+                        }
+                    }
+                }
+            }
+
+            payloadObj.spec.fields.close_code = closeCode;
             payloadObj.spec.fields.close_notes = params.close_notes || '';
             summary = 'Resolution Proposal for ' + targetTable + ' (' + (params.incident_id || targetSysId) + ')';
         } else if (step.tool === 'propose_journal_entry') {

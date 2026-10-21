@@ -9,7 +9,7 @@ You need a ServiceNow instance and an account with the admin role. Install it on
 | Order | File | Update set after import | Updates | sha256 |
 |---|---|---|---|---|
 | 1 | update_sets/gmg_ai_agent_global.xml | Now Pilot open source (global) | 3 | d5bc3b46d97a12fda4f60c1e31ba13183411ddbc5d7199e923ef8c8973fd4168 |
-| 2 | update_sets/gmg_ai_agent_scoped.xml | Now Pilot open source (scoped) | 330 | 9bb008ddf752d0ed613fe9f7489a966400587dceedf248302ddb7ea0f7aaa981 |
+| 2 | update_sets/gmg_ai_agent_scoped.xml | Now Pilot open source (scoped) | 330 | 6370c8473985a85afd256a6b8744c9f3cb975f9759d3141b6664a41dd11b3438 |
 
 v1.5.0 (with Production Readiness, Observability & End-to-End Validation upgrade). Previous v1.0.1, v1.1.0, v1.2.0, v1.3.0, and v1.4.0 passed live install tests on ServiceNow Australia release Patch 7. To check a download, compare its sha256 (`sha256sum <file>`) with this table or SHA256SUMS.
 
@@ -40,11 +40,13 @@ Do these steps for the global file first, then the same steps for the scoped fil
    - To see costs, enter prices in USD per million tokens (price_input_per_m, price_output_per_m). When unpriced, cost is reported as unpriced/unknown.
      Admins can also open the provider list from the **Edit prices & budgets** link on the **Usage** page.
    - Optional spend caps in USD: daily_budget and monthly_budget on the provider, and x_gmg_ai.user_daily_cap_usd per user (0 = no cap).
-3. **Review the settings** under **GMG AI Agent > Settings** (31 system properties). Key defaults:
+3. **Review the settings** under **Now Pilot > Settings** (or filter `sys_properties.list` by `x_gmg_ai`). Key defaults:
    - `x_gmg_ai.fallback_providers`: Comma-separated provider names to attempt in sequence on retryable failures (e.g. `Secondary OmniRoute,Backup OpenAI`).
    - `x_gmg_ai.model_allowlist`: Optional comma-separated model identifiers allowed for user selection.
    - `x_gmg_ai.allow_http_localhost`: false by default. Set to true only in developer/lab environments where OmniRoute runs on 127.0.0.1/localhost.
-   - `x_gmg_ai.retry_max_attempts`: 2 by default (max 5). Bounded retries with exponential backoff and jitter.
+   - `x_gmg_ai.retry_max_attempts`: 2 by default (max 5). Bounded retries with exponential backoff and randomized jitter.
+   - `x_gmg_ai.default_close_code`: `Solved (Permanently)` by default. Matches instance incident choice lists.
+   - `x_gmg_ai.redact_outbound_pii`: `true` by default. Masks email addresses, phone numbers, SSNs, payment card numbers, and API keys before sending outbound LLM requests.
    - `x_gmg_ai.panel_access` = everyone. The other values are admins and off.
    - `x_gmg_ai.allow_non_admin_writes` = true. Set it to false and the agent is read-only for anyone without the admin role.
    - `x_gmg_ai.web_search.enabled` = false. Web search works with Claude only.

@@ -10,7 +10,11 @@ AgentCore.WEB_SEARCH_DEFAULT = 'false';
 /* loop settings from properties */
 AgentCore.settings = function(getProp) {
     var mr = parseInt(getProp('x_gmg_ai.max_rounds', String(AgentCore.MAX_ROUNDS)), 10) || AgentCore.MAX_ROUNDS;
-    var maxAttempts = parseInt(getProp('x_gmg_ai.max_attempts', '2'), 10);
+    var rawAttempts = getProp('x_gmg_ai.retry_max_attempts');
+    if (rawAttempts === null || rawAttempts === undefined || rawAttempts === '') {
+        rawAttempts = getProp('x_gmg_ai.max_attempts', '2');
+    }
+    var maxAttempts = parseInt(rawAttempts, 10);
     if (isNaN(maxAttempts) || maxAttempts < 1) maxAttempts = 1;
     if (maxAttempts > 5) maxAttempts = 5;
 
@@ -677,11 +681,14 @@ AgentCore.prototype = {
                         continue;
                     }
 
-                    // No alternate provider; backoff with bounded delay if within budget
-                    var backoffMs = Math.min(2000, 200 * Math.pow(2, attemptCount));
-                    if (res.retry_after && res.retry_after > 0 && res.retry_after <= 5) {
-                        backoffMs = res.retry_after * 1000;
-                    }
+                    // No alternate provider; bounded exponential backoff with jitter and Retry-After
+                    var backoffMs = (typeof DiagnosticService !== 'undefined' && typeof DiagnosticService.calculateBackoff === 'function')
+                        ? DiagnosticService.calculateBackoff(attemptCount, res.retry_after, 2000)
+                        : (function() {
+                            var b = Math.min(2000, 200 * Math.pow(2, attemptCount)) + Math.floor(Math.random() * 150);
+                            if (res.retry_after && res.retry_after > 0 && res.retry_after <= 10) b = Math.max(b, res.retry_after * 1000);
+                            return b;
+                        })();
                     if ((remainingBudget - backoffMs) > 2500) {
                         var sleepUntil = new Date().getTime() + backoffMs;
                         while (new Date().getTime() < sleepUntil) {}
@@ -848,17 +855,20 @@ AgentCore.prototype = {
                 var matchCloseNotes = out.response.match(/(?:Recommended Resolution Steps|Resolution Steps|Resolution):\s*([\s\S]*?)(?:\n\n[A-Z0-9#]|\n###|$)/i);
                 var notesText = matchCloseNotes ? matchCloseNotes[1].trim() : out.response.substring(0, 1000);
 
+                var configuredCloseCode = (typeof gs !== 'undefined' && gs.getProperty) ? gs.getProperty('x_gmg_ai.default_close_code', 'Solved (Permanently)') : 'Solved (Permanently)';
+                var resolutionCloseCode = (itsmReq && itsmReq.close_code) ? itsmReq.close_code : configuredCloseCode;
+
                 var resCard = this.itsm.createResolutionProposal({
                     sys_id: itsmTargetInc.sys_id,
                     number: itsmTargetInc.number,
-                    close_code: 'Solved (Permanently)',
+                    close_code: resolutionCloseCode,
                     close_notes: notesText
                 });
 
                 if (ctx.bound && ctx.bound.table == 'incident' && ctx.bound.sys_id == itsmTargetInc.sys_id && !AgentCore.writesOff()) {
                     try {
                         var propRes = rtools.propose({
-                            fields: { close_code: 'Solved (Permanently)', close_notes: notesText, state: '6' },
+                            fields: { close_code: resolutionCloseCode, close_notes: notesText, state: '6' },
                             summary: 'Resolve ' + itsmTargetInc.number
                         });
                         if (propRes && !propRes.error && propRes.pending_action_id) {

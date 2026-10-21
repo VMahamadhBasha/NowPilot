@@ -6,6 +6,49 @@ var ITSMAssistant = Class.create();
  * ITSM Intelligence Agent for evidence-grounded resolution recommendations,
  * structured incident summaries, knowledge article drafting, and citation validation.
  */
+/**
+ * Validate close code against valid choice list on table (e.g. sys_choice)
+ */
+ITSMAssistant.isValidCloseCode = function(table, code) {
+    table = table || 'incident';
+    code = String(code || '').trim();
+    if (!code) return false;
+    try {
+        if (typeof GlideRecord !== 'undefined') {
+            var ch = new GlideRecord('sys_choice');
+            ch.addQuery('name', table);
+            ch.addQuery('element', 'close_code');
+            ch.addQuery('inactive', false);
+            ch.query();
+            var count = 0;
+            while (ch.next()) {
+                count++;
+                if (ch.getValue('value') === code || ch.getValue('label') === code) {
+                    return true;
+                }
+            }
+            if (count > 0) return false;
+        }
+    } catch (e) {}
+    return code.length > 0;
+};
+
+/**
+ * Validate that target incident is eligible for resolution (not already closed or cancelled)
+ */
+ITSMAssistant.validateIncidentForResolution = function(incGr) {
+    if (!incGr) return { ok: false, error: 'Target incident record not found.' };
+    var state = String(incGr.getValue('state') || '');
+    if (state === '6' || state === '7' || state === '8') {
+        var stateLabel = (incGr.getDisplayValue && incGr.getDisplayValue('state')) || state;
+        return { ok: false, error: 'Incident is already in resolved or closed state (' + stateLabel + ') and cannot be resolved again.' };
+    }
+    if (typeof incGr.canWrite === 'function' && !incGr.canWrite()) {
+        return { ok: false, error: 'Caller lacks write ACL permissions to resolve this incident.' };
+    }
+    return { ok: true };
+};
+
 ITSMAssistant.prototype = {
     initialize: function() {
         this.retriever = new ITSMRetriever();
@@ -181,7 +224,8 @@ ITSMAssistant.prototype = {
      */
     createResolutionProposal: function(params) {
         params = params || {};
-        var closeCode = params.close_code || 'Solved (Permanently)';
+        var configuredDefault = (typeof gs !== 'undefined' && gs.getProperty) ? gs.getProperty('x_gmg_ai.default_close_code', 'Solved (Permanently)') : 'Solved (Permanently)';
+        var closeCode = params.close_code || configuredDefault;
         var closeNotes = params.close_notes || '';
         var incidentSysId = params.sys_id || '';
         var incidentNumber = params.number || '';

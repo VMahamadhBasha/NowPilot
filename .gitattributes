@@ -1,0 +1,2 @@
+# Ensure ServiceNow update set XML files always retain LF line endings across platforms
+*.xml text eol=lf

@@ -152,16 +152,74 @@ Whenever you modify a global UI Script or scoped Script Include:
 
 ---
 
+## Developer Certificate of Origin (DCO) & Sign-Off
+
+To ensure legal clarity and open-source provenance for all contributions under the Apache License 2.0, **Now Pilot requires a Developer Certificate of Origin (DCO) sign-off** on every commit.
+
+By adding a sign-off line, you certify the following statement (from [developercertificate.org](https://developercertificate.org/)):
+
+```
+Developer Certificate of Origin
+Version 1.1
+
+Copyright (C) 2004, 2006 The Linux Foundation and its contributors.
+
+By making a contribution to this project, I certify that:
+
+(a) The contribution was created in whole or in part by me and I
+    have the right to submit it under the open source license
+    indicated in the file; or
+
+(b) The contribution is based upon previous work that, to the best
+    of my knowledge, is covered under an appropriate open source
+    license and I have the right under that license to submit that
+    work with modifications, whether created in whole or in part
+    by me, under the same open source license; or
+
+(c) The contribution was provided directly to me by some other
+    person who certified (a), (b) or (c) and I have not modified
+    it; and
+
+(d) I understand and agree that this project and the contribution
+    are public and that a record of the contribution (including all
+    personal information I submit with it, including my sign-off) is
+    maintained indefinitely and may be redistributed consistent with
+    this project or the open source license(s) involved.
+```
+
+### How to Sign Off Your Commits
+
+Use the `-s` (or `--signoff`) flag when making Git commits:
+
+```bash
+git commit -s -m "feat(retry): connect retry_max_attempts to bounded backoff loop"
+```
+
+Git will automatically append your sign-off trailer:
+```
+Signed-off-by: Your Name <your.email@example.com>
+```
+
+> **Note:** If you forgot to sign off your most recent commit before opening a pull request, you can amend it using:
+> ```bash
+> git commit --amend --no-edit -s
+> ```
+
+---
+
 ## Submitting a Pull Request
 
 1. **Fork the Repository**: Create your branch from `main`:
    ```bash
    git checkout -b feature/your-feature-name
    ```
-2. **Commit Changes**: Write clear, descriptive commit messages.
+2. **Commit Changes with DCO Sign-Off**:
+   ```bash
+   git commit -s -m "feat(scope): concise description of change"
+   ```
 3. **Add Tests**: Ensure new capabilities or bug fixes include assertions in the appropriate test suite under `src/test/`.
 4. **Verify Checksums**: Ensure `SHA256SUMS` matches the update set XML files.
-5. **Open a PR**: Describe what was changed, why, and include output proving all 150 automated tests pass.
+5. **Open a PR**: Describe what was changed, why, and include output proving all 184 automated tests pass.
 
 ---
 

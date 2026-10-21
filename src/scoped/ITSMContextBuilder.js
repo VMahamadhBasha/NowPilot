@@ -12,14 +12,20 @@ ITSMContextBuilder.MAX_SNIPPET_CHARS = 500;
 
 ITSMContextBuilder.redactSensitiveData = function(text) {
     if (!text) return '';
+    if (typeof DiagnosticService !== 'undefined' && typeof DiagnosticService.redactPII === 'function') {
+        return DiagnosticService.redactPII(text);
+    }
     return String(text)
         // Redact bearer tokens, api keys, and passwords
-        .replace(/\b(Bearer|Basic)\s+[A-Za-z0-9._~+\/=-]{8,}/gi, '$1 [redacted]')
-        .replace(/\b(?:sk-[a-zA-Z0-9_-]{20,}|xai-[a-zA-Z0-9_-]{20,})\b/gi, '[redacted token]')
+        .replace(/\b(Bearer|Basic)\s+[A-Za-z0-9._~+\/=-]{8,}/gi, '$1 [redacted_token]')
+        .replace(/\b(?:sk-[a-zA-Z0-9_-]{20,}|xai-[a-zA-Z0-9_-]{20,})\b/gi, '[redacted_key]')
         .replace(/\b(api[_-]?key|password|secret|token|passcode)(["']?\s*[:=]\s*["']?)[^\s"',;&]+/gi, '$1$2[redacted]')
+        // Redact email addresses and phone numbers
+        .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, '[redacted_email]')
+        .replace(/\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, '[redacted_phone]')
         // Redact suspected SSNs and 16-digit credit card patterns
-        .replace(/\b\d{3}-\d{2}-\d{4}\b/g, '[redacted ssn]')
-        .replace(/\b(?:\d{4}[- ]?){3}\d{4}\b/g, '[redacted card]');
+        .replace(/\b\d{3}-\d{2}-\d{4}\b/g, '[redacted_ssn]')
+        .replace(/\b(?:\d{4}[- ]?){3}\d{4}\b/g, '[redacted_card]');
 };
 
 ITSMContextBuilder.prototype = {

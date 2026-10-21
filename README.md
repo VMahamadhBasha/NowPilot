@@ -10,7 +10,7 @@
 
 [![Version](https://img.shields.io/badge/release-v1.5.0-168B50.svg?style=flat-square)](https://github.com)
 [![License](https://img.shields.io/badge/license-Apache--2.0-080808.svg?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-150%2F150%20passing-168B50.svg?style=flat-square)](src/test)
+[![Tests](https://img.shields.io/badge/tests-184%2F184%20passing-168B50.svg?style=flat-square)](src/test)
 [![ServiceNow](https://img.shields.io/badge/ServiceNow-Xanadu%20%7C%20Washington%20%7C%20Utah-151515.svg?style=flat-square)](INSTALL.md)
 [![Architecture](https://img.shields.io/badge/architecture-Scoped%20App%20%2B%20Global%20UI-303030.svg?style=flat-square)](src)
 [![Author](https://img.shields.io/badge/built%20by-Kanam%20Ramu-168B50.svg?style=flat-square)](https://github.com)
@@ -85,19 +85,21 @@ To ensure complete clarity regarding code origin and project lineage, the follow
 | Component / Subsystem | New Files Created | Architectural Role & Capabilities |
 | :--- | :--- | :--- |
 | **Development Assistant (v1.2.0)** | [`src/scoped/DevAssistant.js`](file:///src/scoped/DevAssistant.js)<br/>[`src/scoped/DevValidator.js`](file:///src/scoped/DevValidator.js) | Generates and reviews 10 ServiceNow artifact types (Business Rules, Script Includes, Client Scripts, UI Policies, etc.); deterministic AST static validation engine enforcing scoped platform boundaries, blocking `current.update()` recursion, `eval()`, and query injection. |
-| **ITSM Intelligence & RAG (v1.3.0)** | [`src/scoped/ITSMRetriever.js`](file:///src/scoped/ITSMRetriever.js)<br/>[`src/scoped/ITSMContextBuilder.js`](file:///src/scoped/ITSMContextBuilder.js)<br/>[`src/scoped/ITSMAssistant.js`](file:///src/scoped/ITSMAssistant.js) | Explainable multi-factor similarity retrieval (TF-IDF + category/CI match) across historical incidents; active published KB search; prompt sandboxing; grounded troubleshooting recommendations; anti-hallucination citation validator. |
-| **Agentic Workflows (v1.4.0)** | [`src/scoped/WorkflowPlanner.js`](file:///src/scoped/WorkflowPlanner.js)<br/>[`src/scoped/WorkflowEngine.js`](file:///src/scoped/WorkflowEngine.js) | Goal decomposition engine translating natural language into schema-compliant multi-step JSON execution plans; state machine orchestrating allowlisted read tools, staging proposals, enforcing human-in-the-loop approvals, and handling interrupted recovery. |
-| **Observability & Diagnostics (v1.5.0)** | [`src/scoped/DiagnosticService.js`](file:///src/scoped/DiagnosticService.js) | Centralized taxonomy of 12 standardized diagnostic error codes; authoritative server correlation IDs (`corr_<ts>_<rand>`); structured audit event logging across 12 lifecycle events; fail-safe write retry prohibition. |
-| **Automated Test Harness** | [`src/test/test_omniroute.js`](file:///src/test/test_omniroute.js)<br/>[`src/test/test_dev_assistant.js`](file:///src/test/test_dev_assistant.js)<br/>[`src/test/test_itsm_intelligence.js`](file:///src/test/test_itsm_intelligence.js)<br/>[`src/test/test_workflow_automation.js`](file:///src/test/test_workflow_automation.js)<br/>[`src/test/test_production_readiness.js`](file:///src/test/test_production_readiness.js) | 5 comprehensive automated test suites (150 total tests, 100% pass rate) providing end-to-end regression coverage, security boundary checks, SSRF verification, and packaging consistency. |
+| **ITSM Intelligence & RAG (v1.3.0)** | [`src/scoped/ITSMRetriever.js`](file:///src/scoped/ITSMRetriever.js)<br/>[`src/scoped/ITSMContextBuilder.js`](file:///src/scoped/ITSMContextBuilder.js)<br/>[`src/scoped/ITSMAssistant.js`](file:///src/scoped/ITSMAssistant.js) | Explainable multi-factor similarity retrieval (TF-IDF + category/CI match) across historical incidents; active published KB search; prompt sandboxing; grounded troubleshooting recommendations; anti-hallucination citation validator; configurable resolution close codes (`x_gmg_ai.default_close_code`). |
+| **Agentic Workflows (v1.4.0)** | [`src/scoped/WorkflowPlanner.js`](file:///src/scoped/WorkflowPlanner.js)<br/>[`src/scoped/WorkflowEngine.js`](file:///src/scoped/WorkflowEngine.js) | Goal decomposition engine translating natural language into schema-compliant multi-step JSON execution plans; strict target table validation (`ALLOWED_TARGET_TABLES`); state machine orchestrating allowlisted read tools, staging proposals, enforcing human-in-the-loop approvals, and handling interrupted recovery. |
+| **Observability & Diagnostics (v1.5.0)** | [`src/scoped/DiagnosticService.js`](file:///src/scoped/DiagnosticService.js) | Centralized taxonomy of 12 standardized diagnostic error codes; authoritative server correlation IDs (`corr_<ts>_<rand>`); structured audit event logging across 12 lifecycle events; fail-safe write retry prohibition; outbound PII sanitizer (`redactPII`); bounded exponential backoff with jitter (`calculateBackoff`). |
+| **Automated Test Harness** | [`src/test/test_omniroute.js`](file:///src/test/test_omniroute.js)<br/>[`src/test/test_dev_assistant.js`](file:///src/test/test_dev_assistant.js)<br/>[`src/test/test_itsm_intelligence.js`](file:///src/test/test_itsm_intelligence.js)<br/>[`src/test/test_workflow_automation.js`](file:///src/test/test_workflow_automation.js)<br/>[`src/test/test_production_readiness.js`](file:///src/test/test_production_readiness.js) | 5 comprehensive automated test suites (184 total tests, 100% pass rate) providing end-to-end regression coverage, security boundary checks, retry limits, target table allowlist, close-code configurability, outbound PII redaction, SSRF verification, and packaging consistency. |
 | **Local Simulator & Showcase** | [`local_runner.js`](file:///local_runner.js)<br/>[`landing.html`](file:///landing.html)<br/>[`index.html`](file:///index.html)<br/>[`src/assets/now_pilot_logo.png`](file:///src/assets/now_pilot_logo.png)<br/>[`src/assets/now_pilot_landing_mockup.jpg`](file:///src/assets/now_pilot_landing_mockup.jpg) | Zero-dependency local simulation server (port 3000) replicating ServiceNow incident forms and REST APIs; Graphify-inspired responsive enterprise showcase landing page; high-resolution brand identity assets. |
-| **Governance Documentation** | [`CONTRIBUTING.md`](file:///CONTRIBUTING.md)<br/>[`SECURITY.md`](file:///SECURITY.md) | Upstream contribution standards, development and test execution instructions, defense-in-depth threat matrix, and responsible vulnerability disclosure policy. |
+| **Governance Documentation** | [`CONTRIBUTING.md`](file:///CONTRIBUTING.md)<br/>[`SECURITY.md`](file:///SECURITY.md) | Upstream contribution standards, Developer Certificate of Origin (DCO) sign-off guidance (`git commit -s`), development and test execution instructions, defense-in-depth threat matrix, and responsible vulnerability disclosure policy. |
 
 #### B. Modified Existing Files (Extended by Kanam Ramu)
 
 | File | Upstream Origin | Modifications & Enhancements Added |
 | :--- | :--- | :--- |
-| [`src/scoped/LLMAdapter.js`](file:///src/scoped/LLMAdapter.js) | GMG AI Agent v1.0.1 | Implemented OmniRoute OpenAI-compatible gateway integration, model discovery via `/models`, `Retry-After` rate limit handling, secondary provider fallback, and SSRF private IP/cloud metadata blocking. |
-| [`src/scoped/AgentCore.js`](file:///src/scoped/AgentCore.js) | GMG AI Agent v1.0.1 | Integrated correlation ID propagation, structured audit event dispatching, multi-mode routing (Chat, ITSM, Dev, Workflows), and scrubbed error presentation via `DiagnosticService`. |
+| [`src/scoped/LLMAdapter.js`](file:///src/scoped/LLMAdapter.js) | GMG AI Agent v1.0.1 | Implemented OmniRoute OpenAI-compatible gateway integration, model discovery via `/models`, `Retry-After` rate limit handling, secondary provider fallback, SSRF private IP/cloud metadata blocking, and outbound PII payload sanitization (`sanitizeOutboundText`). |
+| [`src/scoped/AgentCore.js`](file:///src/scoped/AgentCore.js) | GMG AI Agent v1.0.1 | Connected `x_gmg_ai.retry_max_attempts` setting to execution path with bounded exponential backoff and jitter, integrated correlation ID propagation, structured audit event dispatching, multi-mode routing, configurable resolution close codes, and scrubbed error presentation via `DiagnosticService`. |
+| [`src/scoped/WorkflowPlanner.js`](file:///src/scoped/WorkflowPlanner.js) | Now Pilot v1.4.0 | Added strict target table validation (`ALLOWED_TARGET_TABLES`), prevented silent table defaulting, and bound dynamic incident resolution close codes. |
+| [`src/scoped/WorkflowEngine.js`](file:///src/scoped/WorkflowEngine.js) | Now Pilot v1.4.0 | Enforced target table allowlist, rejected missing or unauthorized tables (never defaulting to `incident`), added write ACL checks, prevented write retries, and validated incident states before resolution proposals. |
 | [`src/scoped/AgentTools.js`](file:///src/scoped/AgentTools.js) | GMG AI Agent v1.0.1 | Registered new ITSM and Dev Assistant tools, established schema parameter validators, and enforced strict 32,000-character parameter size bounds. |
 | [`src/scoped/Budget.js`](file:///src/scoped/Budget.js) | GMG AI Agent v1.0.1 | Added unpriced model detection, fallback token accounting, and user daily spend cap enforcement (`x_gmg_ai.user_daily_cap_usd`). |
 | [`src/scoped/GMGSeal.js`](file:///src/scoped/GMGSeal.js) | GMG AI Agent v1.0.1 | Extended HMAC SHA-256 sealing across multi-mode proposals, stale-record conflict detection (`sys_mod_count`), and duplicate submission replay prevention. |
@@ -105,6 +107,7 @@ To ensure complete clarity regarding code origin and project lineage, the follow
 | [`src/scoped/rest_health.js`](file:///src/scoped/rest_health.js) | GMG AI Agent v1.0.1 | Added non-leaking provider connectivity checks, safe diagnostic reporting, and SSRF loopback guard checks. |
 | [`src/global/gmg_ai_agent_panel.js`](file:///src/global/gmg_ai_agent_panel.js) | GMG AI Agent v1.0.1 | Re-engineered UI Script with Now Pilot branding, dark-and-green palette (`#168B50` / `#080808` / `#151515` / `#303030`), 4-mode header switcher, anti-duplicate click protection (`working` state), correlation ID badge rendering, and accessible circular launcher. |
 | [`update_sets/gmg_ai_agent_global.xml`](file:///update_sets/gmg_ai_agent_global.xml) | GMG AI Agent v1.0.1 | Re-packaged with the updated Now Pilot UI script and synchronized with XML payloads. |
+| [`update_sets/gmg_ai_agent_scoped.xml`](file:///update_sets/gmg_ai_agent_scoped.xml) | GMG AI Agent v1.0.1 | Re-packaged with the updated Now Pilot Application Menu title, updated script includes (`DiagnosticService`, `WorkflowEngine`, `WorkflowPlanner`, `AgentCore`, `LLMAdapter`, `ITSMAssistant`), and synchronized XML payloads. |
 | [`SHA256SUMS`](file:///SHA256SUMS) | GMG AI Agent v1.0.1 | Recomputed manifest checksums to verify integrity of updated update sets. |
 
 #### C. Inherited Foundation Files (Preserved from Base GMG AI Agent)
@@ -300,13 +303,13 @@ Import the update sets in strict sequential order:
 
 1. Go to **System Update Sets > Retrieved Update Sets**.
 2. Select **Import Update Set from XML**.
-3. Upload and commit the **Global Update Set** first:
+3. Upload and commit the **Scoped Update Set** first:
+   - File: `update_sets/gmg_ai_agent_scoped.xml`
+   - Contains: Scoped application `x_gmg_ai` (330 records, tables, ACLs, Script Includes, REST resources, settings, and the **Now Pilot** application menu).
+   - Click **Preview Update Set** &rarr; Verify 0 errors &rarr; Click **Commit Update Set**.
+4. Upload and commit the **Global Update Set** second:
    - File: `update_sets/gmg_ai_agent_global.xml`
    - Contains: Global UI Script `gmg_ai_agent_panel` and applier helper includes.
-   - Click **Preview Update Set** &rarr; Verify 0 errors &rarr; Click **Commit Update Set**.
-4. Upload and commit the **Scoped Update Set** second:
-   - File: `update_sets/gmg_ai_agent_scoped.xml`
-   - Contains: Scoped application `x_gmg_ai` (330 records, tables, ACLs, Script Includes, REST resources, settings).
    - Click **Preview Update Set** &rarr; Verify 0 errors &rarr; Click **Commit Update Set**.
 
 #### Step 2: Assign User Roles
@@ -315,7 +318,7 @@ Assign the `x_gmg_ai.user` role to users who should have access to the agent lau
 - Administrative settings and provider configurations require `admin`.
 
 #### Step 3: Configure AI Providers
-Navigate to **GMG AI Agent > Providers** and click **New**:
+Navigate to **Now Pilot > Providers** (or open `x_gmg_ai_provider.list` in the filter navigator) and click **New**:
 - **OmniRoute Gateway**:
   - Name: `OmniRoute Primary`
   - Type: `omniroute`
@@ -335,11 +338,36 @@ Navigate to **GMG AI Agent > Providers** and click **New**:
   - API Key: Encrypted `sk-...` key
 
 #### Step 4: Verify System Properties
-Navigate to **GMG AI Agent > Settings** to review operational controls:
-- `x_gmg_ai.fallback_providers`: Comma-separated list of secondary providers for automatic retry on rate limits (HTTP 429) or gateway errors.
+Navigate to **Now Pilot > Settings** (or filter `sys_properties.list` by `x_gmg_ai`):
+- `x_gmg_ai.retry_max_attempts`: Bounded retry attempts (default: `2`, max: `5`). Backoff uses bounded exponential delay with randomized jitter and respects `Retry-After`.
+- `x_gmg_ai.default_close_code`: Default incident resolution close code (default: `Solved (Permanently)`). Can be customized to match your instance choice list in `sys_choice`.
+- `x_gmg_ai.redact_outbound_pii`: Privacy protection (default: `true`). Redacts emails, phone numbers, SSNs, payment card numbers, and API keys before sending outbound requests to LLMs.
+- `x_gmg_ai.fallback_providers`: Comma-separated list of secondary providers for automatic retry on rate limits (HTTP 429) or temporary gateway errors.
 - `x_gmg_ai.model_allowlist`: Optional comma-separated model identifiers allowed for user selection in the panel dropdown.
+- `x_gmg_ai.time_budget_ms`: Execution deadline per round (default: `45000` ms). Enforces a 3000ms safety margin before network dispatches.
 - `x_gmg_ai.allow_non_admin_writes`: Default `true`. Set to `false` to make the agent strictly read-only for non-admin users.
 - `x_gmg_ai.allow_http_localhost`: Default `false`. Set to `true` only in local developer labs where gateways run on `127.0.0.1`.
+
+---
+
+### Personal Developer Instance (PDI) Checklist & Scope Compatibility Notes
+
+#### Scope Isolation vs. Platform Integrity
+In ServiceNow, application scope prefixes (`x_gmg_ai`) dictate database table naming (`x_gmg_ai_*`), dictionary column prefixes, Cross-Scope Access (CSA) privileges, and Script Include namespaces. Blindly renaming the internal scope prefix across hundreds of XML records causes schema corruption, broken foreign keys, and upgrade failures.
+
+To balance complete brand separation with platform stability:
+- **User-Facing Touchpoints**: Fully branded as **Now Pilot** (Application Menu in left navigator, panel header, floating launcher tooltip, accessibility labels, and documentation).
+- **Internal Database Scope**: Retained under `x_gmg_ai` to ensure rock-solid stability, zero broken references, and seamless compatibility across all ServiceNow instance versions (Utah, Washington DC, Xanadu).
+- **Global Objects**: `GMGAIApplierCore` and the UI script remain globally accessible to inject into the ServiceNow top-level frame without violating cross-scope restrictions.
+
+#### Step-by-Step PDI Testing Checklist
+1. **Prepare PDI**: Request a fresh Washington DC or Xanadu instance from [developer.servicenow.com](https://developer.servicenow.com).
+2. **Import XMLs**: Import and commit `update_sets/gmg_ai_agent_scoped.xml`, then `update_sets/gmg_ai_agent_global.xml`.
+3. **Verify Application Menu**: Verify the left navigation menu displays **Now Pilot** with sub-modules (*Chat*, *Providers*, *Logs*, *Pending Actions*, *Settings*).
+4. **Configure Provider**: Open **Now Pilot > Providers**, create a new record, and input your API key.
+5. **Verify Role**: Ensure your test user has `x_gmg_ai.user` (and `admin` for configuration).
+6. **Test Launcher**: Open `incident.do?sys_id=-1` or an existing ticket. Confirm the circular green Now Pilot launcher appears in the bottom right corner.
+7. **Test Gated Proposals**: In Workflows or ITSM mode, propose a resolution or work note. Confirm the **Accept / Reject** proposal card is rendered and requires a manual click before applying.
 
 ---
 
@@ -381,7 +409,7 @@ Now Pilot provides enterprise cost controls and usage tracking:
 
 ## Automated Test Suite
 
-Now Pilot includes a comprehensive automated test harness covering all major subsystems. All 150 tests execute without external network dependencies:
+Now Pilot includes a comprehensive automated test harness covering all major subsystems. All 184 tests execute without external network dependencies:
 
 | Test Suite | File | Tests | Focus Area |
 | :--- | :--- | :---: | :--- |
@@ -389,8 +417,8 @@ Now Pilot includes a comprehensive automated test harness covering all major sub
 | **Dev Assistant** | `src/test/test_dev_assistant.js` | 20 | Code generation, static AST validation, `current.update` guard |
 | **ITSM Intelligence** | `src/test/test_itsm_intelligence.js` | 22 | Incident similarity, KB search, citation verification, prompt safety |
 | **Workflow Automation** | `src/test/test_workflow_automation.js` | 22 | Goal planning, tool execution, pause/resume, lifecycle invariants |
-| **Production Readiness** | `src/test/test_production_readiness.js` | 73 | Diagnostics, correlation IDs, secret redaction, update set integrity |
-| **Total** | | **150** | **100% Pass Rate** |
+| **Production Readiness & Hardening** | `src/test/test_production_readiness.js` | 107 | Diagnostics, correlation IDs, retry backoff with jitter, table validation, close codes, outbound PII redaction, manifest consistency |
+| **Total** | | **184** | **100% Pass Rate** |
 
 ### Run Tests Locally
 ```bash
@@ -460,7 +488,7 @@ servicenow-ai-agent/
 
 ## Contributing
 
-We welcome community feedback, issue reports, and pull requests! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide for our upstream merge criteria, development workflow, and update set synchronization process.
+We welcome community feedback, issue reports, and pull requests! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide for our upstream merge criteria, Developer Certificate of Origin (DCO) commit sign-off (`git commit -s`), development workflow, and update set synchronization process.
 
 ---
 

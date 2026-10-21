@@ -619,6 +619,122 @@ console.log('--- STARTING UPGRADE 5: PRODUCTION READINESS & OBSERVABILITY TESTS 
     assert(planRes.ok === true && planRes.plan.steps.length > 0, '20. Regression: WorkflowPlanner generates valid plan');
 })();
 
+// 21. Release Hardening & Security Fixes Verification (5 Technical Issues)
+(function testReleaseHardeningFixes() {
+    // --- Issue 1: Retry Logic ---
+    // A. Precedence of x_gmg_ai.retry_max_attempts
+    var getPropMock = function(key, dflt) {
+        if (key === 'x_gmg_ai.retry_max_attempts') return '4';
+        if (key === 'x_gmg_ai.max_attempts') return '2';
+        return dflt;
+    };
+    var settings = AgentCore.settings(getPropMock);
+    assert(settings.maxAttempts === 4, '21. Retry Logic: retry_max_attempts takes precedence over legacy max_attempts');
+
+    // B. Backoff calculation with bounded delay, jitter, and Retry-After
+    var bo1 = DiagnosticService.calculateBackoff(1, 0, 3000);
+    assert(bo1 >= 400 && bo1 <= 1000, '21. Retry Logic: Exponential backoff with jitter bounded for attempt 1');
+    var boRetryAfter = DiagnosticService.calculateBackoff(1, 2, 3000);
+    assert(boRetryAfter >= 2000, '21. Retry Logic: Backoff respects Retry-After header delay');
+
+    // C. Write operations are never automatically retried
+    assert(DiagnosticService.isRetryable(DiagnosticService.ERRORS.RATE_LIMIT, true) === false, '21. Retry Logic: Write operations are NEVER retried on rate limit');
+    assert(DiagnosticService.isRetryable(DiagnosticService.ERRORS.TIMEOUT, true) === false, '21. Retry Logic: Write operations are NEVER retried on timeout');
+
+    // D. Non-retryable error codes
+    assert(DiagnosticService.isRetryable(DiagnosticService.ERRORS.AUTH_ERROR, false) === false, '21. Retry Logic: AUTH_ERROR is non-retryable');
+    assert(DiagnosticService.isRetryable(DiagnosticService.ERRORS.CONFIG_ERROR, false) === false, '21. Retry Logic: CONFIG_ERROR is non-retryable');
+
+    // --- Issue 2: Workflow Target Table Validation ---
+    // A. Explicit table allowlist
+    assert(WorkflowPlanner.isTableAllowed('incident') === true, '21. Table Validation: incident table is authorized');
+    assert(WorkflowPlanner.isTableAllowed('change_request') === true, '21. Table Validation: change_request table is authorized');
+    assert(WorkflowPlanner.isTableAllowed('sys_script') === true, '21. Table Validation: sys_script table is authorized');
+    assert(WorkflowPlanner.isTableAllowed('sys_user_has_role') === false, '21. Table Validation: sys_user_has_role is rejected');
+    assert(WorkflowPlanner.isTableAllowed('arbitrary_target') === false, '21. Table Validation: unknown table is rejected');
+
+    // B. Rejection of unauthorized table in WorkflowPlanner
+    var pUnauthorized = new WorkflowPlanner().plan('Investigate tickets', { table: 'sys_user_credentials' }, {}, mockState.currentUserId);
+    assert(pUnauthorized.ok === false && pUnauthorized.rejected === true, '21. Table Validation: WorkflowPlanner rejects unauthorized table');
+
+    // C. Rejection of missing table in WorkflowEngine (never silently default to incident)
+    var engine = new WorkflowEngine();
+    var stepNoTable = { id: 's1', name: 'Get Record', tool: 'get_record', params: { sys_id: '123' }, read_only: true, requires_approval: false };
+    var wfDummy = { workflow_id: 'wf_test', user_id: mockState.currentUserId, evidence: {} };
+    var stepRes = engine.executeStep(stepNoTable, wfDummy, {});
+    assert(stepRes.ok === false && stepRes.rejected === true, '21. Table Validation: WorkflowEngine rejects missing table for get_record');
+
+    // D. Step targeting unauthorized table rejected
+    var stepBadTable = { id: 's2', name: 'Get Record', tool: 'get_record', params: { table: 'sys_user_token' }, read_only: true, requires_approval: false };
+    var stepBadRes = engine.executeStep(stepBadTable, wfDummy, {});
+    assert(stepBadRes.ok === false && stepBadRes.rejected === true, '21. Table Validation: WorkflowEngine rejects unauthorized table in step execution');
+
+    // --- Issue 3: Incident Close Code Handling ---
+    // A. Dynamic close code from property configuration
+    mockState.properties['x_gmg_ai.default_close_code'] = 'Closed/Resolved by Caller';
+    var itsm = new ITSMAssistant();
+    var resPropConfig = itsm.createResolutionProposal({ sys_id: 'inc_test_01', number: 'INC0000060' });
+    assert(resPropConfig.close_code === 'Closed/Resolved by Caller', '21. Close Code: Default close code is read from x_gmg_ai.default_close_code property');
+
+    // B. Explicit parameter overrides default configuration
+    var resPropParam = itsm.createResolutionProposal({ sys_id: 'inc_test_01', number: 'INC0000060', close_code: 'Workaround Provided' });
+    assert(resPropParam.close_code === 'Workaround Provided', '21. Close Code: Explicit parameter overrides default close code');
+
+    // C. Choice validation
+    assert(ITSMAssistant.isValidCloseCode('incident', 'Solved (Permanently)') === true, '21. Close Code: Solved (Permanently) is valid');
+    assert(ITSMAssistant.isValidCloseCode('incident', '') === false, '21. Close Code: Empty close code is invalid');
+
+    // D. Incident state validation: prevents resolving already closed incident
+    var mockClosedInc = {
+        getValue: function(f) { if (f === 'state') return '7'; return ''; },
+        getDisplayValue: function(f) { if (f === 'state') return 'Closed'; return ''; },
+        canWrite: function() { return true; }
+    };
+    var stateCheck = ITSMAssistant.validateIncidentForResolution(mockClosedInc);
+    assert(stateCheck.ok === false, '21. Close Code: Attempt to resolve already closed incident is rejected');
+
+    // --- Issue 4: Outbound LLM PII & Privacy Protection ---
+    // A. Email redaction
+    var rawText = 'Contact user john.doe@acme-corp.com or support.team+priority@service.org for details.';
+    var cleanText = DiagnosticService.redactPII(rawText);
+    assert(cleanText.indexOf('john.doe@acme-corp.com') === -1, '21. PII Protection: Outbound email addresses are redacted');
+    assert(cleanText.indexOf('[redacted_email]') >= 0, '21. PII Protection: Email placeholder is inserted');
+
+    // B. Phone number redaction
+    var rawPhone = 'Call tech lead at +1 (555) 234-5678 or 555-876-5432.';
+    var cleanPhone = DiagnosticService.redactPII(rawPhone);
+    assert(cleanPhone.indexOf('555') === -1, '21. PII Protection: Phone numbers are redacted');
+    assert(cleanPhone.indexOf('[redacted_phone]') >= 0, '21. PII Protection: Phone placeholder is inserted');
+
+    // C. SSN and payment card redaction
+    var rawSensitive = 'User SSN is 000-12-3456 and card is 4111-2222-3333-4444.';
+    var cleanSensitive = DiagnosticService.redactPII(rawSensitive);
+    assert(cleanSensitive.indexOf('000-12-3456') === -1, '21. PII Protection: SSN is redacted');
+    assert(cleanSensitive.indexOf('4111-2222-3333-4444') === -1, '21. PII Protection: Payment card number is redacted');
+
+    // D. LLMAdapter sanitizes outbound message contents
+    var sanitizedOutbound = LLMAdapter.sanitizeOutboundText('Please send API key sk-live-secret99887766 and user email test@example.com');
+    assert(sanitizedOutbound.indexOf('sk-live-secret') === -1, '21. PII Protection: LLMAdapter sanitizes provider keys');
+    assert(sanitizedOutbound.indexOf('test@example.com') === -1, '21. PII Protection: LLMAdapter sanitizes emails');
+
+    // E. Redaction is configurable via x_gmg_ai.redact_outbound_pii property
+    mockState.properties['x_gmg_ai.redact_outbound_pii'] = 'false';
+    assert(DiagnosticService.isPIIRedactionEnabled() === false, '21. PII Protection: Redaction can be disabled when configured');
+    var unredactedText = DiagnosticService.redactPII('user@company.com');
+    assert(unredactedText === 'user@company.com', '21. PII Protection: Unredacted text passed when feature disabled');
+    mockState.properties['x_gmg_ai.redact_outbound_pii'] = 'true'; // Re-enable
+
+    // F. Original GlideRecord records are never modified by outbound redaction
+    var origInc = mockState.tables.incident[0];
+    assert(origInc.short_description === 'Network connectivity degraded in Dallas datacenter', '21. PII Protection: Original GlideRecord record is unmodified');
+
+    // --- Issue 5: Update Set & Menu Branding Verification ---
+    var scopedXml = fs.readFileSync('update_sets/gmg_ai_agent_scoped.xml', 'utf8');
+    assert(scopedXml.indexOf('&lt;title&gt;Now Pilot&lt;/title&gt;') >= 0, '21. Update Set: Application menu title branded as Now Pilot');
+    assert(scopedXml.indexOf('redactPII') >= 0, '21. Update Set: redactPII is packaged in scoped XML');
+    assert(scopedXml.indexOf('ALLOWED_TARGET_TABLES') >= 0, '21. Update Set: ALLOWED_TARGET_TABLES is packaged in scoped XML');
+})();
+
 console.log('\n========================================');
 console.log(`PRODUCTION READINESS TEST SUMMARY: ${passCount} / ${totalCount} tests passed.`);
 console.log('========================================\n');
