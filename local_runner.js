@@ -403,6 +403,15 @@ const server = http.createServer((req, res) => {
         return res.end(JSON.stringify(actionRes));
     }
 
+    // 5.5 Serve Showcase Landing Page
+    if (pathname === '/' || pathname === '/landing' || pathname === '/landing.html') {
+        const landingPath = path.resolve(__dirname, 'landing.html');
+        if (fs.existsSync(landingPath)) {
+            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+            return res.end(fs.readFileSync(landingPath, 'utf8'));
+        }
+    }
+
     // 6. Serve Interactive ServiceNow Incident Page with Embedded Agent Panel
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     const inc = mockState.tables.incident[0];
