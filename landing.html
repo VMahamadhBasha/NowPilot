@@ -3,31 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Now Pilot for ServiceNow — From Ticket to Takeoff</title>
+    <title>Now Pilot — The Autonomous AI Control Plane for ServiceNow</title>
     <link rel="icon" type="image/png" href="/assets/now_pilot_logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #168B50;
-            --primary-hover: #117342;
-            --primary-light: #E8F5EE;
-            --primary-glow: rgba(22, 139, 80, 0.35);
-            --dark-hero: #041B12;
-            --dark-hero-surface: #072B1D;
-            --dark-panel: #080808;
-            --surface-elevated: #151515;
-            --border-dark: #1E3D2F;
-            --border-light: #E5E7EB;
-            --text-dark-primary: #FFFFFF;
-            --text-dark-muted: #A3B8AD;
-            --text-light-primary: #111827;
-            --text-light-muted: #4B5563;
-            --bg-light: #F9FAFB;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 20px;
-            --radius-full: 9999px;
-            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
-            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            --emerald-950: #02140D;
+            --emerald-900: #042115;
+            --emerald-850: #062D1D;
+            --emerald-800: #083A26;
+            --emerald-700: #0C5035;
+            --emerald-600: #10754E;
+            --emerald-500: #168B50;
+            --emerald-400: #22C55E;
+            --emerald-300: #4ADE80;
+            --emerald-200: #86EFAC;
+            --emerald-100: #DCFCE7;
+            --emerald-50:  #F0FDF4;
+
+            --gray-900: #0F172A;
+            --gray-800: #1E293B;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-500: #64748B;
+            --gray-400: #94A3B8;
+            --gray-300: #CBD5E1;
+            --gray-200: #E2E8F0;
+            --gray-100: #F1F5F9;
+            --gray-50:  #F8FAFC;
+
+            --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Monaco, monospace;
         }
 
         * {
@@ -41,8 +49,8 @@
         }
 
         body {
-            font-family: var(--font-sans);
-            color: var(--text-light-primary);
+            font-family: var(--font-main);
+            color: var(--gray-800);
             background: #FFFFFF;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
@@ -54,650 +62,652 @@
             text-decoration: none;
         }
 
-        /* ------------------ NAVIGATION BAR ------------------ */
-        .navbar {
+        /* ------------------ NAVBAR ------------------ */
+        .nav-wrap {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            padding: 16px 32px;
+            z-index: 999;
+            background: rgba(4, 33, 21, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 16px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(4, 27, 18, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(22, 139, 80, 0.2);
-            transition: all 0.2s ease;
         }
 
-        .nav-brand {
+        .nav-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .nav-logo {
-            width: 36px;
-            height: 36px;
+        .nav-logo-box {
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: #080808;
             border: 1px solid #303030;
-            padding: 3px;
-            display: block;
-            box-shadow: 0 0 12px rgba(22, 139, 80, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.25);
         }
 
-        .nav-title {
-            font-size: 18px;
-            font-weight: 700;
+        .nav-logo-box img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+        }
+
+        .nav-brand-text {
+            font-size: 19px;
+            font-weight: 800;
             color: #FFFFFF;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
         }
 
-        .nav-badge {
-            font-size: 11px;
-            font-weight: 600;
-            color: #4ADE80;
-            background: rgba(22, 139, 80, 0.2);
-            border: 1px solid rgba(22, 139, 80, 0.4);
-            padding: 2px 8px;
-            border-radius: var(--radius-full);
-        }
-
-        .nav-links {
+        .nav-menu {
             display: flex;
             align-items: center;
             gap: 28px;
             list-style: none;
         }
 
-        .nav-link {
+        .nav-menu a {
             font-size: 14px;
             font-weight: 500;
-            color: var(--text-dark-muted);
+            color: var(--gray-300);
             transition: color 0.15s ease;
         }
 
-        .nav-link:hover {
+        .nav-menu a:hover {
             color: #FFFFFF;
         }
 
-        .nav-actions {
+        .nav-right {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
-        .btn {
+        .github-stars-pill {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: var(--radius-full);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            border: none;
-        }
-
-        .btn-primary {
-            background: #168B50;
-            color: #FFFFFF;
-            box-shadow: 0 4px 14px rgba(22, 139, 80, 0.4);
-        }
-
-        .btn-primary:hover {
-            background: #117342;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(22, 139, 80, 0.5);
-        }
-
-        .btn-secondary {
+            gap: 6px;
             background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 9999px;
+            padding: 6px 14px;
             color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: #FFFFFF;
+        .github-stars-pill:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.25);
         }
 
-        .btn-white {
+        .btn-launch {
             background: #FFFFFF;
-            color: #041B12;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            color: var(--emerald-950);
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .btn-white:hover {
-            background: #F3F4F6;
+        .btn-launch:hover {
+            background: #E2E8F0;
             transform: translateY(-1px);
         }
 
         /* ------------------ HERO SECTION ------------------ */
-        .hero {
+        .hero-section {
             position: relative;
-            background: radial-gradient(circle at 50% 20%, #0D4E30 0%, #041B12 55%, #020F0A 100%);
-            padding: 140px 32px 80px;
+            background: radial-gradient(120% 90% at 75% 20%, #0D6942 0%, #083E28 35%, #042115 70%, #02140D 100%);
+            padding: 140px 24px 80px;
             color: #FFFFFF;
             overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .hero::before {
+        .hero-section::before {
             content: "";
             position: absolute;
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(22, 139, 80, 0.35) 0%, rgba(22, 139, 80, 0) 70%);
+            top: -200px;
+            right: 10%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.32) 0%, rgba(16, 117, 78, 0.1) 50%, transparent 70%);
+            filter: blur(60px);
             pointer-events: none;
-            filter: blur(40px);
         }
 
-        .hero-grid {
+        .hero-grid-pattern {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background-image: 
-                linear-gradient(rgba(22, 139, 80, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(22, 139, 80, 0.08) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: center top;
-            opacity: 0.6;
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
             pointer-events: none;
+            opacity: 0.7;
         }
 
         .hero-container {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
             position: relative;
             z-index: 2;
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
-            gap: 48px;
+            gap: 40px;
             align-items: center;
         }
 
-        .hero-tag {
+        .hero-pill-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 14px;
-            background: rgba(22, 139, 80, 0.18);
-            border: 1px solid rgba(22, 139, 80, 0.45);
-            border-radius: var(--radius-full);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(34, 197, 94, 0.45);
+            border-radius: 9999px;
+            padding: 5px 14px;
+            margin-bottom: 24px;
             font-size: 13px;
             font-weight: 600;
-            color: #4ADE80;
-            margin-bottom: 24px;
+            color: #86EFAC;
+            backdrop-filter: blur(8px);
         }
 
-        .hero-tag-dot {
-            width: 8px;
-            height: 8px;
-            background: #4ADE80;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #4ADE80;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.85); }
-        }
-
-        .hero-title {
-            font-size: 56px;
+        .pill-accent {
+            background: #22C55E;
+            color: #02140D;
+            font-size: 11px;
             font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 20px;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+        }
+
+        .hero-heading {
+            font-size: 58px;
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+            margin-bottom: 22px;
             color: #FFFFFF;
         }
 
-        .hero-title span {
-            background: linear-gradient(135deg, #4ADE80 0%, #168B50 100%);
+        .hero-heading span {
+            background: linear-gradient(135deg, #86EFAC 0%, #22C55E 60%, #168B50 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-desc {
+        .hero-description {
             font-size: 18px;
             line-height: 1.6;
-            color: var(--text-dark-muted);
+            color: #CBD5E1;
             margin-bottom: 32px;
             max-width: 580px;
         }
 
-        .hero-cta {
+        .hero-cta-group {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 36px;
+            margin-bottom: 24px;
         }
 
-        .hero-trust {
+        .hero-cmd-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 9999px;
+            padding: 8px 18px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: #86EFAC;
+            backdrop-filter: blur(8px);
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #94A3B8;
+            cursor: pointer;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            transition: color 0.15s ease;
+        }
+
+        .copy-btn:hover {
+            color: #FFFFFF;
+        }
+
+        .btn-primary-hero {
+            background: #22C55E;
+            color: #02140D;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary-hero:hover {
+            background: #16A34A;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 22px rgba(34, 197, 94, 0.5);
+        }
+
+        .hero-subnotes {
             display: flex;
             align-items: center;
             gap: 16px;
             font-size: 13px;
-            color: #8BA89B;
+            color: #94A3B8;
         }
 
-        .hero-trust-stars {
-            color: #FBBF24;
-            letter-spacing: 2px;
+        .hero-subnotes span::before {
+            content: "✓ ";
+            color: #4ADE80;
+            font-weight: bold;
         }
 
-        .hero-visual {
+        /* ------------------ HERO 3D ISOMETRIC GRAPHIC ------------------ */
+        .hero-graphic-wrap {
             position: relative;
-            background: rgba(7, 43, 29, 0.6);
-            border: 1px solid rgba(22, 139, 80, 0.35);
-            border-radius: var(--radius-lg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-graphic-card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(6, 45, 29, 0.45);
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            border-radius: 20px;
             padding: 24px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(22, 139, 80, 0.15);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(34, 197, 94, 0.12);
             backdrop-filter: blur(12px);
         }
 
-        .visual-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 16px;
-            margin-bottom: 16px;
-            border-bottom: 1px solid rgba(22, 139, 80, 0.25);
+        .iso-svg {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
-        .visual-dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .visual-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .dot-red { background: #EF4444; }
-        .dot-yellow { background: #F59E0B; }
-        .dot-green { background: #10B981; }
-
-        .visual-mockup {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            line-height: 1.6;
-            color: #D1FAE5;
-        }
-
-        /* ------------------ METRICS BAR ------------------ */
-        .metrics-bar {
-            max-width: 1100px;
-            margin: 0 auto;
+        /* ------------------ METRICS BANNER ------------------ */
+        .metrics-wrapper {
+            max-width: 1140px;
+            margin: -36px auto 0;
             position: relative;
-            z-index: 3;
-            margin-top: -30px;
-            background: rgba(6, 32, 21, 0.9);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(22, 139, 80, 0.4);
-            border-radius: var(--radius-lg);
-            padding: 32px 48px;
+            z-index: 10;
+            padding: 0 24px;
+        }
+
+        .metrics-grid {
+            background: rgba(4, 33, 21, 0.95);
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            border-radius: 16px;
+            padding: 28px 40px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 32px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(16px);
         }
 
-        .metric-col {
+        .metric-item {
             text-align: center;
-            border-right: 1px solid rgba(22, 139, 80, 0.25);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             padding: 0 16px;
         }
 
-        .metric-col:last-child {
+        .metric-item:last-child {
             border-right: none;
         }
 
-        .metric-value {
-            font-size: 44px;
+        .metric-number {
+            font-size: 40px;
             font-weight: 800;
             color: #4ADE80;
             line-height: 1;
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+            letter-spacing: -0.03em;
         }
 
-        .metric-label {
+        .metric-title {
             font-size: 14px;
+            font-weight: 700;
             color: #FFFFFF;
-            font-weight: 600;
             margin-bottom: 4px;
         }
 
-        .metric-sub {
+        .metric-subtitle {
             font-size: 12px;
-            color: var(--text-dark-muted);
+            color: #94A3B8;
         }
 
-        /* ------------------ ECOSYSTEM / LOGOS BAR ------------------ */
-        .ecosystem-section {
-            padding: 90px 32px 50px;
-            background: #FFFFFF;
+        /* ------------------ ECOSYSTEM / INTEGRATIONS ------------------ */
+        .eco-section {
+            padding: 80px 24px 40px;
             text-align: center;
         }
 
-        .ecosystem-title {
+        .eco-label {
             font-size: 13px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #6B7280;
-            font-weight: 600;
-            margin-bottom: 28px;
+            letter-spacing: 0.12em;
+            color: var(--gray-500);
+            margin-bottom: 24px;
         }
 
-        .ecosystem-logos {
-            max-width: 1000px;
+        .eco-box {
+            max-width: 1060px;
             margin: 0 auto;
+            background: #FFFFFF;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 24px 32px;
             display: flex;
             align-items: center;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 36px;
-            padding: 20px 32px;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            background: var(--bg-light);
+            gap: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
-        .ecosystem-item {
+        .eco-badge {
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 15px;
             font-weight: 700;
-            color: #374151;
-            filter: grayscale(10%);
-            transition: all 0.2s ease;
+            color: var(--gray-700);
+            transition: color 0.15s ease;
         }
 
-        .ecosystem-item:hover {
-            filter: grayscale(0%);
-            color: #111827;
+        .eco-badge:hover {
+            color: var(--gray-900);
         }
 
-        .eco-icon {
-            width: 24px;
-            height: 24px;
-            display: inline-block;
-        }
-
-        /* ------------------ BENTO GRID (FEATURES) ------------------ */
+        /* ------------------ BENTO GRID (GRAPHIFY STYLE) ------------------ */
         .bento-section {
-            padding: 80px 32px 100px;
-            background: #F9FAFB;
+            padding: 90px 24px;
+            background: #F8FAFC;
         }
 
-        .section-header {
+        .section-headline-box {
             max-width: 760px;
             margin: 0 auto 56px;
             text-align: center;
         }
 
-        .section-pill {
+        .section-tag {
             display: inline-block;
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: #168B50;
-            background: var(--primary-light);
+            color: var(--emerald-600);
+            background: var(--emerald-50);
+            border: 1px solid var(--emerald-200);
             padding: 4px 12px;
-            border-radius: var(--radius-full);
+            border-radius: 9999px;
             margin-bottom: 14px;
         }
 
         .section-title {
-            font-size: 38px;
+            font-size: 40px;
             font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #111827;
+            color: var(--gray-900);
+            letter-spacing: -0.03em;
+            line-height: 1.18;
             margin-bottom: 16px;
-            line-height: 1.2;
         }
 
         .section-desc {
             font-size: 17px;
-            color: #4B5563;
+            color: var(--gray-600);
             line-height: 1.6;
         }
 
-        .bento-grid {
+        .bento-container {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(12, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
-        .bento-card {
+        .bento-tile {
             background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 32px;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 28px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+            transition: all 0.25s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .bento-card:hover {
-            border-color: rgba(22, 139, 80, 0.4);
-            box-shadow: 0 12px 24px -4px rgba(22, 139, 80, 0.1);
+        .bento-tile:hover {
+            border-color: var(--emerald-500);
+            box-shadow: 0 16px 32px -8px rgba(16, 117, 78, 0.12);
             transform: translateY(-2px);
         }
 
-        .bento-card-8 { grid-column: span 8; }
-        .bento-card-4 { grid-column: span 4; }
-        .bento-card-6 { grid-column: span 6; }
-        .bento-card-12 { grid-column: span 12; }
+        .bento-tile-col-span-2 {
+            grid-column: span 2;
+        }
 
-        .bento-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            background: var(--primary-light);
-            color: #168B50;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 20px;
+        .bento-tile-header {
+            margin-bottom: 16px;
+        }
+
+        .bento-pill {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--emerald-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: block;
         }
 
         .bento-title {
             font-size: 20px;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 10px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
-        .bento-desc {
-            font-size: 15px;
-            color: #4B5563;
+        .bento-text {
+            font-size: 14px;
+            color: var(--gray-600);
             line-height: 1.6;
-            margin-bottom: 20px;
         }
 
-        .bento-preview {
+        .bento-diagram {
+            margin-top: 20px;
             background: #080808;
             border: 1px solid #262626;
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             padding: 16px;
             font-family: var(--font-mono);
             font-size: 12px;
-            color: #D1D5DB;
-            overflow-x: auto;
+            color: #E2E8F0;
         }
 
         /* ------------------ COMPARISON TABLE ------------------ */
-        .comparison-section {
-            padding: 100px 32px;
+        .comp-section {
+            padding: 100px 24px;
             background: #FFFFFF;
         }
 
-        .comparison-container {
+        .comp-table-wrap {
             max-width: 1100px;
             margin: 0 auto;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .comp-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .comp-table th, .comp-table td {
             padding: 16px 20px;
             text-align: center;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--gray-200);
             font-size: 14px;
         }
 
         .comp-table th:first-child, .comp-table td:first-child {
             text-align: left;
             font-weight: 600;
-            color: #111827;
+            color: var(--gray-900);
             width: 38%;
         }
 
         .comp-table thead th {
-            background: #F9FAFB;
+            background: var(--gray-50);
             font-weight: 700;
-            color: #374151;
-            font-size: 15px;
-            padding-top: 24px;
-            padding-bottom: 24px;
+            color: var(--gray-700);
+            font-size: 14px;
+            padding: 20px;
         }
 
-        .comp-table thead th.highlight {
+        .comp-table thead th.brand-col {
             background: #F0FDF4;
-            color: #168B50;
-            border-left: 2px solid #168B50;
-            border-right: 2px solid #168B50;
-            border-top: 4px solid #168B50;
+            color: var(--emerald-600);
+            border-top: 4px solid var(--emerald-500);
+            border-left: 2px solid var(--emerald-500);
+            border-right: 2px solid var(--emerald-500);
         }
 
-        .comp-table tbody td.highlight {
+        .comp-table tbody td.brand-col {
             background: #F0FDF4;
-            border-left: 2px solid #168B50;
-            border-right: 2px solid #168B50;
-            font-weight: 600;
-            color: #168B50;
+            border-left: 2px solid var(--emerald-500);
+            border-right: 2px solid var(--emerald-500);
+            font-weight: 700;
+            color: var(--emerald-600);
         }
 
         .comp-table tr:last-child td {
             border-bottom: none;
         }
 
-        .check-icon {
+        .check-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            background: #168B50;
+            background: var(--emerald-500);
             color: #FFFFFF;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 800;
         }
 
-        .cross-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            color: #9CA3AF;
+        .cross-badge {
+            color: var(--gray-400);
             font-size: 18px;
         }
 
-        /* ------------------ PERSONAS / USE CASES ------------------ */
-        .personas-section {
-            padding: 90px 32px;
-            background: #F9FAFB;
+        /* ------------------ USE CASES ------------------ */
+        .use-cases-section {
+            padding: 90px 24px;
+            background: #F8FAFC;
         }
 
-        .personas-grid {
+        .use-cases-grid {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
+            gap: 20px;
         }
 
-        .persona-card {
+        .use-case-card {
             background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: 28px 24px;
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 24px;
             transition: all 0.2s ease;
         }
 
-        .persona-card:hover {
-            transform: translateY(-3px);
-            border-color: #168B50;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        .use-case-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--emerald-500);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
         }
 
-        .persona-role {
-            font-size: 12px;
+        .use-case-tag {
+            font-size: 11px;
             font-weight: 700;
+            color: var(--emerald-600);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #168B50;
             margin-bottom: 8px;
         }
 
-        .persona-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 12px;
+        .use-case-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
         }
 
-        .persona-body {
-            font-size: 14px;
-            color: #4B5563;
+        .use-case-desc {
+            font-size: 13px;
+            color: var(--gray-600);
             line-height: 1.6;
         }
 
-        /* ------------------ TESTIMONIAL CARDS ------------------ */
-        .quotes-section {
-            padding: 80px 32px;
+        /* ------------------ REVIEWS / TESTIMONIALS ------------------ */
+        .reviews-section {
+            padding: 80px 24px;
             background: #FFFFFF;
         }
 
-        .quotes-grid {
+        .reviews-grid {
             max-width: 1100px;
             margin: 0 auto;
             display: grid;
@@ -705,78 +715,78 @@
             gap: 24px;
         }
 
-        .quote-card {
-            background: #F9FAFB;
-            border: 1px solid #E5E7EB;
-            border-top: 3px solid #168B50;
-            border-radius: var(--radius-md);
-            padding: 32px;
+        .review-card {
+            background: #F8FAFC;
+            border: 1px solid var(--gray-200);
+            border-top: 3px solid var(--emerald-500);
+            border-radius: 14px;
+            padding: 28px;
         }
 
-        .quote-text {
-            font-size: 16px;
-            color: #374151;
-            font-style: italic;
+        .review-text {
+            font-size: 15px;
             line-height: 1.6;
+            color: var(--gray-700);
+            font-style: italic;
             margin-bottom: 20px;
         }
 
-        .quote-author {
+        .review-author {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .quote-avatar {
-            width: 42px;
-            height: 42px;
+        .review-avatar {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: #E5E7EB;
+            background: var(--emerald-100);
+            color: var(--emerald-600);
+            font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            color: #168B50;
         }
 
-        .quote-name {
-            font-weight: 700;
-            color: #111827;
+        .review-name {
             font-size: 14px;
+            font-weight: 700;
+            color: var(--gray-900);
         }
 
-        .quote-role {
+        .review-role {
             font-size: 12px;
-            color: #6B7280;
+            color: var(--gray-500);
         }
 
         /* ------------------ FAQ ACCORDION ------------------ */
         .faq-section {
-            padding: 90px 32px;
-            background: #F9FAFB;
+            padding: 90px 24px;
+            background: #F8FAFC;
         }
 
-        .faq-list {
+        .faq-container {
             max-width: 800px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
-        .faq-item {
+        .faq-card {
             background: #FFFFFF;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
             overflow: hidden;
             transition: all 0.2s ease;
         }
 
-        .faq-question {
-            padding: 20px 24px;
+        .faq-trigger {
+            padding: 18px 24px;
             font-size: 16px;
             font-weight: 700;
-            color: #111827;
+            color: var(--gray-900);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -784,401 +794,399 @@
             user-select: none;
         }
 
-        .faq-question:hover {
-            color: #168B50;
+        .faq-trigger:hover {
+            color: var(--emerald-600);
         }
 
-        .faq-icon {
+        .faq-plus {
             font-size: 18px;
-            font-weight: 400;
             transition: transform 0.2s ease;
         }
 
-        .faq-answer {
+        .faq-body {
             padding: 0 24px 20px;
-            font-size: 15px;
-            color: #4B5563;
+            font-size: 14px;
+            color: var(--gray-600);
             line-height: 1.6;
             display: none;
         }
 
-        .faq-item.active .faq-answer {
+        .faq-card.active .faq-body {
             display: block;
         }
 
-        .faq-item.active .faq-icon {
+        .faq-card.active .faq-plus {
             transform: rotate(45deg);
-            color: #168B50;
+            color: var(--emerald-600);
         }
 
-        /* ------------------ PRE-FOOTER CTA ------------------ */
-        .cta-section {
-            padding: 80px 32px 100px;
+        /* ------------------ PRE-FOOTER CTA BOX ------------------ */
+        .cta-wrap {
+            padding: 80px 24px 100px;
             background: #FFFFFF;
         }
 
-        .cta-card {
-            max-width: 1000px;
+        .cta-box {
+            max-width: 1040px;
             margin: 0 auto;
-            background: radial-gradient(circle at center, #0B3F27 0%, #041B12 100%);
-            border: 1px solid rgba(22, 139, 80, 0.4);
-            border-radius: var(--radius-lg);
+            background: radial-gradient(100% 100% at 50% 0%, #08432A 0%, #042115 100%);
+            border: 1px solid rgba(34, 197, 94, 0.45);
+            border-radius: 24px;
             padding: 64px 32px;
             text-align: center;
             color: #FFFFFF;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
 
-        .cta-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(22, 139, 80, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(22, 139, 80, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .cta-title {
-            font-size: 40px;
+        .cta-box-title {
+            font-size: 44px;
             font-weight: 800;
+            letter-spacing: -0.03em;
             margin-bottom: 16px;
-            letter-spacing: -0.02em;
         }
 
-        .cta-sub {
-            font-size: 18px;
-            color: #A3B8AD;
-            margin-bottom: 32px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .cta-box-desc {
+            font-size: 17px;
+            color: #CBD5E1;
+            max-width: 580px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
         }
 
-        /* ------------------ FOOTER ------------------ */
-        .footer {
-            background: #020E08;
+        /* ------------------ FOOTER (GRAPHIFY WATERMARK) ------------------ */
+        .footer-wrap {
+            background: #02140D;
             color: #FFFFFF;
-            padding: 80px 32px 40px;
-            border-top: 1px solid #133927;
+            padding: 80px 24px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
         }
 
-        .footer-grid {
+        .footer-content {
             max-width: 1200px;
             margin: 0 auto 60px;
             display: grid;
-            grid-template-columns: 1.5fr repeat(4, 1fr);
+            grid-template-columns: 1.4fr repeat(4, 1fr);
             gap: 48px;
         }
 
-        .footer-brand-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .footer-brand {
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
         }
 
-        .footer-tagline {
+        .footer-sub {
             font-size: 14px;
-            color: #8BA89B;
-            margin-bottom: 16px;
+            color: #94A3B8;
+            margin-bottom: 14px;
         }
 
-        .footer-author {
+        .footer-author-tag {
             font-size: 13px;
             color: #4ADE80;
             font-weight: 600;
         }
 
-        .footer-heading {
-            font-size: 14px;
+        .footer-col-title {
+            font-size: 13px;
             font-weight: 700;
-            color: #FFFFFF;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 20px;
+            letter-spacing: 0.06em;
+            color: #FFFFFF;
+            margin-bottom: 18px;
         }
 
-        .footer-links {
+        .footer-nav {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .footer-link {
+        .footer-nav a {
             font-size: 14px;
-            color: #8BA89B;
+            color: #94A3B8;
             transition: color 0.15s ease;
         }
 
-        .footer-link:hover {
+        .footer-nav a:hover {
             color: #FFFFFF;
         }
 
-        .footer-watermark {
+        .footer-watermark-text {
             text-align: center;
-            font-size: 140px;
+            font-size: 148px;
             font-weight: 900;
             letter-spacing: -0.04em;
             color: transparent;
-            -webkit-text-stroke: 2px rgba(22, 139, 80, 0.25);
+            -webkit-text-stroke: 2px rgba(34, 197, 94, 0.22);
             user-select: none;
             pointer-events: none;
-            margin-top: 40px;
-            line-height: 0.9;
+            margin-top: 30px;
+            line-height: 0.85;
         }
 
-        .footer-bottom {
+        .footer-bottom-bar {
             max-width: 1200px;
             margin: 40px auto 0;
             padding-top: 24px;
-            border-top: 1px solid rgba(22, 139, 80, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 13px;
-            color: #8BA89B;
+            color: #64748B;
             flex-wrap: wrap;
             gap: 16px;
         }
 
-        /* ------------------ RESPONSIVE BREAKPOINTS ------------------ */
         @media (max-width: 992px) {
             .hero-container { grid-template-columns: 1fr; }
-            .metrics-bar { grid-template-columns: 1fr; margin-top: 20px; }
-            .metric-col { border-right: none; border-bottom: 1px solid rgba(22, 139, 80, 0.25); padding-bottom: 16px; }
-            .metric-col:last-child { border-bottom: none; }
-            .bento-card-8, .bento-card-4, .bento-card-6 { grid-column: span 12; }
-            .personas-grid { grid-template-columns: 1fr 1fr; }
-            .quotes-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-            .footer-watermark { font-size: 80px; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            .metric-item { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 16px; }
+            .metric-item:last-child { border-bottom: none; }
+            .bento-container { grid-template-columns: 1fr; }
+            .bento-tile-col-span-2 { grid-column: span 1; }
+            .use-cases-grid { grid-template-columns: 1fr 1fr; }
+            .reviews-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+            .footer-watermark-text { font-size: 80px; }
         }
 
         @media (max-width: 640px) {
-            .navbar { padding: 12px 16px; }
-            .nav-links { display: none; }
-            .hero-title { font-size: 38px; }
-            .personas-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .footer-watermark { font-size: 50px; }
+            .nav-menu { display: none; }
+            .hero-heading { font-size: 40px; }
+            .use-cases-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr; }
+            .footer-watermark-text { font-size: 50px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- TOP NAVIGATION -->
-    <nav class="navbar">
-        <div class="nav-brand">
-            <img src="/assets/now_pilot_logo.png" alt="Now Pilot Logo" class="nav-logo">
-            <span class="nav-title">Now Pilot</span>
-            <span class="nav-badge">v1.5.0</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#features" class="nav-link">Features</a></li>
-            <li><a href="#architecture" class="nav-link">Architecture</a></li>
-            <li><a href="#comparison" class="nav-link">Comparison</a></li>
-            <li><a href="#use-cases" class="nav-link">Use Cases</a></li>
-            <li><a href="#faq" class="nav-link">FAQ</a></li>
-            <li><a href="https://github.com/kRamu581/nowpilot-servicenow" target="_blank" class="nav-link">GitHub</a></li>
-        </ul>
-        <div class="nav-actions">
-            <a href="/incident.do" class="btn btn-secondary">Open Ticket</a>
-            <a href="/incident.do" class="btn btn-primary">Launch Simulator</a>
+    <!-- TOP NAVBAR -->
+    <nav class="nav-wrap">
+        <div class="nav-inner">
+            <div class="nav-left">
+                <div class="nav-logo-box">
+                    <img src="/assets/now_pilot_logo.png" alt="Now Pilot Logo">
+                </div>
+                <span class="nav-brand-text">Now Pilot</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#comparison">Comparison</a></li>
+                <li><a href="#use-cases">Use Cases</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-right">
+                <a href="https://github.com/kRamu581/nowpilot-servicenow" target="_blank" class="github-stars-pill">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span>Star on GitHub</span>
+                </a>
+                <a href="/incident.do" class="btn-launch">Launch Simulator</a>
+            </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <header class="hero">
-        <div class="hero-grid"></div>
+    <!-- HERO SECTION (GRAPHIFY ATMOSPHERIC GLOW) -->
+    <header class="hero-section">
+        <div class="hero-grid-pattern"></div>
         <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-tag">
-                    <span class="hero-tag-dot"></span>
-                    <span>Production Ready v1.5.0 &bull; From Ticket to Takeoff.</span>
+            <div>
+                <div class="hero-pill-badge">
+                    <span class="pill-accent">v1.5.0</span>
+                    <span>The Autonomous Control Plane for ServiceNow</span>
                 </div>
-                <h1 class="hero-title">
-                    The Autonomous AI <span>Control Plane</span> for ServiceNow.
+                <h1 class="hero-heading">
+                    The AI control plane for <span>enterprise ServiceNow</span>.
                 </h1>
-                <p class="hero-desc">
-                    Connect enterprise LLMs directly to your ServiceNow workflows with zero unapproved writes, platform-native ACLs, deterministic RAG, and cryptographic proposal seals.
+                <p class="hero-description">
+                    Connect enterprise models directly to your ServiceNow workflows with zero unapproved writes, platform-native ACLs, deterministic RAG, and cryptographic proposal seals.
                 </p>
-                <div class="hero-cta">
-                    <a href="/incident.do" class="btn btn-primary" style="padding: 14px 28px; font-size: 15px;">
-                        Launch Live Simulator &rarr;
-                    </a>
-                    <a href="https://github.com/kRamu581/nowpilot-servicenow" target="_blank" class="btn btn-secondary" style="padding: 14px 24px; font-size: 15px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:6px"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        View on GitHub
+                <div class="hero-cta-group">
+                    <div class="hero-cmd-box">
+                        <span>git clone https://github.com/kRamu581/nowpilot-servicenow</span>
+                        <button class="copy-btn" title="Copy command" onclick="navigator.clipboard.writeText('git clone https://github.com/kRamu581/nowpilot-servicenow')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                    </div>
+                    <a href="/incident.do" class="btn-primary-hero">
+                        <span>Open Incident &rarr;</span>
                     </a>
                 </div>
-                <div class="hero-trust">
-                    <span class="hero-trust-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    <span>150 / 150 Automated Tests &bull; Apache-2.0 &bull; Built by Kanam Ramu</span>
+                <div class="hero-subnotes">
+                    <span>100% Open Source</span>
+                    <span>Apache 2.0</span>
+                    <span>Zero Unapproved Writes</span>
                 </div>
             </div>
 
-            <!-- HERO VISUAL PREVIEW -->
-            <div class="hero-visual">
-                <div class="visual-header">
-                    <div class="visual-dots">
-                        <span class="visual-dot dot-red"></span>
-                        <span class="visual-dot dot-yellow"></span>
-                        <span class="visual-dot dot-green"></span>
-                    </div>
-                    <span style="font-size:12px;color:#A3B8AD;font-family:var(--font-mono)">nowpilot-agent.service</span>
-                    <span style="font-size:11px;color:#4ADE80;background:rgba(22,139,80,0.3);padding:2px 8px;border-radius:12px">ACTIVE</span>
-                </div>
-                <div class="visual-mockup">
-                    <p style="color:#6EE7B7">&gt; nowpilot --context incident:INC0010001</p>
-                    <p style="color:#A3A3A3">[INFO] Authenticating as admin (GlideRecordSecure)...</p>
-                    <p style="color:#A3A3A3">[INFO] Gateway: OmniRoute [omniroute/gpt-4o-mini]</p>
-                    <p style="color:#FBBF24">[RAG] 3 closed incidents retrieved (Score: 0.89)</p>
-                    <p style="color:#FBBF24">[DEV] DevValidator: 0 errors, current.update forbidden</p>
-                    <p style="color:#60A5FA">[SEAL] GMGSeal created: hmac_sha256:d8a92f0...</p>
-                    <div style="margin-top:12px;background:#151515;border:1px solid #303030;border-left:3px solid #168B50;border-radius:6px;padding:10px">
-                        <b style="color:#FFFFFF">Proposed Change: INC0010001</b><br/>
-                        <span style="color:#A3A3A3">State:</span> <s style="color:#FCA5A5">In Progress</s> &rarr; <b style="color:#4ADE80">Resolved</b><br/>
-                        <span style="color:#A3A3A3">Resolution:</span> Cache flush applied; latency normalized.
-                        <div style="margin-top:8px;display:flex;gap:6px">
-                            <span style="background:#168B50;color:#fff;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600">Accept [Click]</span>
-                            <span style="border:1px solid #303030;color:#A3A3A3;padding:3px 10px;border-radius:4px;font-size:11px">Reject</span>
-                        </div>
-                    </div>
+            <!-- ISOMETRIC CONTROL PLANE SERVER GRAPHIC (GRAPHIFY STYLE) -->
+            <div class="hero-graphic-wrap">
+                <div class="hero-graphic-card">
+                    <svg class="iso-svg" viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Top Cube Face -->
+                        <polygon points="200,30 320,95 200,160 80,95" fill="rgba(34, 197, 94, 0.2)" stroke="#22C55E" stroke-width="2"/>
+                        <!-- Left Cube Face -->
+                        <polygon points="80,95 200,160 200,270 80,205" fill="rgba(16, 117, 78, 0.35)" stroke="#168B50" stroke-width="2"/>
+                        <!-- Right Cube Face -->
+                        <polygon points="200,160 320,95 320,205 200,270" fill="rgba(4, 33, 21, 0.6)" stroke="#168B50" stroke-width="2"/>
+                        
+                        <!-- Internal Wireframe Topology Lines -->
+                        <line x1="140" y1="62" x2="260" y2="127" stroke="rgba(134, 239, 172, 0.6)" stroke-dasharray="3 3"/>
+                        <line x1="260" y1="62" x2="140" y2="127" stroke="rgba(134, 239, 172, 0.6)" stroke-dasharray="3 3"/>
+                        
+                        <!-- Glowing Nodes -->
+                        <circle cx="200" cy="95" r="7" fill="#4ADE80" filter="drop-shadow(0 0 8px #4ADE80)"/>
+                        <circle cx="140" cy="127" r="5" fill="#22C55E"/>
+                        <circle cx="260" cy="127" r="5" fill="#22C55E"/>
+                        <circle cx="200" cy="160" r="6" fill="#86EFAC"/>
+                        
+                        <!-- Bottom Reflection Rings -->
+                        <ellipse cx="200" cy="290" rx="90" ry="24" stroke="rgba(34, 197, 94, 0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+                        <ellipse cx="200" cy="290" rx="130" ry="34" stroke="rgba(34, 197, 94, 0.15)" stroke-width="1"/>
+                        
+                        <!-- Status Overlays -->
+                        <rect x="220" y="210" width="130" height="42" rx="8" fill="#080808" stroke="#303030"/>
+                        <text x="232" y="228" fill="#4ADE80" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">GMGSeal : VALID</text>
+                        <text x="232" y="243" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="10">ACL: GlideRecordSecure</text>
+                    </svg>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- METRICS BANNER -->
-    <section class="metrics-bar">
-        <div class="metric-col">
-            <div class="metric-value">150 / 150</div>
-            <div class="metric-label">Automated Verification Tests</div>
-            <div class="metric-sub">100% Pass Rate across 5 Upgrade Suites</div>
-        </div>
-        <div class="metric-col">
-            <div class="metric-value">0%</div>
-            <div class="metric-label">Unapproved Writes</div>
-            <div class="metric-sub">GMGSeal HMAC-SHA256 Tamper Protection</div>
-        </div>
-        <div class="metric-col">
-            <div class="metric-value">4 Modes</div>
-            <div class="metric-label">Unified Platform Intelligence</div>
-            <div class="metric-sub">Chat &bull; ITSM RAG &bull; Dev Assistant &bull; Workflows</div>
-        </div>
-    </section>
-
-    <!-- INTEGRATIONS / ECOSYSTEM SECTION -->
-    <section class="ecosystem-section">
-        <div class="ecosystem-title">Engineered to integrate seamlessly with your AI infrastructure</div>
-        <div class="ecosystem-logos">
-            <div class="ecosystem-item">
-                <span style="display:inline-block;width:12px;height:12px;background:#168B50;border-radius:50%"></span>
-                <span>ServiceNow</span>
+    <!-- METRICS BANNER (GRAPHIFY STYLE) -->
+    <div class="metrics-wrapper">
+        <div class="metrics-grid">
+            <div class="metric-item">
+                <div class="metric-number">150 / 150</div>
+                <div class="metric-title">Automated Verification Tests</div>
+                <div class="metric-subtitle">100% Pass Rate across 5 Upgrade Suites</div>
             </div>
-            <div class="ecosystem-item">
+            <div class="metric-item">
+                <div class="metric-number">0%</div>
+                <div class="metric-title">Unapproved Database Writes</div>
+                <div class="metric-subtitle">HMAC-SHA256 Cryptographic Proposal Seal</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-number">4 Modes</div>
+                <div class="metric-title">Platform Intelligence</div>
+                <div class="metric-subtitle">Chat &bull; ITSM RAG &bull; Dev Assistant &bull; Workflows</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTEGRATIONS ECOSYSTEM -->
+    <section class="eco-section">
+        <div class="eco-label">Supported Models &bull; Enterprise AI Gateways</div>
+        <div class="eco-box">
+            <div class="eco-badge">
+                <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#168B50"></span>
+                <span>ServiceNow Xanadu &amp; Washington</span>
+            </div>
+            <div class="eco-badge">
                 <span style="color:#3B82F6">&#9670;</span>
                 <span>OmniRoute Gateway</span>
             </div>
-            <div class="ecosystem-item">
+            <div class="eco-badge">
                 <span style="color:#D97706">&#9632;</span>
                 <span>Anthropic Claude</span>
             </div>
-            <div class="ecosystem-item">
+            <div class="eco-badge">
                 <span style="color:#10B981">&#9679;</span>
-                <span>OpenAI Compatible</span>
+                <span>OpenAI / Compatible</span>
             </div>
-            <div class="ecosystem-item">
+            <div class="eco-badge">
                 <span style="color:#6366F1">&#9650;</span>
                 <span>xAI Grok</span>
             </div>
-            <div class="ecosystem-item">
+            <div class="eco-badge">
                 <span style="color:#8B5CF6">&#9733;</span>
                 <span>Meta Llama / Ollama</span>
             </div>
         </div>
     </section>
 
-    <!-- BENTO GRID (FEATURES) -->
+    <!-- BENTO GRID (GRAPHIFY SECTION) -->
     <section id="features" class="bento-section">
-        <div class="section-header">
-            <span class="section-pill">Core Capabilities</span>
-            <h2 class="section-title">Engineered for High-Governance Enterprise ServiceNow</h2>
+        <div class="section-headline-box">
+            <span class="section-tag">Architecture</span>
+            <h2 class="section-title">Engineered for Enterprise Governance</h2>
             <p class="section-desc">
-                From investigating priority outages to writing client scripts and orchestrating multi-step automations, Now Pilot delivers safe generative AI with platform guardrails.
+                From investigating incidents to scaffolding Script Includes and executing agentic workflows, Now Pilot delivers production-grade platform safety.
             </p>
         </div>
 
-        <div class="bento-grid">
-            <!-- Card 1: ITSM Intelligence -->
-            <div class="bento-card bento-card-8">
-                <div>
-                    <div class="bento-icon">&#128269;</div>
-                    <h3 class="bento-title">ITSM Intelligence &amp; Deterministic RAG</h3>
+        <div class="bento-container">
+            <!-- Bento 1: ITSM RAG -->
+            <div class="bento-tile bento-tile-col-span-2">
+                <div class="bento-tile-header">
+                    <span class="bento-pill">Deterministic RAG</span>
+                    <h3 class="bento-title">ITSM Intelligence &amp; Citation Validation</h3>
                     <p class="bento-desc">
-                        Retrieve historical resolved incidents using explainable multi-factor scoring (TF-IDF + categorical matching + CI relationships). Query active published Knowledge Base articles with user-criteria ACL enforcement and strict citation validation.
+                        Retrieve historical resolved incidents using explainable multi-factor scoring (TF-IDF + categorical matching + CI relationships). Query active published Knowledge Base articles with user-criteria ACL enforcement and strict citation validation that detects hallucinated ticket citations.
                     </p>
                 </div>
-                <div class="bento-preview">
+                <div class="bento-diagram">
                     <span style="color:#4ADE80">// Citation Verification Engine</span><br/>
-                    &gt; Retrieved: INC0010045, INC0010082, KB0010012<br/>
-                    &gt; Citations Validated: 3 / 3 &bull; Hallucinations: 0<br/>
-                    <span style="color:#60A5FA">[PASS] Citation Notice: All referenced tickets verified against platform source registry.</span>
+                    &gt; Retrieved Evidence: INC0010045, INC0010082, KB0010012<br/>
+                    &gt; Citations Validated: 3 / 3 &bull; Hallucinated References: 0<br/>
+                    <span style="color:#60A5FA">[PASS] Citation Notice: All cited tickets verified against platform source registry.</span>
                 </div>
             </div>
 
-            <!-- Card 2: GMGSeal -->
-            <div class="bento-card bento-card-4">
-                <div>
-                    <div class="bento-icon">&#128274;</div>
+            <!-- Bento 2: GMGSeal -->
+            <div class="bento-tile">
+                <div class="bento-tile-header">
+                    <span class="bento-pill">Zero Unapproved Writes</span>
                     <h3 class="bento-title">Cryptographic GMGSeal</h3>
                     <p class="bento-desc">
-                        Every proposed record or code change is staged as an immutable proposal sealed with a SHA-256 HMAC hash. Any background tampering invalidates the seal.
+                        Every proposed change is sealed with a SHA-256 HMAC hash. Any background tampering or stale mod_count invalidates the proposal.
                     </p>
                 </div>
-                <div class="bento-preview">
+                <div class="bento-diagram">
                     <span style="color:#FBBF24">HMAC_SHA256: 8f4c21...</span><br/>
-                    State: <code>waiting_approval</code><br/>
+                    Status: <code>waiting_approval</code><br/>
                     Stale check: <code>sys_mod_count=4</code>
                 </div>
             </div>
 
-            <!-- Card 3: Dev Assistant -->
-            <div class="bento-card bento-card-4">
-                <div>
-                    <div class="bento-icon">&#128187;</div>
-                    <h3 class="bento-title">Dev Assistant &amp; AST Guard</h3>
+            <!-- Bento 3: Dev Validator -->
+            <div class="bento-tile">
+                <div class="bento-tile-header">
+                    <span class="bento-pill">Platform AST Guard</span>
+                    <h3 class="bento-title">Dev Assistant &amp; Validator</h3>
                     <p class="bento-desc">
                         Generates Business Rules, Script Includes, Client Scripts, and UI Policies. <code>DevValidator</code> detects syntax errors and strictly forbids <code>current.update()</code>.
                     </p>
                 </div>
-                <div class="bento-preview">
+                <div class="bento-diagram">
                     <span style="color:#EF4444">[FORBIDDEN] current.update()</span><br/>
                     <span style="color:#4ADE80">[PASS] AbstractAjaxProcessor</span><br/>
                     <span style="color:#4ADE80">[PASS] isLoading guard intact</span>
                 </div>
             </div>
 
-            <!-- Card 4: Agentic Workflows -->
-            <div class="bento-card bento-card-8">
-                <div>
-                    <div class="bento-icon">&#9889;</div>
-                    <h3 class="bento-title">Agentic Workflow Automation &amp; Controlled Tool Execution</h3>
+            <!-- Bento 4: Agentic Workflows -->
+            <div class="bento-tile bento-tile-col-span-2">
+                <div class="bento-tile-header">
+                    <span class="bento-pill">Multi-Step Automation</span>
+                    <h3 class="bento-title">Controlled Agentic Workflow Execution</h3>
                     <p class="bento-desc">
-                        Autonomous goal decomposition breaks complex tasks into structured multi-step plans. Permitted read tools execute automatically; write tools stage proposals and pause for human review with full resume capabilities.
+                        Autonomous goal decomposition breaks complex tasks into structured multi-step plans. Permitted read tools execute automatically; write tools stage proposals and pause for human review with full recovery capabilities.
                     </p>
                 </div>
-                <div class="bento-preview">
+                <div class="bento-diagram">
                     <span style="color:#60A5FA">Workflow: Incident Investigation &amp; Resolution</span><br/>
                     Step 1: <code>record_read</code> &rarr; [COMPLETED]<br/>
                     Step 2: <code>kb_search</code> &rarr; [COMPLETED]<br/>
@@ -1188,104 +1196,76 @@
         </div>
     </section>
 
-    <!-- ARCHITECTURE / HOW IT WORKS -->
-    <section id="architecture" class="bento-section" style="background:#FFFFFF">
-        <div class="section-header">
-            <span class="section-pill">Architecture</span>
-            <h2 class="section-title">Built Native to ServiceNow's Security Model</h2>
+    <!-- COMPARISON TABLE (GRAPHIFY STYLE) -->
+    <section id="comparison" class="comp-section">
+        <div class="section-headline-box">
+            <span class="section-tag">Comparison</span>
+            <h2 class="section-title">Why Enterprise Teams Choose Now Pilot</h2>
             <p class="section-desc">
-                Now Pilot operates within your existing security perimeter, inheriting native platform ACLs and keeping sensitive API keys server-side.
+                Evaluate how Now Pilot compares with closed proprietary add-ons, generic chat wrappers, and custom scripts.
             </p>
         </div>
 
-        <div class="bento-grid">
-            <div class="bento-card bento-card-6">
-                <div class="bento-icon">&#128737;</div>
-                <h3 class="bento-title">SSRF Protection &amp; Network Firewall</h3>
-                <p class="bento-desc">
-                    All outbound HTTP requests are inspected by <code>LLMAdapter</code>. Access to AWS/GCP cloud metadata endpoints (<code>169.254.169.254</code>) and private subnets is blocked to prevent server-side request forgery.
-                </p>
-            </div>
-            <div class="bento-card bento-card-6">
-                <div class="bento-icon">&#128101;</div>
-                <h3 class="bento-title">Native Platform ACLs via GlideRecordSecure</h3>
-                <p class="bento-desc">
-                    Unlike naive wrappers using raw database access, Now Pilot enforces ServiceNow's <code>GlideRecordSecure</code> on every read and search. The AI cannot see data the logged-in user lacks rights to view.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- COMPARISON MATRIX -->
-    <section id="comparison" class="comparison-section">
-        <div class="section-header">
-            <span class="section-pill">Why Now Pilot?</span>
-            <h2 class="section-title">How Now Pilot Compares</h2>
-            <p class="section-desc">
-                See why enterprise platform architects choose Now Pilot over closed vendor add-ons and generic scripts.
-            </p>
-        </div>
-
-        <div class="comparison-container">
+        <div class="comp-table-wrap">
             <table class="comp-table">
                 <thead>
                     <tr>
                         <th>Capability &bull; Governance</th>
-                        <th class="highlight">Now Pilot (v1.5.0)</th>
+                        <th class="brand-col">Now Pilot (v1.5.0)</th>
                         <th>ServiceNow GenAI Add-on</th>
-                        <th>Generic Chat Wrappers</th>
+                        <th>Generic Chatbots</th>
                         <th>Custom In-House Scripts</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>100% Human-in-the-Loop (GMGSeal)</td>
-                        <td class="highlight"><span class="check-icon">&#10003;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
+                        <td class="brand-col"><span class="check-badge">&#10003;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
                     </tr>
                     <tr>
-                        <td>ServiceNow ACLs (GlideRecordSecure)</td>
-                        <td class="highlight"><span class="check-icon">&#10003;</span></td>
-                        <td><span class="check-icon">&#10003;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
+                        <td>Native ACLs (GlideRecordSecure)</td>
+                        <td class="brand-col"><span class="check-badge">&#10003;</span></td>
+                        <td><span class="check-badge">&#10003;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
                         <td>Varies</td>
                     </tr>
                     <tr>
-                        <td>Multi-Provider &amp; Gateway Freedom</td>
-                        <td class="highlight"><span class="check-icon">&#10003;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
+                        <td>Multi-Provider Freedom (OmniRoute, Claude, OpenAI)</td>
+                        <td class="brand-col"><span class="check-badge">&#10003;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
                         <td>Varies</td>
-                        <td><span class="cross-icon">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
                     </tr>
                     <tr>
-                        <td>Deterministic RAG &amp; Citation Warning</td>
-                        <td class="highlight"><span class="check-icon">&#10003;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
+                        <td>Deterministic RAG &amp; Citation Warnings</td>
+                        <td class="brand-col"><span class="check-badge">&#10003;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
                     </tr>
                     <tr>
                         <td>Static Safety Guard (Blocks current.update)</td>
-                        <td class="highlight"><span class="check-icon">&#10003;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
+                        <td class="brand-col"><span class="check-badge">&#10003;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
                     </tr>
                     <tr>
                         <td>Zero-Dependency Local Simulator</td>
-                        <td class="highlight"><span class="check-icon">&#10003;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
-                        <td><span class="cross-icon">&minus;</span></td>
+                        <td class="brand-col"><span class="check-badge">&#10003;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
+                        <td><span class="cross-badge">&minus;</span></td>
                     </tr>
                     <tr>
-                        <td>Per-Seat Licensing Cost</td>
-                        <td class="highlight"><b>$0 (Apache-2.0)</b></td>
+                        <td>Per-Seat Licensing Fee</td>
+                        <td class="brand-col"><b>$0 (Apache-2.0)</b></td>
                         <td>$$$$$ / seat</td>
                         <td>Subscription</td>
-                        <td>Dev overhead</td>
+                        <td>High dev maintenance</td>
                     </tr>
                 </tbody>
             </table>
@@ -1293,216 +1273,216 @@
     </section>
 
     <!-- PERSONAS / USE CASES -->
-    <section id="use-cases" class="personas-section">
-        <div class="section-header">
-            <span class="section-pill">Who It's Built For</span>
-            <h2 class="section-title">Value Across Every ServiceNow Persona</h2>
+    <section id="use-cases" class="use-cases-section">
+        <div class="section-headline-box">
+            <span class="section-tag">Personas</span>
+            <h2 class="section-title">Value Across the Entire Enterprise</h2>
             <p class="section-desc">
-                From frontline support technicians to platform architects and enterprise leaders.
+                Purpose-built workflows for frontline agents, platform developers, architects, and IT executives.
             </p>
         </div>
 
-        <div class="personas-grid">
-            <div class="persona-card">
-                <div class="persona-role">Frontline Support</div>
-                <h3 class="persona-title">Service Desk Agents</h3>
-                <p class="persona-body">
-                    Instantly summarize long caller threads, retrieve matching closed tickets with proven workarounds, and draft resolution notes in one click.
+        <div class="use-cases-grid">
+            <div class="use-case-card">
+                <div class="use-case-tag">Support</div>
+                <h3 class="use-case-title">Service Desk Agents</h3>
+                <p class="use-case-desc">
+                    Instantly summarize long incident caller threads, retrieve matching closed tickets with proven workarounds, and draft resolution notes in one click.
                 </p>
             </div>
-            <div class="persona-card">
-                <div class="persona-role">Engineering</div>
-                <h3 class="persona-title">ServiceNow Developers</h3>
-                <p class="persona-body">
+            <div class="use-case-card">
+                <div class="use-case-tag">Engineering</div>
+                <h3 class="use-case-title">ServiceNow Developers</h3>
+                <p class="use-case-desc">
                     Generate Script Includes and Business Rules with static AST validation, eliminating platform freezes from unintended <code>current.update()</code> calls.
                 </p>
             </div>
-            <div class="persona-card">
-                <div class="persona-role">Governance</div>
-                <h3 class="persona-title">Platform Architects</h3>
-                <p class="persona-body">
-                    Enforce SSRF boundaries, model allowlists, and daily spend caps in USD, backed by authoritative correlation IDs for complete auditability.
+            <div class="use-case-card">
+                <div class="use-case-tag">Governance</div>
+                <h3 class="use-case-title">Platform Architects</h3>
+                <p class="use-case-desc">
+                    Enforce SSRF boundaries, model allowlists, and daily spend caps in USD, backed by authoritative correlation IDs for complete platform auditability.
                 </p>
             </div>
-            <div class="persona-card">
-                <div class="persona-role">Leadership</div>
-                <h3 class="persona-title">IT &amp; AI Executives</h3>
-                <p class="persona-body">
+            <div class="use-case-card">
+                <div class="use-case-tag">Leadership</div>
+                <h3 class="use-case-title">IT &amp; AI Executives</h3>
+                <p class="use-case-desc">
                     Avoid multi-million-dollar vendor lock-in. Deploy a transparent, open-source AI assistant that integrates with your preferred enterprise gateways.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- TESTIMONIALS / ARCHITECT REVIEWS -->
-    <section class="quotes-section">
-        <div class="section-header">
-            <span class="section-pill">Field Verified</span>
-            <h2 class="section-title">Engineered for Enterprise Confidence</h2>
+    <!-- FIELD REVIEWS -->
+    <section class="reviews-section">
+        <div class="section-headline-box">
+            <span class="section-tag">Testimonials</span>
+            <h2 class="section-title">Field-Tested Confidence</h2>
         </div>
-        <div class="quotes-grid">
-            <div class="quote-card">
-                <p class="quote-text">
+        <div class="reviews-grid">
+            <div class="review-card">
+                <p class="review-text">
                     "Now Pilot's proposal seal model is exactly what enterprise ServiceNow needed. Our security team immediately approved it because it's physically impossible for the LLM to commit changes without explicit human sign-off."
                 </p>
-                <div class="quote-author">
-                    <div class="quote-avatar">SR</div>
+                <div class="review-author">
+                    <div class="review-avatar">SR</div>
                     <div>
-                        <div class="quote-name">ServiceNow Technical Architect</div>
-                        <div class="quote-role">Global IT Operations &bull; 15,000+ Users</div>
+                        <div class="review-name">ServiceNow Technical Architect</div>
+                        <div class="review-role">Global IT Operations &bull; 15,000+ Users</div>
                     </div>
                 </div>
             </div>
-            <div class="quote-card">
-                <p class="quote-text">
+            <div class="review-card">
+                <p class="review-text">
                     "The Dev Assistant's AST validator caught three instances of current.update() in legacy business rules that would have caused recursive crashes. The citation verification on KB drafts alone saved us 40 hours a week."
                 </p>
-                <div class="quote-author">
-                    <div class="quote-avatar">ML</div>
+                <div class="review-author">
+                    <div class="review-avatar">ML</div>
                     <div>
-                        <div class="quote-name">Lead ServiceNow Developer</div>
-                        <div class="quote-role">Enterprise Financial Services</div>
+                        <div class="review-name">Lead ServiceNow Developer</div>
+                        <div class="review-role">Enterprise Financial Services</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ ACCORDION -->
+    <!-- FAQ SECTION -->
     <section id="faq" class="faq-section">
-        <div class="section-header">
-            <span class="section-pill">Frequently Asked Questions</span>
-            <h2 class="section-title">Everything You Need to Know</h2>
+        <div class="section-headline-box">
+            <span class="section-tag">FAQ</span>
+            <h2 class="section-title">Frequently Asked Questions</h2>
         </div>
 
-        <div class="faq-list">
-            <div class="faq-item active">
-                <div class="faq-question">
+        <div class="faq-container">
+            <div class="faq-card active">
+                <div class="faq-trigger">
                     <span>Can Now Pilot make unauthorized writes to our production records?</span>
-                    <span class="faq-icon">&plus;</span>
+                    <span class="faq-plus">&plus;</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-body">
                     <b>No.</b> Now Pilot enforces a zero-unapproved-writes contract. Every change is staged as an immutable proposal sealed with a cryptographic SHA-256 HMAC hash. Changes are applied only after an authorized user reviews the proposed diff and clicks <b>Accept</b>.
                 </div>
             </div>
 
-            <div class="faq-item">
-                <div class="faq-question">
+            <div class="faq-card">
+                <div class="faq-trigger">
                     <span>Which ServiceNow releases are supported?</span>
-                    <span class="faq-icon">&plus;</span>
+                    <span class="faq-plus">&plus;</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-body">
                     Now Pilot v1.5.0 is tested and verified on <b>ServiceNow Vancouver, Washington DC, Xanadu, and Australia (Patch 7+)</b>. It runs in classic UI16 forms, list views, and inside Next Experience / Polaris iframes.
                 </div>
             </div>
 
-            <div class="faq-item">
-                <div class="faq-question">
+            <div class="faq-card">
+                <div class="faq-trigger">
                     <span>Can we connect our own private AI Gateway or local models?</span>
-                    <span class="faq-icon">&plus;</span>
+                    <span class="faq-plus">&plus;</span>
                 </div>
-                <div class="faq-answer">
-                    <b>Yes!</b> Now Pilot supports OmniRoute, Anthropic Claude, OpenAI, and any OpenAI-compatible API (including Grok, Ollama, vLLM, and LM Studio). You can route traffic through your own self-hosted gateway with automatic fallback.
+                <div class="faq-body">
+                    <b>Yes.</b> Now Pilot supports OmniRoute, Anthropic Claude, OpenAI, and any OpenAI-compatible API (including Grok, Ollama, vLLM, and LM Studio). You can route traffic through your own self-hosted gateway with automatic fallback.
                 </div>
             </div>
 
-            <div class="faq-item">
-                <div class="faq-question">
+            <div class="faq-card">
+                <div class="faq-trigger">
                     <span>How is Now Pilot installed into a ServiceNow instance?</span>
-                    <span class="faq-icon">&plus;</span>
+                    <span class="faq-plus">&plus;</span>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-body">
                     Now Pilot is distributed as two clean XML Update Sets: <code>gmg_ai_agent_global.xml</code> (UI Script) and <code>gmg_ai_agent_scoped.xml</code> (Scoped application with tables, ACLs, and Script Includes). Simply import, preview, and commit both sets.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PRE-FOOTER CTA -->
-    <section class="cta-section">
-        <div class="cta-card">
-            <h2 class="cta-title">Ready for Takeoff?</h2>
-            <p class="cta-sub">
-                Try the live interactive Now Pilot simulator on your local machine, or install the verified update sets into your ServiceNow sub-production instance today.
+    <!-- PRE-FOOTER CTA (GRAPHIFY STYLE) -->
+    <section class="cta-wrap">
+        <div class="cta-box">
+            <h2 class="cta-box-title">Try Now Pilot now.</h2>
+            <p class="cta-box-desc">
+                Experience the live interactive Now Pilot simulator on your local machine, or install the verified update sets into your ServiceNow instance today.
             </p>
-            <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-                <a href="/incident.do" class="btn btn-white" style="padding:14px 28px;font-size:15px;font-weight:700">
-                    Launch Simulator Now &rarr;
+            <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+                <a href="/incident.do" class="btn-launch" style="padding:14px 28px;font-size:15px;background:#FFFFFF;color:#02140D">
+                    Launch Simulator &rarr;
                 </a>
-                <a href="https://github.com/kRamu581/nowpilot-servicenow" target="_blank" class="btn btn-secondary" style="padding:14px 28px;font-size:15px">
+                <a href="https://github.com/kRamu581/nowpilot-servicenow" target="_blank" class="github-stars-pill" style="padding:14px 28px;font-size:15px">
                     Clone on GitHub
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-grid">
+    <!-- FOOTER (GRAPHIFY WATERMARK) -->
+    <footer class="footer-wrap">
+        <div class="footer-content">
             <div>
-                <div class="footer-brand-title">
-                    <img src="/assets/now_pilot_logo.png" alt="Now Pilot Logo" style="width:28px;height:28px;border-radius:50%;background:#080808;border:1px solid #303030;padding:2px">
-                    <span>Now Pilot for ServiceNow</span>
+                <div class="footer-brand">
+                    <img src="/assets/now_pilot_logo.png" alt="Now Pilot Logo" style="width:26px;height:26px;border-radius:50%;background:#080808;border:1px solid #303030;padding:2px">
+                    <span>Now Pilot</span>
                 </div>
-                <p class="footer-tagline">From Ticket to Takeoff.</p>
-                <p class="footer-author">Built by Kanam Ramu &bull; v1.5.0</p>
+                <p class="footer-sub">From Ticket to Takeoff.</p>
+                <p class="footer-author-tag">Built by Kanam Ramu &bull; v1.5.0</p>
             </div>
             <div>
-                <h4 class="footer-heading">Product</h4>
-                <ul class="footer-links">
-                    <li><a href="#features" class="footer-link">Chat Assistant</a></li>
-                    <li><a href="#features" class="footer-link">ITSM Intelligence</a></li>
-                    <li><a href="#features" class="footer-link">Dev Assistant</a></li>
-                    <li><a href="#features" class="footer-link">Agentic Workflows</a></li>
+                <h4 class="footer-col-title">Product</h4>
+                <ul class="footer-nav">
+                    <li><a href="#features">Chat Assistant</a></li>
+                    <li><a href="#features">ITSM Intelligence</a></li>
+                    <li><a href="#features">Dev Assistant</a></li>
+                    <li><a href="#features">Agentic Workflows</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="footer-heading">Architecture</h4>
-                <ul class="footer-links">
-                    <li><a href="#architecture" class="footer-link">GMGSeal Integrity</a></li>
-                    <li><a href="#architecture" class="footer-link">SSRF Firewall</a></li>
-                    <li><a href="#architecture" class="footer-link">GlideRecordSecure</a></li>
-                    <li><a href="#comparison" class="footer-link">Comparison Matrix</a></li>
+                <h4 class="footer-col-title">Architecture</h4>
+                <ul class="footer-nav">
+                    <li><a href="#architecture">GMGSeal Integrity</a></li>
+                    <li><a href="#architecture">SSRF Firewall</a></li>
+                    <li><a href="#architecture">GlideRecordSecure</a></li>
+                    <li><a href="#comparison">Comparison Matrix</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="footer-heading">Developers</h4>
-                <ul class="footer-links">
-                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow" target="_blank" class="footer-link">GitHub Repository</a></li>
-                    <li><a href="/incident.do" class="footer-link">Local Simulator</a></li>
-                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/CONTRIBUTING.md" target="_blank" class="footer-link">Contributing</a></li>
-                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/INSTALL.md" target="_blank" class="footer-link">Install Guide</a></li>
+                <h4 class="footer-col-title">Developers</h4>
+                <ul class="footer-nav">
+                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow" target="_blank">GitHub Repository</a></li>
+                    <li><a href="/incident.do">Local Simulator</a></li>
+                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a></li>
+                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/INSTALL.md" target="_blank">Install Guide</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="footer-heading">Legal &amp; Trust</h4>
-                <ul class="footer-links">
-                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/SECURITY.md" target="_blank" class="footer-link">Security Policy</a></li>
-                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/LICENSE" target="_blank" class="footer-link">Apache-2.0 License</a></li>
-                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/DATA_NOTICE.md" target="_blank" class="footer-link">Data Notice</a></li>
-                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/TRADEMARKS.md" target="_blank" class="footer-link">Trademarks</a></li>
+                <h4 class="footer-col-title">Legal &amp; Trust</h4>
+                <ul class="footer-nav">
+                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/SECURITY.md" target="_blank">Security Policy</a></li>
+                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/LICENSE" target="_blank">Apache-2.0 License</a></li>
+                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/DATA_NOTICE.md" target="_blank">Data Notice</a></li>
+                    <li><a href="https://github.com/kRamu581/nowpilot-servicenow/blob/main/TRADEMARKS.md" target="_blank">Trademarks</a></li>
                 </ul>
             </div>
         </div>
 
-        <!-- OUTLINED WATERMARK -->
-        <div class="footer-watermark">NOW PILOT</div>
+        <!-- GIANT OUTLINED WATERMARK (GRAPHIFY STYLE) -->
+        <div class="footer-watermark-text">NOW PILOT</div>
 
-        <div class="footer-bottom">
+        <div class="footer-bottom-bar">
             <span>&copy; 2026 GMG Technology LLC &bull; Built by Kanam Ramu. Licensed under Apache-2.0.</span>
             <span>ServiceNow is a registered trademark of ServiceNow, Inc.</span>
         </div>
     </footer>
 
-    <!-- INTERACTIVE FAQ SCRIPT -->
+    <!-- INTERACTIVE ACCORDION SCRIPT -->
     <script>
-        document.querySelectorAll('.faq-question').forEach(q => {
-            q.addEventListener('click', () => {
-                const item = q.parentElement;
-                const wasActive = item.classList.contains('active');
-                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const card = trigger.parentElement;
+                const wasActive = card.classList.contains('active');
+                document.querySelectorAll('.faq-card').forEach(c => c.classList.remove('active'));
                 if (!wasActive) {
-                    item.classList.add('active');
+                    card.classList.add('active');
                 }
             });
         });
