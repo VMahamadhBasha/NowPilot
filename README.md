@@ -17,13 +17,14 @@
 
 <p align="center">
   <a href="#overview">Overview</a> •
+  <a href="#project-origin-ownership--attribution">Attribution &amp; Origin</a> •
   <a href="#does-it-actually-work">Does It Actually Work?</a> •
-  <a href="#brand--the-logo">Brand & Logo</a> •
+  <a href="#brand--the-logo">Brand &amp; Logo</a> •
   <a href="#what-it-does">What It Does</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#quick-start">Quick Start</a> •
-  <a href="#security--governance">Security & Governance</a> •
-  <a href="#provider-routing--budgets">Providers & Budgets</a> •
+  <a href="#security--governance">Security &amp; Governance</a> •
+  <a href="#provider-routing--budgets">Providers &amp; Budgets</a> •
   <a href="#automated-test-suite">Tests</a> •
   <a href="CONTRIBUTING.md">Contributing</a> •
   <a href="SECURITY.md">Security</a> •
@@ -38,7 +39,7 @@
 
 ---
 
-> **Disclaimer:** Now Pilot for ServiceNow is an independent open-source project created by Kanam Ramu / GMG Technology LLC. It is not affiliated with, endorsed by, sponsored by, or maintained by ServiceNow, Inc., Anthropic PBC, OpenAI, Inc., or xAI Corp. ServiceNow, Now Platform, Next Experience, and Polaris are registered trademarks of ServiceNow, Inc. Anthropic and Claude are trademarks of Anthropic PBC. OpenAI is a trademark of OpenAI, Inc. This project has no affiliated cryptocurrency, token, or paid sponsorship program. Anything claiming otherwise is unauthorized.
+> **Disclaimer &amp; Independence Notice:** **Now Pilot for ServiceNow** is an independent open-source project **developed and extended by Kanam Ramu**, based on the GMG AI Agent open-source foundation by GMG Technology LLC. **GMG Technology LLC is not involved in the development, maintenance, sponsorship, or endorsement of Now Pilot.** No official partnership, endorsement, or commercial affiliation exists between the author and GMG Technology LLC. ServiceNow, Now Platform, Next Experience, and Polaris are registered trademarks of ServiceNow, Inc. Anthropic and Claude are trademarks of Anthropic PBC. OpenAI is a trademark of OpenAI, Inc. xAI and Grok are trademarks of xAI Corp. This project has no affiliated cryptocurrency, token, or paid sponsorship program. Anything claiming otherwise is unauthorized.
 
 ---
 
@@ -53,6 +54,66 @@
 - 💻 **Development Assistant**: Generates, explains, reviews, and debugs Business Rules, Script Includes, Client Scripts, and UI Policies with static platform safety checks that catch dangerous calls (`current.update()`, `eval()`, prototype pollution).
 - ⚡ **Agentic Workflow Automation**: Decomposes complex user goals into structured multi-step plans, executes permitted read tools, pauses safely for approval, and resumes with duplicate-write prevention.
 - 🚀 **Zero-Dependency Local Simulator**: Test the entire frontend panel, REST endpoints, and mock incident context locally on your machine with `node local_runner.js` in under 60 seconds.
+
+---
+
+## Project Origin, Ownership & Attribution
+
+### 1. Origin & Upstream Attribution
+> **Based on GMG AI Agent by GMG Technology LLC.**
+
+Now Pilot for ServiceNow originated from the open-source **GMG AI Agent** foundation (v1.0.1) originally developed by **GMG Technology LLC** and distributed under the Apache License, Version 2.0.
+
+**Explicit Independence Notice:** **GMG Technology LLC is not involved in the development, maintenance, sponsorship, or endorsement of Now Pilot.** GMG Technology LLC is not a partner, co-developer, or sponsor of this project, and no commercial, legal, or official affiliation exists between the author and GMG Technology LLC. All upstream trademarks, copyrights, and original notices remain the property of their respective owners and are fully respected and preserved under Apache-2.0.
+
+### 2. Project Ownership & Development Scope
+**Now Pilot for ServiceNow** is an independently developed and maintained open-source project:
+
+- **Developer Credit:** **Developed and extended by Kanam Ramu.**
+- **Foundation & Evolution:** Now Pilot builds upon the initial scoped and global architecture of the GMG AI Agent project. The author makes no claim of having originally created the base foundation code inherited from the original GMG AI Agent v1.0.1 release.
+- **Independent Architecture & Additions:** All subsequent major enhancements—including the OmniRoute multi-provider gateway, Advanced ServiceNow Development Assistant, ITSM Intelligence & RAG retrieval, agentic multi-step workflow automation, centralized diagnostics, correlation ID tracking, SSRF firewall hardening, Graphify-inspired showcase landing page, and the unified dark-and-green Now Pilot branding—were independently designed, engineered, and verified by Kanam Ramu.
+- **Preservation of Upstream Rights:** Existing copyright notices (`Copyright 2026 GMG Technology LLC`) and Apache-2.0 headers in inherited files are strictly preserved. New contributions, extensions, and files are licensed under Apache-2.0.
+
+### 3. Documented Contributions & Subsystem Inventory
+
+To ensure complete clarity regarding code origin and project lineage, the following inventory details which components were inherited versus newly created or extended by Kanam Ramu across versions v1.1.0 through v1.5.0:
+
+#### A. Newly Created Subsystems & Files (Developed by Kanam Ramu)
+
+| Component / Subsystem | New Files Created | Architectural Role & Capabilities |
+| :--- | :--- | :--- |
+| **Development Assistant (v1.2.0)** | [`src/scoped/DevAssistant.js`](file:///src/scoped/DevAssistant.js)<br/>[`src/scoped/DevValidator.js`](file:///src/scoped/DevValidator.js) | Generates and reviews 10 ServiceNow artifact types (Business Rules, Script Includes, Client Scripts, UI Policies, etc.); deterministic AST static validation engine enforcing scoped platform boundaries, blocking `current.update()` recursion, `eval()`, and query injection. |
+| **ITSM Intelligence & RAG (v1.3.0)** | [`src/scoped/ITSMRetriever.js`](file:///src/scoped/ITSMRetriever.js)<br/>[`src/scoped/ITSMContextBuilder.js`](file:///src/scoped/ITSMContextBuilder.js)<br/>[`src/scoped/ITSMAssistant.js`](file:///src/scoped/ITSMAssistant.js) | Explainable multi-factor similarity retrieval (TF-IDF + category/CI match) across historical incidents; active published KB search; prompt sandboxing; grounded troubleshooting recommendations; anti-hallucination citation validator. |
+| **Agentic Workflows (v1.4.0)** | [`src/scoped/WorkflowPlanner.js`](file:///src/scoped/WorkflowPlanner.js)<br/>[`src/scoped/WorkflowEngine.js`](file:///src/scoped/WorkflowEngine.js) | Goal decomposition engine translating natural language into schema-compliant multi-step JSON execution plans; state machine orchestrating allowlisted read tools, staging proposals, enforcing human-in-the-loop approvals, and handling interrupted recovery. |
+| **Observability & Diagnostics (v1.5.0)** | [`src/scoped/DiagnosticService.js`](file:///src/scoped/DiagnosticService.js) | Centralized taxonomy of 12 standardized diagnostic error codes; authoritative server correlation IDs (`corr_<ts>_<rand>`); structured audit event logging across 12 lifecycle events; fail-safe write retry prohibition. |
+| **Automated Test Harness** | [`src/test/test_omniroute.js`](file:///src/test/test_omniroute.js)<br/>[`src/test/test_dev_assistant.js`](file:///src/test/test_dev_assistant.js)<br/>[`src/test/test_itsm_intelligence.js`](file:///src/test/test_itsm_intelligence.js)<br/>[`src/test/test_workflow_automation.js`](file:///src/test/test_workflow_automation.js)<br/>[`src/test/test_production_readiness.js`](file:///src/test/test_production_readiness.js) | 5 comprehensive automated test suites (150 total tests, 100% pass rate) providing end-to-end regression coverage, security boundary checks, SSRF verification, and packaging consistency. |
+| **Local Simulator & Showcase** | [`local_runner.js`](file:///local_runner.js)<br/>[`landing.html`](file:///landing.html)<br/>[`index.html`](file:///index.html)<br/>[`src/assets/now_pilot_logo.png`](file:///src/assets/now_pilot_logo.png)<br/>[`src/assets/now_pilot_landing_mockup.jpg`](file:///src/assets/now_pilot_landing_mockup.jpg) | Zero-dependency local simulation server (port 3000) replicating ServiceNow incident forms and REST APIs; Graphify-inspired responsive enterprise showcase landing page; high-resolution brand identity assets. |
+| **Governance Documentation** | [`CONTRIBUTING.md`](file:///CONTRIBUTING.md)<br/>[`SECURITY.md`](file:///SECURITY.md) | Upstream contribution standards, development and test execution instructions, defense-in-depth threat matrix, and responsible vulnerability disclosure policy. |
+
+#### B. Modified Existing Files (Extended by Kanam Ramu)
+
+| File | Upstream Origin | Modifications & Enhancements Added |
+| :--- | :--- | :--- |
+| [`src/scoped/LLMAdapter.js`](file:///src/scoped/LLMAdapter.js) | GMG AI Agent v1.0.1 | Implemented OmniRoute OpenAI-compatible gateway integration, model discovery via `/models`, `Retry-After` rate limit handling, secondary provider fallback, and SSRF private IP/cloud metadata blocking. |
+| [`src/scoped/AgentCore.js`](file:///src/scoped/AgentCore.js) | GMG AI Agent v1.0.1 | Integrated correlation ID propagation, structured audit event dispatching, multi-mode routing (Chat, ITSM, Dev, Workflows), and scrubbed error presentation via `DiagnosticService`. |
+| [`src/scoped/AgentTools.js`](file:///src/scoped/AgentTools.js) | GMG AI Agent v1.0.1 | Registered new ITSM and Dev Assistant tools, established schema parameter validators, and enforced strict 32,000-character parameter size bounds. |
+| [`src/scoped/Budget.js`](file:///src/scoped/Budget.js) | GMG AI Agent v1.0.1 | Added unpriced model detection, fallback token accounting, and user daily spend cap enforcement (`x_gmg_ai.user_daily_cap_usd`). |
+| [`src/scoped/GMGSeal.js`](file:///src/scoped/GMGSeal.js) | GMG AI Agent v1.0.1 | Extended HMAC SHA-256 sealing across multi-mode proposals, stale-record conflict detection (`sys_mod_count`), and duplicate submission replay prevention. |
+| [`src/scoped/ActionService.js`](file:///src/scoped/ActionService.js) | GMG AI Agent v1.0.1 | Added correlation ID tracking, structured audit logging (`record_change_applied`, `record_change_rejected`), and duplicate submission conflict handling (`HTTP 409`). |
+| [`src/scoped/rest_health.js`](file:///src/scoped/rest_health.js) | GMG AI Agent v1.0.1 | Added non-leaking provider connectivity checks, safe diagnostic reporting, and SSRF loopback guard checks. |
+| [`src/global/gmg_ai_agent_panel.js`](file:///src/global/gmg_ai_agent_panel.js) | GMG AI Agent v1.0.1 | Re-engineered UI Script with Now Pilot branding, dark-and-green palette (`#168B50` / `#080808` / `#151515` / `#303030`), 4-mode header switcher, anti-duplicate click protection (`working` state), correlation ID badge rendering, and accessible circular launcher. |
+| [`update_sets/gmg_ai_agent_global.xml`](file:///update_sets/gmg_ai_agent_global.xml) | GMG AI Agent v1.0.1 | Re-packaged with the updated Now Pilot UI script and synchronized with XML payloads. |
+| [`SHA256SUMS`](file:///SHA256SUMS) | GMG AI Agent v1.0.1 | Recomputed manifest checksums to verify integrity of updated update sets. |
+
+#### C. Inherited Foundation Files (Preserved from Base GMG AI Agent)
+The following foundation utilities provide the platform-level scaffolding and are preserved under their original Apache-2.0 license:
+- `src/scoped/ContextStore.js` (session context storage)
+- `src/scoped/GMGExtensions.js` (hook extension point)
+- `src/scoped/RecordTools.js` (safe `GlideRecordSecure` query wrapper)
+- `src/scoped/rest_action.js`, `src/scoped/rest_chat.js`, `src/scoped/rest_providers.js`, `src/scoped/rest_usage.js` (base REST resource endpoints)
+- `src/global/GMGAIApplier.js` & `src/global/GMGAIApplierCore.js` (global record mutation appliers)
+- `update_sets/gmg_ai_agent_scoped.xml` (base platform tables, dictionary attributes, ACLs, and modules)
+- `DATA_NOTICE.md`, `TRADEMARKS.md`
 
 ---
 
