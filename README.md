@@ -32,7 +32,9 @@
 </p>
 
 <p align="center">
-  <img src="src/assets/now_pilot_landing_mockup.jpg" alt="Now Pilot for ServiceNow Platform Showcase" width="850" />
+  <img width="1044" height="521" alt="image" src="https://github.com/user-attachments/assets/c4bf3645-785b-434b-ad5f-ef8bfee2e3ad" />
+  <img width="1351" height="549" alt="image" src="https://github.com/user-attachments/assets/324f49eb-ae4d-4a78-a78b-83e155eaab7c" />
+
 </p>
 
 </div>
