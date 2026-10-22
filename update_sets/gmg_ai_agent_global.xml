@@ -862,7 +862,7 @@ GMGAIApplier.prototype = {
  */
 (function() {
     var ROLE = 'x_gmg_ai.user', API = '/api/x_gmg_ai/agent/chat', KEY_BASE = 'gmgai_state_v1', CONV_BASE = 'gmgai_conv_id';
-    var LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;30&amp;quot; height=&amp;quot;30&amp;quot; style=&amp;quot;flex-shrink:0;vertical-align:middle;border-radius:8px;background:#051C24;box-shadow:0 1px 3px rgba(0,0,0,0.15)&amp;quot;&amp;gt;&amp;lt;rect width=&amp;quot;32&amp;quot; height=&amp;quot;32&amp;quot; rx=&amp;quot;8&amp;quot; fill=&amp;quot;#051C24&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M5 23 C11 23 17 20 26 15 C21 21 14 24 5 24 Z&amp;quot; fill=&amp;quot;#46CC58&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M6 23 C11 21 16 18 25 15 C20 19 14 22 6 23 Z&amp;quot; fill=&amp;quot;#52DF65&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 21 C11 16 16 11 22 7 C25 6 27 7.5 26 10 C24 13 18 17 11 21 C9.5 21.5 8.5 21.5 7 21 Z&amp;quot; fill=&amp;quot;#FFFFFF&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
+    var LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;28&amp;quot; height=&amp;quot;28&amp;quot; style=&amp;quot;flex-shrink:0;vertical-align:middle;border-radius:8px;background:#051C24;box-shadow:0 1px 3px rgba(0,0,0,0.15)&amp;quot;&amp;gt;&amp;lt;rect width=&amp;quot;32&amp;quot; height=&amp;quot;32&amp;quot; rx=&amp;quot;8&amp;quot; fill=&amp;quot;#051C24&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M5 23 C11 23 17 20 26 15 C21 21 14 24 5 24 Z&amp;quot; fill=&amp;quot;#46CC58&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M6 23 C11 21 16 18 25 15 C20 19 14 22 6 23 Z&amp;quot; fill=&amp;quot;#52DF65&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 21 C11 16 16 11 22 7 C25 6 27 7.5 26 10 C24 13 18 17 11 21 C9.5 21.5 8.5 21.5 7 21 Z&amp;quot; fill=&amp;quot;#FFFFFF&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
     var BTN_LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;36&amp;quot; height=&amp;quot;36&amp;quot; style=&amp;quot;vertical-align:middle;display:block&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;16&amp;quot; cy=&amp;quot;16&amp;quot; r=&amp;quot;14.5&amp;quot; fill=&amp;quot;#FFFFFF&amp;quot; stroke=&amp;quot;#002B3B&amp;quot; stroke-width=&amp;quot;1.8&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L25 8 L14 17 Z&amp;quot; fill=&amp;quot;#63E052&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L14 17 L18 24 Z&amp;quot; fill=&amp;quot;#38A827&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M14 17 L25 8&amp;quot; stroke=&amp;quot;#002B3B&amp;quot; stroke-width=&amp;quot;1.5&amp;quot; stroke-linecap=&amp;quot;round&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
     var w = window, top;
     try { top = window.top; void top.document.body; } catch (e) { top = window; }
@@ -1383,7 +1383,8 @@ GMGAIApplier.prototype = {
     var WARN_ICO = '&amp;lt;span style=&amp;quot;color:#B45309&amp;quot; aria-hidden=&amp;quot;true&amp;quot;&amp;gt;\u26a0\ufe0e&amp;lt;/span&amp;gt;';
     var INFO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; width=&amp;quot;14&amp;quot; height=&amp;quot;14&amp;quot; viewBox=&amp;quot;0 0 14 14&amp;quot; aria-hidden=&amp;quot;true&amp;quot; style=&amp;quot;display:inline-block;vertical-align:-2px;margin-right:3px&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;7&amp;quot; cy=&amp;quot;7&amp;quot; r=&amp;quot;5.5&amp;quot; fill=&amp;quot;none&amp;quot; stroke=&amp;quot;currentColor&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;7&amp;quot; y1=&amp;quot;6.2&amp;quot; x2=&amp;quot;7&amp;quot; y2=&amp;quot;10&amp;quot; stroke=&amp;quot;currentColor&amp;quot; stroke-width=&amp;quot;1.5&amp;quot; stroke-linecap=&amp;quot;round&amp;quot;/&amp;gt;&amp;lt;circle cx=&amp;quot;7&amp;quot; cy=&amp;quot;4.2&amp;quot; r=&amp;quot;0.9&amp;quot; fill=&amp;quot;currentColor&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
     var STOP_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; width=&amp;quot;14&amp;quot; height=&amp;quot;14&amp;quot; viewBox=&amp;quot;0 0 14 14&amp;quot; aria-hidden=&amp;quot;true&amp;quot; style=&amp;quot;display:inline-block;vertical-align:-2px;margin-right:3px&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;7&amp;quot; cy=&amp;quot;7&amp;quot; r=&amp;quot;5.5&amp;quot; fill=&amp;quot;none&amp;quot; stroke=&amp;quot;#B91C1C&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;3.2&amp;quot; y1=&amp;quot;3.2&amp;quot; x2=&amp;quot;10.8&amp;quot; y2=&amp;quot;10.8&amp;quot; stroke=&amp;quot;#B91C1C&amp;quot; stroke-width=&amp;quot;1.5&amp;quot; stroke-linecap=&amp;quot;round&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
-    var CSS = '#gmgai-root{' +
+    var CSS = '#gmgai-root, #gmgai-root *, #gmgai-root *::before, #gmgai-root *::after{box-sizing:border-box}' +
+        '#gmgai-root{' +
         'position:fixed;right:20px;bottom:20px;z-index:2147483000;' +
         'font:13px/1.45 Inter,-apple-system,BlinkMacSystemFont,&amp;quot;Segoe UI&amp;quot;,Roboto,&amp;quot;Helvetica Neue&amp;quot;,Arial,sans-serif;' +
         '--np-background:#EEECE8;--np-surface:#FFFFFF;--np-surface-muted:#F5F4F1;--np-navy:#002B3B;--np-green:#63E052;' +
@@ -1393,75 +1394,80 @@ GMGAIApplier.prototype = {
         '--text-primary:var(--np-text);--text-secondary:var(--np-text-secondary);--danger:var(--np-danger);' +
         '--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.1);--primary-accent:var(--np-green);' +
         'color:var(--np-text);-webkit-font-smoothing:antialiased}' +
-        '.gmgai-select{font-family:inherit;font-size:12px;font-weight:500;padding:5px 10px;border:1px solid #E5E5E5;' +
-        'border-radius:8px;background:#FFFFFF;color:#111111;max-width:130px;cursor:pointer;outline:none;' +
-        'text-overflow:ellipsis;white-space:nowrap;box-sizing:border-box;transition:all .15s ease}' +
-        '.gmgai-select:focus{border-color:var(--np-green);box-shadow:0 0 0 2px rgba(82,223,101,0.2)}' +
         '#gmgai-btn{width:56px;height:56px;border-radius:50%;border:2px solid #002B3B;background:#FFFFFF !important;' +
-        'box-shadow:0 6px 20px rgba(0,0,0,0.15),0 0 12px rgba(82,223,101,0.25);cursor:pointer;display:grid;place-items:center;' +
+        'box-shadow:0 6px 20px rgba(0,0,0,0.15),0 0 12px rgba(99,224,82,0.25);cursor:pointer;display:grid;place-items:center;' +
         'padding:0;overflow:hidden;transition:all .18s ease;z-index:2147483000;box-sizing:border-box}' +
-        '#gmgai-btn:hover{transform:translateY(-2px);border-color:var(--np-green);box-shadow:0 10px 24px rgba(0,0,0,0.2),0 0 16px rgba(82,223,101,0.45)}' +
+        '#gmgai-btn:hover{transform:translateY(-2px);border-color:var(--np-green);box-shadow:0 10px 24px rgba(0,0,0,0.2),0 0 16px rgba(99,224,82,0.45)}' +
         '#gmgai-btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(0,0,0,0.15)}' +
         '#gmgai-btn svg{display:block}' +
         '#gmgai-btn:focus-visible,#gmgai-root :focus-visible{outline:2px solid var(--np-green);outline-offset:2px}' +
-        '#gmgai-panel{position:fixed;right:16px;bottom:16px;width:460px;height:680px;max-height:88vh;max-width:calc(100vw - 32px);' +
-        'background:#FFFFFF;border:1px solid var(--np-border);border-radius:18px;box-shadow:var(--np-shadow);' +
-        'display:flex;flex-direction:column;overflow:hidden;color:var(--np-text);box-sizing:border-box}' +
-        '#gmgai-head{padding:12px 16px;background:#FFFFFF;color:var(--np-text);display:flex;' +
-        'justify-content:space-between;align-items:center;border-bottom:1px solid var(--np-border);gap:8px;box-sizing:border-box;flex-shrink:0}' +
-        '#gmgai-head .gmgai-brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1 1 auto;overflow:hidden}' +
+        '#gmgai-panel{position:fixed;right:16px;bottom:16px;width:440px;height:660px;' +
+        'max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);max-width:calc(100vw - 32px);max-width:calc(100% - 32px);' +
+        'background:var(--np-surface);border:1px solid var(--np-border);border-radius:16px;box-shadow:var(--np-shadow);' +
+        'display:flex;flex-direction:column;overflow:hidden;color:var(--np-text);box-sizing:border-box;' +
+        'min-width:0;min-height:0;z-index:2147483000}' +
+        '@media (max-width: 480px){#gmgai-panel{right:8px;bottom:8px;max-width:calc(100vw - 16px);max-height:calc(100vh - 16px);border-radius:14px}}' +
+        '#gmgai-head{flex:0 0 auto;min-width:0;width:100%;padding:10px 14px;background:var(--np-surface);color:var(--np-text);' +
+        'display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--np-border);gap:8px;box-sizing:border-box}' +
+        '#gmgai-head .gmgai-brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto;overflow:hidden}' +
         '#gmgai-head .gmgai-title-wrap{min-width:0;overflow:hidden;display:flex;flex-direction:column}' +
-        '#gmgai-head .gmgai-title{font-size:16px;font-weight:700;color:#111111;line-height:1.2;white-space:nowrap;letter-spacing:-0.2px}' +
-        '#gmgai-head small{display:block;color:var(--np-text-secondary);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;line-height:1.3;font-weight:400;margin-top:2px}' +
-        '#gmgai-head .gmgai-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}' +
-        '#gmgai-head button{background:transparent;border:0;color:var(--np-text-secondary);cursor:pointer;padding:4px 6px;border-radius:6px;font-size:12px;font-weight:500;transition:all .15s ease;flex-shrink:0;font-family:inherit}' +
-        '#gmgai-head button:hover{color:#111111;background:rgba(0,0,0,0.04)}' +
+        '#gmgai-head .gmgai-title{font-size:15px;font-weight:700;color:var(--np-text);line-height:1.2;white-space:nowrap;letter-spacing:-0.2px;overflow:hidden;text-overflow:ellipsis}' +
+        '#gmgai-head small{display:block;color:var(--np-text-secondary);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;line-height:1.3;font-weight:400;margin-top:2px}' +
+        '#gmgai-head .gmgai-controls{display:flex;align-items:center;gap:6px;flex-shrink:0}' +
+        '.gmgai-select{font-family:inherit;font-size:11.5px;font-weight:500;padding:4px 8px;border:1px solid var(--np-border);' +
+        'border-radius:6px;background:var(--np-surface);color:var(--np-text);max-width:115px;cursor:pointer;outline:none;' +
+        'text-overflow:ellipsis;white-space:nowrap;box-sizing:border-box;transition:all .15s ease}' +
+        '.gmgai-select:focus{border-color:var(--np-green);box-shadow:0 0 0 2px rgba(99,224,82,0.2)}' +
+        '#gmgai-head button{background:transparent;border:0;color:var(--np-text-secondary);cursor:pointer;padding:4px 6px;border-radius:6px;font-size:11.5px;font-weight:500;transition:all .15s ease;flex-shrink:0;font-family:inherit}' +
+        '#gmgai-head button:hover{color:var(--np-text);background:rgba(0,0,0,0.04)}' +
         '#gmgai-head #gmgai-close{background:transparent;color:#626262;border:0;padding:4px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s ease}' +
-        '#gmgai-head #gmgai-close:hover{background:#F3F4F6;color:#111111}' +
+        '#gmgai-head #gmgai-close:hover{background:#F3F4F6;color:var(--np-text)}' +
         '#gmgai-head #gmgai-close:focus-visible{outline:2px solid var(--np-green);outline-offset:1px}' +
-        '#gmgai-mode-bar{display:flex;border-bottom:1px solid var(--np-border);background:#FFFFFF;box-sizing:border-box;flex-shrink:0;padding:0 12px;gap:6px}' +
-        '#gmgai-mode-bar button{padding:10px 10px;border:0;background:transparent;font-size:12px;font-weight:500;color:var(--np-text-secondary);cursor:pointer;text-align:center;white-space:nowrap;transition:all .15s ease;font-family:inherit;border-bottom:3px solid transparent;position:relative}' +
-        '#gmgai-mode-bar button:hover{color:#111111}' +
-        '#gmgai-mode-bar button.gmgai-tab-active{color:#111111;font-weight:600;border-bottom-color:var(--np-green);border-radius:3px 3px 0 0}' +
-        '#gmgai-msgs{flex:1;overflow-y:auto;padding:16px;background:var(--np-background);color:var(--np-text);box-sizing:border-box}' +
-        '.gmgai-hero-card{background:#F6F4EE;border:1px solid rgba(0,0,0,0.04);border-radius:14px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;box-sizing:border-box}' +
-        '.gmgai-hero-icon{flex-shrink:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center}' +
-        '.gmgai-hero-text{flex:1;min-width:0}' +
-        '.gmgai-hero-text h3{margin:0 0 6px 0;font-size:17.5px;font-weight:700;color:#111111;line-height:1.25}' +
-        '.gmgai-hero-text p{margin:0;font-size:13px;line-height:1.48;color:#525252}' +
-        '.gmgai-examples-head{font-size:13.5px;font-weight:700;color:#111111;margin:16px 0 10px 0}' +
-        '.gmgai-bento-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}' +
-        '.gmgai-bento-card{background:#FFFFFF;border:1px solid #ECEAE5;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;text-align:left;transition:all .15s ease;box-shadow:0 1px 3px rgba(0,0,0,0.02);width:100%;box-sizing:border-box;font-family:inherit}' +
+        '#gmgai-mode-bar{flex:0 0 auto;min-width:0;width:100%;display:flex;border-bottom:1px solid var(--np-border);background:var(--np-surface);box-sizing:border-box;padding:0 8px;gap:2px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}' +
+        '#gmgai-mode-bar::-webkit-scrollbar{display:none}' +
+        '#gmgai-mode-bar button{flex:1 0 auto;min-width:0;padding:9px 10px;border:0;background:transparent;font-size:12px;font-weight:500;color:var(--np-text-secondary);cursor:pointer;text-align:center;white-space:nowrap;transition:all .15s ease;font-family:inherit;border-bottom:2.5px solid transparent;box-sizing:border-box}' +
+        '#gmgai-mode-bar button:hover{color:var(--np-text)}' +
+        '#gmgai-mode-bar button.gmgai-tab-active{color:var(--np-text);font-weight:600;border-bottom-color:var(--np-green)}' +
+        '#gmgai-msgs{flex:1 1 auto;min-width:0;min-height:0;width:100%;overflow-y:auto;overflow-x:hidden;padding:14px;background:var(--np-background);color:var(--np-text);box-sizing:border-box;display:flex;flex-direction:column;gap:8px}' +
+        '.gmgai-hero-card{width:100%;min-width:0;max-width:100%;background:#F6F4EE;border:1px solid rgba(0,0,0,0.05);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;box-sizing:border-box}' +
+        '.gmgai-hero-icon{flex:0 0 28px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}' +
+        '.gmgai-hero-text{flex:1 1 auto;min-width:0}' +
+        '.gmgai-hero-text h3{margin:0 0 4px 0;font-size:16px;font-weight:700;color:var(--np-text);line-height:1.25}' +
+        '.gmgai-hero-text p{margin:0;font-size:12.5px;line-height:1.45;color:#525252;overflow-wrap:break-word;word-break:break-word}' +
+        '.gmgai-examples-head{font-size:13px;font-weight:700;color:var(--np-text);margin:12px 0 8px 0;flex:0 0 auto}' +
+        '.gmgai-bento-grid{display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:8px;width:100%;min-width:0;max-width:100%;margin-bottom:10px;box-sizing:border-box}' +
+        '@media (max-width: 380px){.gmgai-bento-grid{grid-template-columns:minmax(0, 1fr)}}' +
+        '.gmgai-bento-card{background:var(--np-surface);border:1px solid var(--np-border);border-radius:10px;padding:10px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;text-align:left;transition:all .15s ease;box-shadow:0 1px 3px rgba(0,0,0,0.02);width:100%;min-width:0;max-width:100%;box-sizing:border-box;font-family:inherit}' +
         '.gmgai-bento-card:hover{border-color:var(--np-green);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.05)}' +
-        '.gmgai-bento-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}' +
-        '.gmgai-bento-content{flex:1;min-width:0}' +
-        '.gmgai-bento-title{font-size:12.5px;font-weight:600;color:#111111;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-        '.gmgai-bento-sub{font-size:11px;color:#6B7280;line-height:1.3;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-        '.gmgai-bento-arrow{color:#9CA3AF;flex-shrink:0;display:flex;align-items:center}' +
-        '.gmgai-m{margin:6px 0;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;max-width:88%;box-sizing:border-box}' +
-        '.gmgai-u{background:#002B3B;color:#FFFFFF;margin-left:auto;border-bottom-right-radius:2px;box-shadow:0 1px 4px rgba(0,43,59,0.15)}' +
-        '.gmgai-a{background:#FFFFFF;border:1px solid #ECEAE5;color:var(--np-text);border-bottom-left-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,0.03);max-width:92%}' +
+        '.gmgai-bento-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 30px}' +
+        '.gmgai-bento-content{flex:1 1 auto;min-width:0;overflow:hidden}' +
+        '.gmgai-bento-title{font-size:12px;font-weight:600;color:var(--np-text);line-height:1.3;overflow-wrap:break-word;word-break:break-word}' +
+        '.gmgai-bento-sub{font-size:10.5px;color:var(--np-text-secondary);line-height:1.3;margin-top:2px;overflow-wrap:break-word;word-break:break-word}' +
+        '.gmgai-bento-arrow{color:#9CA3AF;flex:0 0 auto;display:flex;align-items:center}' +
+        '.gmgai-m{margin:4px 0;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.48;white-space:pre-wrap;word-wrap:break-word;max-width:88%;box-sizing:border-box;min-width:0}' +
+        '.gmgai-u{background:var(--np-navy);color:#FFFFFF;margin-left:auto;border-bottom-right-radius:2px;box-shadow:0 1px 4px rgba(0,43,59,0.15)}' +
+        '.gmgai-a{background:var(--np-surface);border:1px solid var(--np-border);color:var(--np-text);border-bottom-left-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,0.03);max-width:92%}' +
         '.gmgai-e{background:#FEF2F2;border:1px solid #FCA5A5;color:var(--np-danger)}' +
-        '.gmgai-chip{display:inline-block;font:11px ui-monospace,Menlo,monospace;background:#F5F4F0;color:#002B3B;border:1px solid #ECEAE5;border-radius:4px;padding:1px 6px;margin:0 3px 3px 0;font-weight:500}' +
-        '.gmgai-sug{display:block;width:100%;text-align:left;margin:4px 0;padding:8px 12px;border:1px solid #ECEAE5;border-radius:8px;background:#FFFFFF;cursor:pointer;color:var(--np-text);font-size:12px;font-weight:500;transition:all .15s ease;box-shadow:0 1px 3px rgba(0,0,0,0.02);box-sizing:border-box;font-family:inherit}' +
-        '.gmgai-sug:hover{border-color:var(--np-green);background:#F5FDF4;color:#002B3B;transform:translateX(2px)}' +
-        '#gmgai-in{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--np-border);background:#FFFFFF;box-sizing:border-box;flex-shrink:0;align-items:center}' +
-        '#gmgai-clip{width:38px;height:38px;border-radius:50%;background:#FFFFFF;border:1px solid #E5E5E5;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#525252;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.03);transition:all .15s ease;padding:0}' +
-        '#gmgai-clip:hover{border-color:var(--np-green);color:#111111}' +
-        '#gmgai-in textarea{flex:1;resize:none;height:38px;border:1px solid #E5E5E5;border-radius:10px;padding:9px 12px;font:inherit;font-size:13px;line-height:1.4;background:#FFFFFF;color:var(--np-text);box-sizing:border-box;transition:border-color .15s ease}' +
-        '#gmgai-in textarea:focus{border-color:var(--np-green);outline:none;box-shadow:0 0 0 2px rgba(82,223,101,0.2)}' +
-        '#gmgai-in button#gmgai-send{border:0;border-radius:10px;background:var(--np-green);color:#061D24;font-weight:600;font-size:13px;padding:0 18px;height:38px;cursor:pointer;transition:all .15s ease;flex-shrink:0;box-shadow:0 2px 6px rgba(82,223,101,0.25);font-family:inherit;display:inline-flex;align-items:center;gap:6px}' +
+        '.gmgai-chip{display:inline-block;font:11px ui-monospace,Menlo,monospace;background:var(--np-surface-muted);color:var(--np-navy);border:1px solid var(--np-border);border-radius:4px;padding:1px 6px;margin:0 3px 3px 0;font-weight:500}' +
+        '.gmgai-sug{display:block;width:100%;min-width:0;max-width:100%;text-align:left;margin:4px 0;padding:8px 12px;border:1px solid var(--np-border);border-radius:8px;background:var(--np-surface);cursor:pointer;color:var(--np-text);font-size:12px;font-weight:500;transition:all .15s ease;box-shadow:0 1px 3px rgba(0,0,0,0.02);box-sizing:border-box;font-family:inherit;overflow-wrap:break-word;word-break:break-word}' +
+        '.gmgai-sug:hover{border-color:var(--np-green);background:#F5FDF4;color:var(--np-navy);transform:translateX(2px)}' +
+        '#gmgai-in{flex:0 0 auto;min-width:0;width:100%;display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--np-border);background:var(--np-surface);box-sizing:border-box;align-items:flex-end}' +
+        '#gmgai-clip{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:var(--np-surface);border:1px solid #E5E5E5;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#525252;box-shadow:0 1px 2px rgba(0,0,0,0.03);transition:all .15s ease;padding:0;box-sizing:border-box}' +
+        '#gmgai-clip:hover{border-color:var(--np-green);color:var(--np-text)}' +
+        '#gmgai-in textarea{flex:1 1 auto;width:0;min-width:0;max-width:100%;resize:none;height:36px;border:1px solid #E5E5E5;border-radius:8px;padding:8px 10px;font:inherit;font-size:13px;line-height:1.4;background:var(--np-surface);color:var(--np-text);box-sizing:border-box;transition:border-color .15s ease}' +
+        '#gmgai-in textarea:focus{border-color:var(--np-green);outline:none;box-shadow:0 0 0 2px rgba(99,224,82,0.2)}' +
+        '#gmgai-in button#gmgai-send{flex:0 0 auto;border:0;border-radius:8px;background:var(--np-green);color:var(--np-navy);font-weight:600;font-size:12.5px;padding:0 14px;height:36px;cursor:pointer;transition:all .15s ease;box-shadow:0 2px 6px rgba(99,224,82,0.25);font-family:inherit;display:inline-flex;align-items:center;gap:5px;box-sizing:border-box;white-space:nowrap}' +
         '#gmgai-in button#gmgai-send:hover:not(:disabled){background:var(--np-green-hover)}' +
         '#gmgai-in button#gmgai-send:active:not(:disabled){transform:scale(0.98)}' +
         '#gmgai-in button#gmgai-send:disabled{opacity:0.55;cursor:not-allowed;box-shadow:none}' +
         '.gmgai-foot{font-size:11px;color:var(--np-text-secondary);margin-top:6px;border-top:1px solid var(--np-border);padding-top:4px}' +
-        '.gmgai-warn{background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;border-radius:6px;padding:5px 8px;margin-top:5px;font-size:12px}' +
-        '.gmgai-card{border:1px solid var(--np-border);background:var(--np-surface);border-radius:10px;padding:10px 12px;margin:6px 0;max-width:100%;color:var(--np-text);font-size:12.5px;box-shadow:0 1px 4px rgba(0,0,0,0.03);box-sizing:border-box}' +
-        '.gmgai-card h4{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--np-navy)}' +
-        '.gmgai-card .meta{font-size:11px;color:var(--np-text-secondary);margin-bottom:4px}' +
-        '.gmgai-diff{background:var(--np-surface-muted);color:var(--np-text);border:1px solid var(--np-border);font:11.5px/1.45 ui-monospace,Menlo,monospace;border-radius:6px;padding:6px 8px;max-height:200px;overflow:auto;white-space:pre-wrap}' +
+        '.gmgai-warn{background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;border-radius:6px;padding:5px 8px;margin-top:5px;font-size:12px;overflow-wrap:break-word;word-break:break-word}' +
+        '.gmgai-card{border:1px solid var(--np-border);background:var(--np-surface);border-radius:10px;padding:10px 12px;margin:6px 0;width:100%;min-width:0;max-width:100%;color:var(--np-text);font-size:12.5px;box-shadow:0 1px 4px rgba(0,0,0,0.03);box-sizing:border-box}' +
+        '.gmgai-card h4{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--np-navy);overflow-wrap:break-word;word-break:break-word}' +
+        '.gmgai-card .meta{font-size:11px;color:var(--np-text-secondary);margin-bottom:4px;overflow-wrap:break-word}' +
+        '.gmgai-diff{background:var(--np-surface-muted);color:var(--np-text);border:1px solid var(--np-border);font:11.5px/1.45 ui-monospace,Menlo,monospace;border-radius:6px;padding:6px 8px;max-height:200px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}' +
         '.gmgai-chip-inactive{display:inline-block;font-size:11px;line-height:18px;padding:0 6px;border-radius:999px;border:1px solid var(--np-border);color:var(--np-text-secondary);font-weight:500;vertical-align:middle}' +
-        '.gmgai-cr s,.gmgai-cr b{white-space:pre-wrap}' +
+        '.gmgai-cr s,.gmgai-cr b{white-space:pre-wrap;overflow-wrap:anywhere}' +
         '.gmgai-chg{border:1px solid var(--np-border);border-radius:6px;background:var(--np-surface-muted);margin:5px 0;max-height:240px;overflow:auto}' +
         '.gmgai-cr,.gmgai-cn{padding:5px 8px;border-top:1px solid var(--np-border);font-size:12px;line-height:1.4;word-break:break-word;color:var(--np-text)}.gmgai-chg&amp;gt;div:first-child{border-top:0}' +
         '.gmgai-cr .f{display:block;font:11px ui-monospace,Menlo,monospace;color:var(--np-text-secondary);margin-bottom:2px}' +
@@ -1470,18 +1476,19 @@ GMGAIApplier.prototype = {
         '.gmgai-cr .ar{color:var(--np-text-secondary)}' +
         '.gmgai-cr i{color:var(--np-text-secondary)}' +
         '.gmgai-cn{color:var(--np-text)}' +
-        '.gmgai-act{display:flex;gap:6px;margin-top:6px}' +
+        '.gmgai-act{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}' +
         '.gmgai-act button{border:0;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:11.5px;font-weight:600;transition:background .15s ease;font-family:inherit}' +
         '.gmgai-ok{background:var(--np-green);color:var(--np-navy)}.gmgai-ok:hover{background:var(--np-green-hover)}' +
         '.gmgai-no{background:var(--np-surface);color:var(--np-danger);border:1px solid var(--np-border) !important}.gmgai-act button.gmgai-no:hover{border-color:var(--np-danger) !important;background:#FEE2E2}' +
         '.gmgai-rv-note{border-left:3px solid var(--note-bar);background:var(--note-bg);border-radius:6px;padding:8px 12px;margin:8px 0 4px}' +
         '.gmgai-rv-head{font-size:12px;font-weight:600;line-height:16px;color:var(--np-text);margin:0 0 3px}.gmgai-rv-body{font-size:13px;line-height:18px;color:var(--np-text);white-space:pre-wrap;overflow-wrap:anywhere;margin:0}' +
         '.gmgai-st{font-size:12px;margin-top:4px;font-weight:600}.gmgai-st a{color:var(--np-navy);text-decoration:underline}' +
-        '.gmgai-tw{overflow-x:auto;max-width:100%;margin:4px 0}.gmgai-mt{border-collapse:collapse;font-size:12px;line-height:1.4;white-space:normal;width:100%}' +
-        '.gmgai-mt th,.gmgai-mt td{border:1px solid var(--np-border);padding:4px 6px;text-align:left;vertical-align:top}' +
+        '.gmgai-tw{overflow-x:auto;max-width:100%;margin:4px 0}' +
+        '.gmgai-mt{border-collapse:collapse;font-size:12px;line-height:1.4;white-space:normal;width:100%}' +
+        '.gmgai-mt th,.gmgai-mt td{border:1px solid var(--np-border);padding:4px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}' +
         '.gmgai-mt th{background:var(--np-surface-muted);font-weight:600;color:var(--np-navy)}' +
         '.gmgai-vt{border-collapse:collapse;width:100%;font-size:12px;margin-top:4px}.gmgai-vt th,.gmgai-vt td{border-bottom:1px solid var(--np-border);padding:4px 6px;text-align:left;vertical-align:top}' +
-        '.gmgai-m ul,.gmgai-m ol{margin:4px 0;padding-left:20px;white-space:normal}.gmgai-m code{font:11.5px ui-monospace,Menlo,monospace;background:var(--np-surface-muted);border:1px solid var(--np-border);border-radius:3px;padding:1px 4px;color:var(--np-navy)}' +
+        '.gmgai-m ul,.gmgai-m ol{margin:4px 0;padding-left:20px;white-space:normal}.gmgai-m code{font:11.5px ui-monospace,Menlo,monospace;background:var(--np-surface-muted);border:1px solid var(--np-border);border-radius:3px;padding:1px 4px;color:var(--np-navy);overflow-wrap:anywhere}' +
         '.gmgai-no-chip{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border:1px solid var(--np-danger);border-radius:99px;color:var(--np-danger);font-size:11px;font-weight:600}.gmgai-no-chip:before{content:&amp;quot;&amp;quot;;width:6px;height:6px;border-radius:50%;background:var(--np-danger)}' +
         '.gmgai-cost{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid var(--np-border);border-radius:99px;background:var(--np-surface);color:var(--np-text-secondary);font-size:11px}';
     var PAPI = '/api/x_gmg_ai/agent/providers';
@@ -1633,7 +1640,6 @@ GMGAIApplier.prototype = {
             '&amp;lt;/div&amp;gt;&amp;lt;div id=&amp;quot;gmgai-msgs&amp;quot;&amp;gt;';
         h += hook('renderStrip').join('');
         if (!s.messages.length) {
-            // Hero Welcome Card exactly matching screenshot
             h += '&amp;lt;div class=&amp;quot;gmgai-hero-card&amp;quot;&amp;gt;' +
                  '&amp;lt;div class=&amp;quot;gmgai-hero-icon&amp;quot;&amp;gt;' +
                  '&amp;lt;svg width=&amp;quot;28&amp;quot; height=&amp;quot;28&amp;quot; viewBox=&amp;quot;0 0 24 24&amp;quot; fill=&amp;quot;none&amp;quot;&amp;gt;&amp;lt;path d=&amp;quot;M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z&amp;quot; fill=&amp;quot;#16A34A&amp;quot;/&amp;gt;&amp;lt;circle cx=&amp;quot;19&amp;quot; cy=&amp;quot;6&amp;quot; r=&amp;quot;1.5&amp;quot; fill=&amp;quot;#16A34A&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;' +
@@ -1644,11 +1650,10 @@ GMGAIApplier.prototype = {
                  '&amp;lt;/div&amp;gt;' +
                  '&amp;lt;/div&amp;gt;';
 
-            // &amp;quot;Try these examples&amp;quot; 2x2 Bento Grid
             h += '&amp;lt;div class=&amp;quot;gmgai-examples-head&amp;quot;&amp;gt;Try these examples&amp;lt;/div&amp;gt;' +
                  '&amp;lt;div class=&amp;quot;gmgai-bento-grid&amp;quot;&amp;gt;' +
                  '&amp;lt;button class=&amp;quot;gmgai-bento-card gmgai-sug&amp;quot; data-prompt=&amp;quot;Show me open P1 incidents&amp;quot;&amp;gt;' +
-                 '&amp;lt;div class=&amp;quot;gmgai-bento-icon&amp;quot; style=&amp;quot;background:#E8F8F0;color:#16A34A&amp;quot;&amp;gt;&amp;lt;svg width=&amp;quot;18&amp;quot; height=&amp;quot;18&amp;quot; viewBox=&amp;quot;0 0 24 24&amp;quot; fill=&amp;quot;none&amp;quot; stroke=&amp;quot;currentColor&amp;quot; stroke-width=&amp;quot;2&amp;quot; stroke-linecap=&amp;quot;round&amp;quot; stroke-linejoin=&amp;quot;round&amp;quot;&amp;gt;&amp;lt;path d=&amp;quot;M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z&amp;quot;/&amp;gt;&amp;lt;polyline points=&amp;quot;14 2 14 8 20 8&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;16&amp;quot; y1=&amp;quot;13&amp;quot; x2=&amp;quot;8&amp;quot; y2=&amp;quot;13&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;16&amp;quot; y1=&amp;quot;17&amp;quot; x2=&amp;quot;8&amp;quot; y2=&amp;quot;17&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;&amp;lt;/div&amp;gt;' +
+                 '&amp;lt;div class=&amp;quot;gmgai-bento-icon&amp;quot; style=&amp;quot;background:#E8F8F0;color:#16A34A&amp;quot;&amp;gt;&amp;lt;svg width=&amp;quot;18&amp;quot; height=&amp;quot;18&amp;quot; viewBox=&amp;quot;0 0 24 24&amp;quot; fill=&amp;quot;none&amp;quot; stroke=&amp;quot;currentColor&amp;quot; stroke-width=&amp;quot;2&amp;quot; stroke-linecap=&amp;quot;round&amp;quot; stroke-linejoin=&amp;quot;round&amp;quot;&amp;gt;&amp;lt;path d=&amp;quot;M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z&amp;quot;/&amp;gt;&amp;lt;polyline points=&amp;quot;14 2 14 8 20 8&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;16&amp;quot; y1=&amp;quot;13&amp;quot; x2=&amp;quot;8&amp;quot; y2=&amp;quot;13&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;16&amp;quot; y1=&amp;quot;17&amp;quot; x2=&amp;quot;8&amp;quot; y2=&amp;quot;17&amp;quot;/&amp;gt;&amp;lt;polyline points=&amp;quot;10 9 9 9 8 9&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;&amp;lt;/div&amp;gt;' +
                  '&amp;lt;div class=&amp;quot;gmgai-bento-content&amp;quot;&amp;gt;&amp;lt;div class=&amp;quot;gmgai-bento-title&amp;quot;&amp;gt;Show me open P1 incidents&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;quot;gmgai-bento-sub&amp;quot;&amp;gt;List high-priority incidents with key details&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;' +
                  '&amp;lt;div class=&amp;quot;gmgai-bento-arrow&amp;quot;&amp;gt;&amp;lt;svg width=&amp;quot;14&amp;quot; height=&amp;quot;14&amp;quot; viewBox=&amp;quot;0 0 24 24&amp;quot; fill=&amp;quot;none&amp;quot; stroke=&amp;quot;currentColor&amp;quot; stroke-width=&amp;quot;2.5&amp;quot; stroke-linecap=&amp;quot;round&amp;quot; stroke-linejoin=&amp;quot;round&amp;quot;&amp;gt;&amp;lt;line x1=&amp;quot;5&amp;quot; y1=&amp;quot;12&amp;quot; x2=&amp;quot;19&amp;quot; y2=&amp;quot;12&amp;quot;/&amp;gt;&amp;lt;polyline points=&amp;quot;12 5 19 12 12 19&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;&amp;lt;/div&amp;gt;' +
                  '&amp;lt;/button&amp;gt;' +
@@ -1671,9 +1676,9 @@ GMGAIApplier.prototype = {
 
             var dynSug = suggestions(c);
             if (dynSug &amp;amp;&amp;amp; dynSug.length) {
-                h += '&amp;lt;div style=&amp;quot;margin-top:6px;display:flex;flex-wrap:wrap;gap:4px&amp;quot;&amp;gt;';
+                h += '&amp;lt;div style=&amp;quot;margin-top:4px;display:flex;flex-direction:column;gap:4px&amp;quot;&amp;gt;';
                 dynSug.forEach(function(x) {
-                    h += '&amp;lt;button class=&amp;quot;gmgai-sug&amp;quot; style=&amp;quot;display:inline-block;width:auto;padding:4px 8px;font-size:11px;border-radius:6px;margin:2px 0&amp;quot;&amp;gt;' + esc(x) + '&amp;lt;/button&amp;gt;';
+                    h += '&amp;lt;button class=&amp;quot;gmgai-sug&amp;quot;&amp;gt;' + esc(x) + '&amp;lt;/button&amp;gt;';
                 });
                 h += '&amp;lt;/div&amp;gt;';
             }
@@ -1700,10 +1705,10 @@ GMGAIApplier.prototype = {
         if (s.pending) h += '&amp;lt;div class=&amp;quot;gmgai-m gmgai-a&amp;quot; style=&amp;quot;color:var(--np-text-secondary)&amp;quot;&amp;gt;Working…&amp;lt;/div&amp;gt;';
         var devPane = '';
         if (isDevMode) {
-            devPane = '&amp;lt;div id=&amp;quot;gmgai-dev-bar&amp;quot; style=&amp;quot;padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px&amp;quot;&amp;gt;' +
+            devPane = '&amp;lt;div id=&amp;quot;gmgai-dev-bar&amp;quot; style=&amp;quot;flex:0 0 auto;min-width:0;width:100%;box-sizing:border-box;padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px&amp;quot;&amp;gt;' +
                 '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
                 '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Artifact:&amp;lt;/label&amp;gt;' +
-                '&amp;lt;select id=&amp;quot;gmgai-dev-artifact&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1&amp;quot; aria-label=&amp;quot;Artifact Type&amp;quot;&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-dev-artifact&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1;min-width:0&amp;quot; aria-label=&amp;quot;Artifact Type&amp;quot;&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;business_rule&amp;quot;' + (s.dev_artifact == 'business_rule' ? ' selected' : '') + '&amp;gt;Business Rule&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;script_include&amp;quot;' + (s.dev_artifact == 'script_include' ? ' selected' : '') + '&amp;gt;Script Include&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;client_script&amp;quot;' + (s.dev_artifact == 'client_script' ? ' selected' : '') + '&amp;gt;Client Script&amp;lt;/option&amp;gt;' +
@@ -1716,7 +1721,7 @@ GMGAIApplier.prototype = {
                 '&amp;lt;option value=&amp;quot;atf_test&amp;quot;' + (s.dev_artifact == 'atf_test' ? ' selected' : '') + '&amp;gt;ATF Test Plan &amp;amp; Script&amp;lt;/option&amp;gt;' +
                 '&amp;lt;/select&amp;gt;' +
                 '&amp;lt;label style=&amp;quot;font-weight:600;margin-left:4px&amp;quot;&amp;gt;Action:&amp;lt;/label&amp;gt;' +
-                '&amp;lt;select id=&amp;quot;gmgai-dev-action&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;width:90px&amp;quot; aria-label=&amp;quot;Dev Action&amp;quot;&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-dev-action&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;width:85px;min-width:0&amp;quot; aria-label=&amp;quot;Dev Action&amp;quot;&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;generate&amp;quot;' + (s.dev_action == 'generate' ? ' selected' : '') + '&amp;gt;Generate&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;review&amp;quot;' + (s.dev_action == 'review' ? ' selected' : '') + '&amp;gt;Review&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;explain&amp;quot;' + (s.dev_action == 'explain' ? ' selected' : '') + '&amp;gt;Explain&amp;lt;/option&amp;gt;' +
@@ -1724,8 +1729,8 @@ GMGAIApplier.prototype = {
                 '&amp;lt;/select&amp;gt;&amp;lt;/div&amp;gt;' +
                 '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
                 '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Table:&amp;lt;/label&amp;gt;' +
-                '&amp;lt;input id=&amp;quot;gmgai-dev-table&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. incident&amp;quot; value=&amp;quot;' + esc(s.dev_table !== undefined ? s.dev_table : (c.table || '')) + '&amp;quot; style=&amp;quot;flex:1;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)&amp;quot; aria-label=&amp;quot;Table Name&amp;quot;&amp;gt;' +
-                '&amp;lt;button id=&amp;quot;gmgai-dev-code-toggle&amp;quot; style=&amp;quot;background:var(--np-surface);border:1px solid var(--np-border);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px;font-weight:500&amp;quot; aria-label=&amp;quot;Toggle Code Input&amp;quot;&amp;gt;' + (s.dev_show_code ? '- Code' : '+ Code') + '&amp;lt;/button&amp;gt;' +
+                '&amp;lt;input id=&amp;quot;gmgai-dev-table&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. incident&amp;quot; value=&amp;quot;' + esc(s.dev_table !== undefined ? s.dev_table : (c.table || '')) + '&amp;quot; style=&amp;quot;flex:1;min-width:0;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)&amp;quot; aria-label=&amp;quot;Table Name&amp;quot;&amp;gt;' +
+                '&amp;lt;button id=&amp;quot;gmgai-dev-code-toggle&amp;quot; style=&amp;quot;flex:0 0 auto;background:var(--np-surface);border:1px solid var(--np-border);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px;font-weight:500&amp;quot; aria-label=&amp;quot;Toggle Code Input&amp;quot;&amp;gt;' + (s.dev_show_code ? '- Code' : '+ Code') + '&amp;lt;/button&amp;gt;' +
                 '&amp;lt;/div&amp;gt;' +
                 '&amp;lt;textarea id=&amp;quot;gmgai-dev-code&amp;quot; placeholder=&amp;quot;Paste existing script here for Review / Debug / Explain...&amp;quot; style=&amp;quot;display:' + (s.dev_show_code ? 'block' : 'none') + ';width:100%;height:75px;box-sizing:border-box;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;border:1px solid var(--np-border);border-radius:6px;padding:6px;resize:vertical;background:var(--np-surface);color:var(--np-text)&amp;quot; aria-label=&amp;quot;Existing Script Code&amp;quot;&amp;gt;' + esc(s.dev_code || '') + '&amp;lt;/textarea&amp;gt;' +
                 '&amp;lt;/div&amp;gt;';
@@ -1733,10 +1738,10 @@ GMGAIApplier.prototype = {
         var itsmPane = '';
         if (isITSMMode) {
             var boundInc = (c.table == 'incident' ? (c.fields &amp;amp;&amp;amp; c.fields.number ? c.fields.number : (c.sys_id || '')) : '');
-            itsmPane = '&amp;lt;div id=&amp;quot;gmgai-itsm-bar&amp;quot; style=&amp;quot;padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px&amp;quot;&amp;gt;' +
+            itsmPane = '&amp;lt;div id=&amp;quot;gmgai-itsm-bar&amp;quot; style=&amp;quot;flex:0 0 auto;min-width:0;width:100%;box-sizing:border-box;padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px&amp;quot;&amp;gt;' +
                 '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
                 '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Action:&amp;lt;/label&amp;gt;' +
-                '&amp;lt;select id=&amp;quot;gmgai-itsm-action&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1&amp;quot; aria-label=&amp;quot;ITSM Action&amp;quot;&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-itsm-action&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1;min-width:0&amp;quot; aria-label=&amp;quot;ITSM Action&amp;quot;&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;recommend_resolution&amp;quot;' + (s.itsm_action == 'recommend_resolution' || !s.itsm_action ? ' selected' : '') + '&amp;gt;Recommend Resolution&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;similar_incidents&amp;quot;' + (s.itsm_action == 'similar_incidents' ? ' selected' : '') + '&amp;gt;Find Similar Incidents&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;search_knowledge&amp;quot;' + (s.itsm_action == 'search_knowledge' ? ' selected' : '') + '&amp;gt;Search Knowledge Articles&amp;lt;/option&amp;gt;' +
@@ -1746,17 +1751,17 @@ GMGAIApplier.prototype = {
                 '&amp;lt;/div&amp;gt;' +
                 '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
                 '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Incident:&amp;lt;/label&amp;gt;' +
-                '&amp;lt;input id=&amp;quot;gmgai-itsm-incident&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. INC0000060 or sys_id&amp;quot; value=&amp;quot;' + esc(s.itsm_incident !== undefined ? s.itsm_incident : boundInc) + '&amp;quot; style=&amp;quot;flex:1;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)&amp;quot; aria-label=&amp;quot;Incident Identifier&amp;quot;&amp;gt;' +
+                '&amp;lt;input id=&amp;quot;gmgai-itsm-incident&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. INC0000060 or sys_id&amp;quot; value=&amp;quot;' + esc(s.itsm_incident !== undefined ? s.itsm_incident : boundInc) + '&amp;quot; style=&amp;quot;flex:1;min-width:0;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)&amp;quot; aria-label=&amp;quot;Incident Identifier&amp;quot;&amp;gt;' +
                 '&amp;lt;/div&amp;gt;' +
                 '&amp;lt;/div&amp;gt;';
         }
         var workflowPane = '';
         if (isWorkflowMode) {
             var boundTarget = (c.table == 'incident' ? (c.fields &amp;amp;&amp;amp; c.fields.number ? c.fields.number : (c.sys_id || '')) : (c.bound &amp;amp;&amp;amp; c.bound.sys_id ? c.bound.sys_id : ''));
-            workflowPane = '&amp;lt;div id=&amp;quot;gmgai-wf-bar&amp;quot; style=&amp;quot;padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px&amp;quot;&amp;gt;' +
+            workflowPane = '&amp;lt;div id=&amp;quot;gmgai-wf-bar&amp;quot; style=&amp;quot;flex:0 0 auto;min-width:0;width:100%;box-sizing:border-box;padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px&amp;quot;&amp;gt;' +
                 '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
                 '&amp;lt;label style=&amp;quot;font-weight:600;min-width:55px&amp;quot;&amp;gt;Workflow:&amp;lt;/label&amp;gt;' +
-                '&amp;lt;select id=&amp;quot;gmgai-wf-type&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1&amp;quot; aria-label=&amp;quot;Workflow Template&amp;quot;&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-wf-type&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1;min-width:0&amp;quot; aria-label=&amp;quot;Workflow Template&amp;quot;&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;incident_investigation&amp;quot;' + (s.wf_type == 'incident_investigation' || !s.wf_type ? ' selected' : '') + '&amp;gt;A: Incident Investigation&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;knowledge_preparation&amp;quot;' + (s.wf_type == 'knowledge_preparation' ? ' selected' : '') + '&amp;gt;B: Knowledge Preparation&amp;lt;/option&amp;gt;' +
                 '&amp;lt;option value=&amp;quot;development_review&amp;quot;' + (s.wf_type == 'development_review' ? ' selected' : '') + '&amp;gt;C: Development Review&amp;lt;/option&amp;gt;' +
@@ -1764,7 +1769,7 @@ GMGAIApplier.prototype = {
                 '&amp;lt;/div&amp;gt;' +
                 '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
                 '&amp;lt;label style=&amp;quot;font-weight:600;min-width:55px&amp;quot;&amp;gt;Target/Ref:&amp;lt;/label&amp;gt;' +
-                '&amp;lt;input id=&amp;quot;gmgai-wf-target&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. INC0000060 or script&amp;quot; value=&amp;quot;' + esc(s.wf_target !== undefined ? s.wf_target : boundTarget) + '&amp;quot; style=&amp;quot;flex:1;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)&amp;quot; aria-label=&amp;quot;Workflow Target&amp;quot;&amp;gt;' +
+                '&amp;lt;input id=&amp;quot;gmgai-wf-target&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. INC0000060 or script&amp;quot; value=&amp;quot;' + esc(s.wf_target !== undefined ? s.wf_target : boundTarget) + '&amp;quot; style=&amp;quot;flex:1;min-width:0;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)&amp;quot; aria-label=&amp;quot;Workflow Target&amp;quot;&amp;gt;' +
                 '&amp;lt;/div&amp;gt;' +
                 '&amp;lt;/div&amp;gt;';
         }
