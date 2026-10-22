@@ -862,8 +862,8 @@ GMGAIApplier.prototype = {
  */
 (function() {
     var ROLE = 'x_gmg_ai.user', API = '/api/x_gmg_ai/agent/chat', KEY_BASE = 'gmgai_state_v1', CONV_BASE = 'gmgai_conv_id';
-    var LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;26&amp;quot; height=&amp;quot;26&amp;quot; style=&amp;quot;flex-shrink:0;vertical-align:middle;border-radius:50%;background:#041B12;border:1.5px solid #168B50;box-shadow:0 0 8px rgba(74,222,128,0.3)&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;16&amp;quot; cy=&amp;quot;16&amp;quot; r=&amp;quot;14&amp;quot; fill=&amp;quot;#0A3C24&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L25 8 L18 24 L14 17 Z&amp;quot; fill=&amp;quot;#4ADE80&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M14 17 L25 8&amp;quot; stroke=&amp;quot;#041B12&amp;quot; stroke-width=&amp;quot;1.2&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
-    var BTN_LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;34&amp;quot; height=&amp;quot;34&amp;quot; style=&amp;quot;vertical-align:middle;display:block&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;16&amp;quot; cy=&amp;quot;16&amp;quot; r=&amp;quot;15&amp;quot; fill=&amp;quot;#0A3C24&amp;quot; stroke=&amp;quot;#168B50&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L25 8 L18 24 L14 17 Z&amp;quot; fill=&amp;quot;#4ADE80&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M14 17 L25 8&amp;quot; stroke=&amp;quot;#041B12&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
+    var LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;28&amp;quot; height=&amp;quot;28&amp;quot; style=&amp;quot;flex-shrink:0;vertical-align:middle;border-radius:50%;background:#FFFFFF;border:2px solid #168B50;box-shadow:0 0 8px rgba(255,255,255,0.9)&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;16&amp;quot; cy=&amp;quot;16&amp;quot; r=&amp;quot;14&amp;quot; fill=&amp;quot;#FFFFFF&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L25 8 L18 24 L14 17 Z&amp;quot; fill=&amp;quot;#168B50&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M14 17 L25 8&amp;quot; stroke=&amp;quot;#041B12&amp;quot; stroke-width=&amp;quot;1.3&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
+    var BTN_LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;38&amp;quot; height=&amp;quot;38&amp;quot; style=&amp;quot;vertical-align:middle;display:block&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;16&amp;quot; cy=&amp;quot;16&amp;quot; r=&amp;quot;14&amp;quot; fill=&amp;quot;#FFFFFF&amp;quot; stroke=&amp;quot;#168B50&amp;quot; stroke-width=&amp;quot;2.5&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L25 8 L18 24 L14 17 Z&amp;quot; fill=&amp;quot;#168B50&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M14 17 L25 8&amp;quot; stroke=&amp;quot;#041B12&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
     var w = window, top;
     try { top = window.top; void top.document.body; } catch (e) { top = window; }
     var tdoc = top.document;
@@ -1387,7 +1387,7 @@ GMGAIApplier.prototype = {
         '.gmgai-select:focus{border-color:#168B50}' +
         '#gmgai-root{position:fixed;right:20px;bottom:20px;z-index:2147483000;font:13px/1.4 Inter,system-ui,-apple-system,&amp;quot;Segoe UI&amp;quot;,Roboto,&amp;quot;Helvetica Neue&amp;quot;,Arial,sans-serif;--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}' +
         '@media (prefers-color-scheme: dark){#gmgai-root{--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}}' +
-        '#gmgai-btn{width:54px;height:54px;border-radius:50%;border:1.5px solid #168B50;background:#062617;box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 12px rgba(22,139,80,.4);cursor:pointer;display:grid;place-items:center;padding:0;overflow:hidden;transition:all .18s ease}' +
+        '#gmgai-btn{width:56px;height:56px;border-radius:50%;border:2.5px solid #168B50;background:#FFFFFF !important;box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 15px rgba(255,255,255,.9);cursor:pointer;display:grid;place-items:center;padding:0;overflow:hidden;transition:all .18s ease;z-index:2147483000}' +
         '#gmgai-btn:hover{transform:translateY(-2px);border-color:#4ADE80;box-shadow:0 10px 24px rgba(0,0,0,.7),0 0 16px rgba(74,222,128,.5)}' +
         '#gmgai-btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(0,0,0,.3)}' +
         '#gmgai-btn svg{display:block}' +
@@ -1402,7 +1402,7 @@ GMGAIApplier.prototype = {
         '#gmgai-head .gmgai-controls{display:flex;align-items:center;gap:4px;flex-shrink:0}' +
         '#gmgai-head button{background:#1E1E1E;border:1px solid #333333;color:#D1D5DB;cursor:pointer;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:500;transition:all .15s ease;flex-shrink:0}' +
         '#gmgai-head button:hover{background:#2E2E2E;color:#FFF;border-color:#168B50}' +
-        '#gmgai-head #gmgai-close{font-size:12px;font-weight:700;width:24px;height:24px;padding:0;display:inline-flex;align-items:center;justify-content:center}' +
+        '#gmgai-head #gmgai-close{background:#DC2626 !important;color:#FFFFFF !important;border:1px solid #EF4444 !important;font-size:11px !important;font-weight:700 !important;padding:3px 8px !important;border-radius:5px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;cursor:pointer !important;gap:3px !important;flex-shrink:0 !important;box-shadow:0 1px 3px rgba(0,0,0,0.3) !important}' +
         '#gmgai-head #gmgai-close:hover{background:#DC2626;color:#FFF;border-color:#EF4444}' +
         '@media (prefers-color-scheme: dark){#gmgai-head{background:#080808;color:#F5F5F5;border-bottom-color:#303030;border-top-color:#168B50}#gmgai-head small{color:#A3A3A3}}' +
         '#gmgai-msgs{flex:1;overflow-y:auto;padding:8px 10px;background:#080808;color:#F5F5F5}' +
@@ -1557,6 +1557,16 @@ GMGAIApplier.prototype = {
             if (ownAppPage()) return;   // design review: no floating launcher on our own x_gmg_ai_*.do pages (the page is the agent); ?panel=open still opens the panel
             root.innerHTML = '&amp;lt;button id=&amp;quot;gmgai-btn&amp;quot; title=&amp;quot;Now Pilot for ServiceNow&amp;quot; aria-label=&amp;quot;Open Now Pilot for ServiceNow&amp;quot;&amp;gt;' + BTN_LOGO_SVG + '&amp;lt;/button&amp;gt;';
             tdoc.body.appendChild(root);
+        tdoc.addEventListener('keydown', function(ev) {
+            if (ev.key === 'Escape' || ev.keyCode === 27) {
+                var curr = load();
+                if (curr.open) {
+                    curr.open = false;
+                    save(curr);
+                    render();
+                }
+            }
+        });
             tdoc.getElementById('gmgai-btn').onclick = function() { s.open = true; save(s); render(); hook('onOpen'); };
             return;
         }
@@ -1567,7 +1577,7 @@ GMGAIApplier.prototype = {
         var isChatMode = (!isDevMode &amp;amp;&amp;amp; !isITSMMode &amp;amp;&amp;amp; !isWorkflowMode);
         var h = '&amp;lt;div id=&amp;quot;gmgai-panel&amp;quot;&amp;gt;&amp;lt;div id=&amp;quot;gmgai-head&amp;quot;&amp;gt;' +
             '&amp;lt;div class=&amp;quot;gmgai-brand&amp;quot;&amp;gt;' + LOGO_SVG + '&amp;lt;div class=&amp;quot;gmgai-title-wrap&amp;quot;&amp;gt;&amp;lt;div class=&amp;quot;gmgai-title&amp;quot;&amp;gt;Now Pilot&amp;lt;/div&amp;gt;&amp;lt;small title=&amp;quot;' + esc(where || c.url) + ' &amp;amp;middot; Built by Kanam Ramu&amp;quot;&amp;gt;' + esc(where || c.url) + ' &amp;amp;middot; Built by Kanam Ramu&amp;lt;/small&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;' +
-            '&amp;lt;div class=&amp;quot;gmgai-controls&amp;quot;&amp;gt;' + (top.__gmgaiProviders &amp;amp;&amp;amp; top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '&amp;lt;button id=&amp;quot;gmgai-clear&amp;quot; title=&amp;quot;Clear chat history&amp;quot;&amp;gt;Clear&amp;lt;/button&amp;gt;&amp;lt;button id=&amp;quot;gmgai-close&amp;quot; title=&amp;quot;Close Now Pilot&amp;quot;&amp;gt;&amp;amp;#10005;&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;' +
+            '&amp;lt;div class=&amp;quot;gmgai-controls&amp;quot;&amp;gt;' + (top.__gmgaiProviders &amp;amp;&amp;amp; top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '&amp;lt;button id=&amp;quot;gmgai-clear&amp;quot; title=&amp;quot;Clear chat history&amp;quot;&amp;gt;Clear&amp;lt;/button&amp;gt;&amp;lt;button id=&amp;quot;gmgai-close&amp;quot; title=&amp;quot;Close Now Pilot (Esc)&amp;quot; aria-label=&amp;quot;Close Now Pilot&amp;quot;&amp;gt;&amp;amp;#10005; Close&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;' +
             '&amp;lt;div id=&amp;quot;gmgai-mode-bar&amp;quot; style=&amp;quot;display:flex;border-bottom:1px solid var(--border);background:var(--surface);font-size:12px&amp;quot;&amp;gt;' +
             '&amp;lt;button id=&amp;quot;gmgai-tab-chat&amp;quot; style=&amp;quot;flex:1;padding:6px;border:0;background:' + (isChatMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isChatMode ? '600' : '400') + ';color:' + (isChatMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isChatMode ? '2px solid #168B50' : 'none') + '&amp;quot;&amp;gt;Chat&amp;lt;/button&amp;gt;' +
             '&amp;lt;button id=&amp;quot;gmgai-tab-itsm&amp;quot; style=&amp;quot;flex:1;padding:6px;border:0;background:' + (isITSMMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isITSMMode ? '600' : '400') + ';color:' + (isITSMMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isITSMMode ? '2px solid #168B50' : 'none') + '&amp;quot;&amp;gt;ITSM Intelligence&amp;lt;/button&amp;gt;' +

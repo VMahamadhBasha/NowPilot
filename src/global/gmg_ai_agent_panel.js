@@ -8,8 +8,8 @@
  */
 (function() {
     var ROLE = 'x_gmg_ai.user', API = '/api/x_gmg_ai/agent/chat', KEY_BASE = 'gmgai_state_v1', CONV_BASE = 'gmgai_conv_id';
-    var LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="26" height="26" style="flex-shrink:0;vertical-align:middle;border-radius:50%;background:#041B12;border:1.5px solid #168B50;box-shadow:0 0 8px rgba(74,222,128,0.3)"><circle cx="16" cy="16" r="14" fill="#0A3C24"/><path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#4ADE80"/><path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.2"/></svg>';
-    var BTN_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="34" height="34" style="vertical-align:middle;display:block"><circle cx="16" cy="16" r="15" fill="#0A3C24" stroke="#168B50" stroke-width="1.5"/><path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#4ADE80"/><path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.5"/></svg>';
+    var LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28" style="flex-shrink:0;vertical-align:middle;border-radius:50%;background:#FFFFFF;border:2px solid #168B50;box-shadow:0 0 8px rgba(255,255,255,0.9)"><circle cx="16" cy="16" r="14" fill="#FFFFFF"/><path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#168B50"/><path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.3"/></svg>';
+    var BTN_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="38" height="38" style="vertical-align:middle;display:block"><circle cx="16" cy="16" r="14" fill="#FFFFFF" stroke="#168B50" stroke-width="2.5"/><path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#168B50"/><path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.5"/></svg>';
     var w = window, top;
     try { top = window.top; void top.document.body; } catch (e) { top = window; }
     var tdoc = top.document;
@@ -533,7 +533,7 @@
         '.gmgai-select:focus{border-color:#168B50}' +
         '#gmgai-root{position:fixed;right:20px;bottom:20px;z-index:2147483000;font:13px/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}' +
         '@media (prefers-color-scheme: dark){#gmgai-root{--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}}' +
-        '#gmgai-btn{width:54px;height:54px;border-radius:50%;border:1.5px solid #168B50;background:#062617;box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 12px rgba(22,139,80,.4);cursor:pointer;display:grid;place-items:center;padding:0;overflow:hidden;transition:all .18s ease}' +
+        '#gmgai-btn{width:56px;height:56px;border-radius:50%;border:2.5px solid #168B50;background:#FFFFFF !important;box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 15px rgba(255,255,255,.9);cursor:pointer;display:grid;place-items:center;padding:0;overflow:hidden;transition:all .18s ease;z-index:2147483000}' +
         '#gmgai-btn:hover{transform:translateY(-2px);border-color:#4ADE80;box-shadow:0 10px 24px rgba(0,0,0,.7),0 0 16px rgba(74,222,128,.5)}' +
         '#gmgai-btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(0,0,0,.3)}' +
         '#gmgai-btn svg{display:block}' +
@@ -548,7 +548,7 @@
         '#gmgai-head .gmgai-controls{display:flex;align-items:center;gap:4px;flex-shrink:0}' +
         '#gmgai-head button{background:#1E1E1E;border:1px solid #333333;color:#D1D5DB;cursor:pointer;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:500;transition:all .15s ease;flex-shrink:0}' +
         '#gmgai-head button:hover{background:#2E2E2E;color:#FFF;border-color:#168B50}' +
-        '#gmgai-head #gmgai-close{font-size:12px;font-weight:700;width:24px;height:24px;padding:0;display:inline-flex;align-items:center;justify-content:center}' +
+        '#gmgai-head #gmgai-close{background:#DC2626 !important;color:#FFFFFF !important;border:1px solid #EF4444 !important;font-size:11px !important;font-weight:700 !important;padding:3px 8px !important;border-radius:5px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;cursor:pointer !important;gap:3px !important;flex-shrink:0 !important;box-shadow:0 1px 3px rgba(0,0,0,0.3) !important}' +
         '#gmgai-head #gmgai-close:hover{background:#DC2626;color:#FFF;border-color:#EF4444}' +
         '@media (prefers-color-scheme: dark){#gmgai-head{background:#080808;color:#F5F5F5;border-bottom-color:#303030;border-top-color:#168B50}#gmgai-head small{color:#A3A3A3}}' +
         '#gmgai-msgs{flex:1;overflow-y:auto;padding:8px 10px;background:#080808;color:#F5F5F5}' +
@@ -703,6 +703,16 @@
             if (ownAppPage()) return;   // design review: no floating launcher on our own x_gmg_ai_*.do pages (the page is the agent); ?panel=open still opens the panel
             root.innerHTML = '<button id="gmgai-btn" title="Now Pilot for ServiceNow" aria-label="Open Now Pilot for ServiceNow">' + BTN_LOGO_SVG + '</button>';
             tdoc.body.appendChild(root);
+        tdoc.addEventListener('keydown', function(ev) {
+            if (ev.key === 'Escape' || ev.keyCode === 27) {
+                var curr = load();
+                if (curr.open) {
+                    curr.open = false;
+                    save(curr);
+                    render();
+                }
+            }
+        });
             tdoc.getElementById('gmgai-btn').onclick = function() { s.open = true; save(s); render(); hook('onOpen'); };
             return;
         }
@@ -713,7 +723,7 @@
         var isChatMode = (!isDevMode && !isITSMMode && !isWorkflowMode);
         var h = '<div id="gmgai-panel"><div id="gmgai-head">' +
             '<div class="gmgai-brand">' + LOGO_SVG + '<div class="gmgai-title-wrap"><div class="gmgai-title">Now Pilot</div><small title="' + esc(where || c.url) + ' &middot; Built by Kanam Ramu">' + esc(where || c.url) + ' &middot; Built by Kanam Ramu</small></div></div>' +
-            '<div class="gmgai-controls">' + (top.__gmgaiProviders && top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '<button id="gmgai-clear" title="Clear chat history">Clear</button><button id="gmgai-close" title="Close Now Pilot">&#10005;</button></div></div>' +
+            '<div class="gmgai-controls">' + (top.__gmgaiProviders && top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '<button id="gmgai-clear" title="Clear chat history">Clear</button><button id="gmgai-close" title="Close Now Pilot (Esc)" aria-label="Close Now Pilot">&#10005; Close</button></div></div>' +
             '<div id="gmgai-mode-bar" style="display:flex;border-bottom:1px solid var(--border);background:var(--surface);font-size:12px">' +
             '<button id="gmgai-tab-chat" style="flex:1;padding:6px;border:0;background:' + (isChatMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isChatMode ? '600' : '400') + ';color:' + (isChatMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isChatMode ? '2px solid #168B50' : 'none') + '">Chat</button>' +
             '<button id="gmgai-tab-itsm" style="flex:1;padding:6px;border:0;background:' + (isITSMMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isITSMMode ? '600' : '400') + ';color:' + (isITSMMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isITSMMode ? '2px solid #168B50' : 'none') + '">ITSM Intelligence</button>' +
