@@ -1,7 +1,6 @@
 // Copyright 2026 GMG Technology LLC
 // SPDX-License-Identifier: Apache-2.0
 /* Now Pilot for ServiceNow - global desktop UI Script (UI16 + classic pages inside the Next Experience/Polaris iframe).
- * Tagline: From Ticket to Takeoff.
  * Built by Kanam Ramu.
  * Runs in every classic page/frame. The panel is rendered into the TOP window (same origin), and each
  * content frame registers a context provider there, so the agent "follows" the user across navigations.

@@ -226,7 +226,7 @@ ActionService.writesOff = function() { return ActionService.writesOffFor(gs.getP
  * (Confirm/Reject) and health REST operations; the panel only hides its launcher from the same answer (GET /health?access=1).
  * Returns '' (allowed) or the refusal text. */
 ActionService.PANEL_PROP = 'x_gmg_ai.panel_access';
-ActionService.PANEL_OFF = 'The GMG AI Agent is turned off for your role.';
+ActionService.PANEL_OFF = 'Now Pilot is turned off for your role.';
 ActionService.panelModeOf = function(prop) {
     var v = String(prop === null || prop === undefined ? '' : prop).replace(/^\s+|\s+$/g, '').toLowerCase();
     return v == 'admins' || v == 'off' ? v : 'everyone';
