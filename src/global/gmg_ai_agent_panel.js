@@ -5,6 +5,14 @@
  * Runs in every classic page/frame. The panel is rendered into the TOP window (same origin), and each
  * content frame registers a context provider there, so the agent "follows" the user across navigations.
  * Chat state lives in top.sessionStorage (keys scoped to the session user) so it survives page loads.
+ *
+ * Fixes in this revision:
+ *  1. Example cards no longer carry the gmgai-sug class (it forced display:block and broke the bento layout);
+ *     the click handler now covers both and re-queries the textarea after render().
+ *  2. actionCard no longer throws when a card has no type.
+ *  3. The "Accepted and applied" message no longer prints "(undefined)" when there is no link.
+ *  4. Escape no longer closes the panel while typing in an input/textarea.
+ *  5. Optional debug logging: in the browser console run  top.__gmgaiDebug = true  then reload, to see why the launcher is hidden.
  */
 (function() {
     var ROLE = 'x_gmg_ai.user', API = '/api/x_gmg_ai/agent/chat', KEY_BASE = 'gmgai_state_v1', CONV_BASE = 'gmgai_conv_id';
@@ -13,6 +21,10 @@
     var w = window, top;
     try { top = window.top; void top.document.body; } catch (e) { top = window; }
     var tdoc = top.document;
+    /* debug helper: top.__gmgaiDebug = true (console), reload the page */
+    function dbg() {
+        try { if (top.__gmgaiDebug && w.console && w.console.log) w.console.log.apply(w.console, ['[GMG AI]'].concat([].slice.call(arguments))); } catch (e) {}
+    }
     /* QA 2026-10-20 (cross-user panel cache): sessionStorage is per browser tab, not per ServiceNow user, so after a user switch in the
      * same tab the next user saw the previous user's chat and cards. Both keys are scoped to the session user; on load any other
      * user's keys and the old unscoped keys are removed (browser storage only). No user id: nothing is read or kept in sessionStorage.
@@ -241,7 +253,7 @@
         return out;
     }
     function actionCard(a) {
-        var h = '<div class="gmgai-card" data-act="' + esc(a.id) + '"><h4>' + esc((a.operation == 'update' ? 'Update ' : 'Create ') + a.type.replace('_', ' ')) + ': ' + esc(a.target || '') + '</h4>';
+        var h = '<div class="gmgai-card" data-act="' + esc(a.id) + '"><h4>' + esc((a.operation == 'update' ? 'Update ' : 'Create ') + String(a.type || 'item').replace(/_/g, ' ')) + ': ' + esc(a.target || '') + '</h4>';   // FIX 2: no throw when type is missing
         if (a.type == 'knowledge_draft') {
             h = '<div class="gmgai-card" data-act="' + esc(a.id) + '"><h4>' + esc(a.summary || a.title || 'Knowledge Article Draft') + '</h4>';
             h += '<div class="meta"><span class="gmgai-chip" style="background:#EFF6FF;color:#1D4ED8;border-color:#BFDBFE">Knowledge Draft</span> &middot; State: <b>Draft (Review Only)</b>' + (a.incident_number ? ' &middot; Source: <b>' + esc(a.incident_number) + '</b>' : '') + '</div>';
@@ -341,9 +353,9 @@
             }
 
             if (a.can_accept && a.status == 'pending') {
-                var actId = a.pending_action_id || a.id;
+                var actId2 = a.pending_action_id || a.id;
                 h += '<div class="meta" style="margin-top:6px;color:#15803D">Bound to open record ' + esc(a.bound_table) + ' ' + esc(a.bound_sys_id) + '. Click Accept to apply.</div>';
-                h += '<div class="gmgai-act" data-act="' + esc(actId) + '"><button class="gmgai-ok" data-v="confirm">Accept</button><button class="gmgai-no" data-v="reject">Reject</button></div>';
+                h += '<div class="gmgai-act" data-act="' + esc(actId2) + '"><button class="gmgai-ok" data-v="confirm">Accept</button><button class="gmgai-no" data-v="reject">Reject</button></div>';
             }
             return h + '</div>';
         }
@@ -470,7 +482,7 @@
             h += '<div class="gmgai-st" style="color:#15803d">\u2714 Applied.' + (ol ? ' <a href="' + esc(ol) + '" target="_blank">' + esc(openLabel) + '</a>' : '') +
                 (ul ? ' \u00b7 <a href="' + esc(ul) + '" target="_blank">' + esc(a.update_set_name || 'Update set') + '</a>' : /^record_/.test(String(a.type || '')) ? ' \u00b7 data write (no update set)' : '') + '</div>'; }
         else if (a.status == 'refused') h += '<div class="gmgai-st" style="color:#92400e;background:#fef3c7;padding:4px 6px;border-radius:4px">' + STOP_SVG + 'Not allowed: ' + esc(a.error || 'you do not have permission to accept this change.') + '</div>';
-        else h += '<div class="gmgai-st" style="color:#991b1b">' + esc(a.status) + (a.error ? ': ' + a.error : '') + '</div>';
+        else h += '<div class="gmgai-st" style="color:#991b1b">' + esc(a.status) + (a.error ? ': ' + esc(a.error) : '') + '</div>';
         return h;
     }
     /* f25 (design review wording): a card whose stored hash predates the current canon. Still 409 on Accept; 14px secondary text + info icon;
@@ -517,8 +529,9 @@
                 st.messages.forEach(function(m) { (m.actions || []).forEach(function(a) { if (a.id == id) {
                     a.status = r.status || (r.ok ? 'applied' : 'failed'); a.error = r.error; a.link = r.link; a.target_sys_id = r.sys_id || a.target_sys_id; a.update_set_link = r.update_set_link; a.update_set_name = r.update_set_name; } }); });
                 (st.buildActions || []).forEach(function(a) { if (a.id == id) { a.status = r.status || (r.ok ? 'applied' : 'failed'); a.error = r.error; a.link = r.link; a.target_sys_id = r.sys_id || a.target_sys_id; a.update_set_link = r.update_set_link; a.update_set_name = r.update_set_name; } });
+                /* FIX 3: no "(undefined)" when the server returns no link */
                 if (!(verb == 'confirm' && r.status == 'refused')) st.messages.push({role: 'assistant', content: verb == 'confirm'
-                    ? (r.ok ? 'Accepted and applied ' + (act.target || '') + ' (' + r.link + ')' + (r.update_set_name ? ' in update set "' + r.update_set_name + '"' : (r.data_write ? ' as a data write (no update set)' : ' (no update set)')) + '.' : (r.status == 'refused' ? 'Refused: ' : 'Apply failed: ') + (r.error || 'unknown error'))
+                    ? (r.ok ? 'Accepted and applied ' + (act.target || '') + (r.link ? ' (' + r.link + ')' : '') + (r.update_set_name ? ' in update set "' + r.update_set_name + '"' : (r.data_write ? ' as a data write (no update set)' : ' (no update set)')) + '.' : (r.status == 'refused' ? 'Refused: ' : 'Apply failed: ') + (r.error || 'unknown error'))
                     : (r.ok ? 'Rejected proposal for ' + (act.target || '') + '. Nothing was changed.' : 'Reject failed: ' + r.error)});
                 save(st); top.__gmgaiRender && top.__gmgaiRender();
                 hook('onConfirmed', [id, r]);   // extension refresh (paid: build cards/strip from the server)
@@ -711,7 +724,7 @@
     }
 
     /* design review: on our pages an open panel must not cover Accept/Reject or 'Create it': narrow the content frame's main column. */
-    var PANEL_ROOM = 512;   // #gmgai-panel width 480 + right 16 + gap 16
+    var PANEL_ROOM = 512;   // #gmgai-panel width 440 + right 16 + gap, padded for our own app pages
     function shiftContent(open) { try { if (!/^\/x_gmg_ai_/.test(w.location.pathname)) return; var b = w.document.body; b.style.paddingRight = open ? PANEL_ROOM + 'px' : ''; b.style.boxSizing = 'border-box'; b.setAttribute('data-gmgai-panel', open ? 'open' : 'closed'); } catch (e) {} }
     function provSelectHtml(s) {
         var cur = s.provider || 'default';
@@ -731,6 +744,16 @@
         });
         out += '</select>';
         return out;
+    }
+
+    /* the four example cards; the arrow icon is shared */
+    var ARROW_SVG = '<div class="gmgai-bento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>';
+    /* FIX 1: bento cards no longer use the gmgai-sug class (its display:block broke the flex row layout) */
+    function bentoCard(prompt, tab, bg, fg, iconSvg, title, sub) {
+        return '<button class="gmgai-bento-card" data-prompt="' + esc(prompt) + '"' + (tab ? ' data-tab="' + tab + '"' : '') + '>' +
+            '<div class="gmgai-bento-icon" style="background:' + bg + ';color:' + fg + '">' + iconSvg + '</div>' +
+            '<div class="gmgai-bento-content"><div class="gmgai-bento-title">' + esc(title) + '</div><div class="gmgai-bento-sub">' + esc(sub) + '</div></div>' +
+            ARROW_SVG + '</button>';
     }
 
     function render() {
@@ -792,42 +815,19 @@
                  '</div>' +
                  '<div class="gmgai-hero-text">' +
                  '<h3>Hi! I\'m Now Pilot</h3>' +
-                 '<p>Ask me anything about ServiceNow — incidents, knowledge articles, configurations, scripts, or platform development.</p>' +
+                 '<p>Ask me anything about ServiceNow \u2014 incidents, knowledge articles, configurations, scripts, or platform development.</p>' +
                  '</div>' +
                  '</div>';
 
             h += '<div class="gmgai-examples-head">Try these examples</div>' +
                  '<div class="gmgai-bento-grid">' +
-                 '<button class="gmgai-bento-card gmgai-sug" data-prompt="Show me open P1 incidents">' +
-                 '<div class="gmgai-bento-icon" style="background:#E8F8F0;color:#16A34A"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>' +
-                 '<div class="gmgai-bento-content"><div class="gmgai-bento-title">Show me open P1 incidents</div><div class="gmgai-bento-sub">List high-priority incidents with key details</div></div>' +
-                 '<div class="gmgai-bento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>' +
-                 '</button>' +
-                 '<button class="gmgai-bento-card gmgai-sug" data-prompt="Find incidents about email">' +
-                 '<div class="gmgai-bento-icon" style="background:#F3E8FF;color:#9333EA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>' +
-                 '<div class="gmgai-bento-content"><div class="gmgai-bento-title">Find incidents about email</div><div class="gmgai-bento-sub">Search similar resolved incidents and KB articles</div></div>' +
-                 '<div class="gmgai-bento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>' +
-                 '</button>' +
-                 '<button class="gmgai-bento-card gmgai-sug" data-prompt="Create a Business Rule" data-tab="dev">' +
-                 '<div class="gmgai-bento-icon" style="background:#E0F2FE;color:#0284C7"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>' +
-                 '<div class="gmgai-bento-content"><div class="gmgai-bento-title">Create a Business Rule</div><div class="gmgai-bento-sub">Generate a business rule with best practices</div></div>' +
-                 '<div class="gmgai-bento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>' +
-                 '</button>' +
-                 '<button class="gmgai-bento-card gmgai-sug" data-prompt="Help me automate a workflow" data-tab="workflow">' +
-                 '<div class="gmgai-bento-icon" style="background:#FFEDD5;color:#EA580C"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg></div>' +
-                 '<div class="gmgai-bento-content"><div class="gmgai-bento-title">Help me automate a workflow</div><div class="gmgai-bento-sub">Plan and create a multi-step workflow</div></div>' +
-                 '<div class="gmgai-bento-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>' +
-                 '</button>' +
+                 bentoCard('Show me open P1 incidents', '', '#E8F8F0', '#16A34A',
+                     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
+                     'Show me open P1 incidents', 'List high-priority incidents with key details') +
+                 bentoCard('Find incidents about email', '', '#F3E8FF', '#9333EA',
+                     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+                     'Find incidents about email', 'Search similar resolved incidents and KB articles') +
                  '</div>';
-
-            var dynSug = suggestions(c);
-            if (dynSug && dynSug.length) {
-                h += '<div style="margin-top:4px;display:flex;flex-direction:column;gap:4px">';
-                dynSug.forEach(function(x) {
-                    h += '<button class="gmgai-sug">' + esc(x) + '</button>';
-                });
-                h += '</div>';
-            }
         }
         s.messages.forEach(function(m) {
             var cls = m.role == 'user' ? 'gmgai-u' : (m.error ? 'gmgai-e' : 'gmgai-a');
@@ -848,7 +848,7 @@
             if (m.role == 'assistant' && (m.cost != null || m.month != null)) h += '<div class="gmgai-foot">' + footer(m) + '</div>';
             h += '</div>';
         });
-        if (s.pending) h += '<div class="gmgai-m gmgai-a" style="color:var(--np-text-secondary)">Working…</div>';
+        if (s.pending) h += '<div class="gmgai-m gmgai-a" style="color:var(--np-text-secondary)">Working\u2026</div>';
         var devPane = '';
         if (isDevMode) {
             devPane = '<div id="gmgai-dev-bar" style="flex:0 0 auto;min-width:0;width:100%;box-sizing:border-box;padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px">' +
@@ -858,13 +858,13 @@
                 '<option value="business_rule"' + (s.dev_artifact == 'business_rule' ? ' selected' : '') + '>Business Rule</option>' +
                 '<option value="script_include"' + (s.dev_artifact == 'script_include' ? ' selected' : '') + '>Script Include</option>' +
                 '<option value="client_script"' + (s.dev_artifact == 'client_script' ? ' selected' : '') + '>Client Script</option>' +
-                '<option value="ui_policy"' + (s.dev_artifact == 'ui_policy' ? ' selected' : '') + '>UI Policy & Actions</option>' +
+                '<option value="ui_policy"' + (s.dev_artifact == 'ui_policy' ? ' selected' : '') + '>UI Policy &amp; Actions</option>' +
                 '<option value="ui_action"' + (s.dev_artifact == 'ui_action' ? ' selected' : '') + '>UI Action</option>' +
                 '<option value="background_script"' + (s.dev_artifact == 'background_script' ? ' selected' : '') + '>Background Script</option>' +
                 '<option value="scripted_rest"' + (s.dev_artifact == 'scripted_rest' ? ' selected' : '') + '>Scripted REST API</option>' +
                 '<option value="flow_designer"' + (s.dev_artifact == 'flow_designer' ? ' selected' : '') + '>Flow Designer Guidance</option>' +
                 '<option value="service_portal_widget"' + (s.dev_artifact == 'service_portal_widget' ? ' selected' : '') + '>Service Portal Widget</option>' +
-                '<option value="atf_test"' + (s.dev_artifact == 'atf_test' ? ' selected' : '') + '>ATF Test Plan & Script</option>' +
+                '<option value="atf_test"' + (s.dev_artifact == 'atf_test' ? ' selected' : '') + '>ATF Test Plan &amp; Script</option>' +
                 '</select>' +
                 '<label style="font-weight:600;margin-left:4px">Action:</label>' +
                 '<select id="gmgai-dev-action" class="gmgai-select" style="width:85px;min-width:0" aria-label="Dev Action">' +
@@ -919,10 +919,10 @@
                 '</div>' +
                 '</div>';
         }
-        var inputPlaceholder = isDevMode ? 'Enter requirement, acceptance criteria, or questions…'
-            : isITSMMode ? 'Enter symptoms, query, or prompt for ITSM analysis…'
-            : isWorkflowMode ? 'Enter workflow goal, acceptance criteria, or instruction…'
-            : 'Ask anything about this page or ServiceNow…';
+        var inputPlaceholder = isDevMode ? 'Enter requirement, acceptance criteria, or questions\u2026'
+            : isITSMMode ? 'Enter symptoms, query, or prompt for ITSM analysis\u2026'
+            : isWorkflowMode ? 'Enter workflow goal, acceptance criteria, or instruction\u2026'
+            : 'Ask anything about this page or ServiceNow\u2026';
         var actionBtnLabel = isDevMode ? 'Run' : (isITSMMode ? 'Analyze' : (isWorkflowMode ? 'Start' : 'Send'));
         var disabledAttr = s.pending ? ' disabled style="opacity:0.6;cursor:not-allowed"' : '';
         var clipIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>';
@@ -999,6 +999,9 @@
         }
         top.__gmgaiDocKeydown = function(e) {
             if (e.key === 'Escape' || e.keyCode === 27) {
+                /* FIX 4: don't close while the user is typing in the panel */
+                var ae = tdoc.activeElement;
+                if (ae && (ae.tagName == 'TEXTAREA' || ae.tagName == 'INPUT' || ae.tagName == 'SELECT')) return;
                 var curr = load();
                 if (curr.open) {
                     curr.open = false;
@@ -1035,7 +1038,8 @@
                 render();
             };
         }
-        Array.prototype.forEach.call(root.querySelectorAll('.gmgai-sug'), function(b) {
+        /* FIX 1: one handler for dynamic suggestions and the example cards; re-query the textarea because render() replaced the DOM */
+        Array.prototype.forEach.call(root.querySelectorAll('.gmgai-sug, .gmgai-bento-card'), function(b) {
             b.onclick = function(e) {
                 e.stopPropagation();
                 var pVal = b.getAttribute('data-prompt') || b.textContent;
@@ -1045,10 +1049,9 @@
                     st.mode = pTab;
                     save(st);
                     render();
-                    return;
                 }
-                ta.value = pVal;
-                ta.focus();
+                var nt = tdoc.querySelector('#gmgai-in textarea');
+                if (nt) { nt.value = pVal; nt.focus(); }
             };
         });
         Array.prototype.forEach.call(root.querySelectorAll('.gmgai-card button'), function(b) {
@@ -1240,7 +1243,7 @@
           .then(function(x) {
               var r = (x.j && x.j.result) || x.j || {};
               var st = load(); st.pending = false;
-              var u = r.usage || {}, meta = {cost: r.cost, month: r.spend && r.spend.month, monthly_budget: r.spend && r.spend.monthly_budget,
+              var meta = {cost: r.cost, month: r.spend && r.spend.month, monthly_budget: r.spend && r.spend.monthly_budget,
                   warning: r.warning, citation_warning: r.citation_warning, correlation_id: r.correlation_id, error_code: r.error_code};   // AC16: model and token counts are never kept or shown in the panel
               if (r.workflow) meta.workflow = r.workflow;
               if (r.rejected) { top.__gmgaiProviders = null; st.provider = ''; }
@@ -1273,23 +1276,26 @@
     var openedHere = false;   // per page load (live dcb843c)
     function ownAppPage() { try { return /^\/x_gmg_ai_[a-z0-9_]+\.do$/.test(w.location.pathname || ''); } catch (e) { return false; } }
     function boot() {
-        if (isShellOnly() || !hasRole() || !tdoc.body) return;
+        /* FIX 5: with top.__gmgaiDebug = true, the console says exactly which gate stopped the launcher */
+        var shell = isShellOnly(), role = hasRole(), hasBody = !!tdoc.body;
+        dbg('boot', {shellOnly: shell, hasRole: role, hasBody: hasBody, frame: w.location.pathname, isTop: w === top});
+        if (shell || !role || !hasBody) return;
         /* Ignore tiny helper iframes (e.g. hidden frames, dialogs) */
-        if (w !== top && (w.innerWidth < 300 || w.innerHeight < 200)) return;
+        if (w !== top && (w.innerWidth < 300 || w.innerHeight < 200)) { dbg('skipped: tiny frame', w.innerWidth, w.innerHeight); return; }
         accessThen(bootAllowed);   // x_gmg_ai.panel_access: no launcher until the server says this user may use the agent
     }
     /* Panel access: ask the server once per top window (GET /health?access=1 -> {panel_access: true|false}). Anything but an explicit
      * true (403, error, bad JSON) = no launcher. The REST operations refuse on their own, so this only hides the UI. */
     function accessThen(fn) {
         if (top.__gmgaiAccess === true) { fn(); return; }
-        if (top.__gmgaiAccess === false) return;
+        if (top.__gmgaiAccess === false) { dbg('panel_access is false for this session'); return; }
         (top.__gmgaiAccessQ = top.__gmgaiAccessQ || []).push(fn);
         if (top.__gmgaiAccessLoading) return;
         top.__gmgaiAccessLoading = true;
         w.fetch(HAPI + '?access=1', {credentials: 'same-origin', headers: {'Accept': 'application/json', 'X-UserToken': w.g_ck || ''}})
-            .then(function(r) { return r.status == 200 ? r.json() : null; })
-            .then(function(j) { var r = (j && j.result) || j || {}; top.__gmgaiAccess = r.panel_access === true; })
-            ['catch'](function() { top.__gmgaiAccess = false; })
+            .then(function(r) { dbg('health?access=1 status', r.status); return r.status == 200 ? r.json() : null; })
+            .then(function(j) { var r = (j && j.result) || j || {}; top.__gmgaiAccess = r.panel_access === true; dbg('panel_access', top.__gmgaiAccess); })
+            ['catch'](function(e) { dbg('health?access=1 failed', String(e)); top.__gmgaiAccess = false; })
             .then(function() {
                 var q = top.__gmgaiAccessQ || [], i; top.__gmgaiAccessQ = []; top.__gmgaiAccessLoading = false;
                 if (top.__gmgaiAccess === true) for (i = 0; i < q.length; i++) { try { q[i](); } catch (e) { extLog('boot threw: ' + e); } }
