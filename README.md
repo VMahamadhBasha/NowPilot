@@ -4,174 +4,98 @@
 
 # Now Pilot for ServiceNow
 
-### *From Ticket to Takeoff.*
+**The Autonomous, Sovereign, and Safe AI Control Plane for the ServiceNow Platform.**
 
-**The autonomous, controllable, and secure AI Agent built natively for the ServiceNow platform.**
-
-[![Version](https://img.shields.io/badge/release-v1.5.0-168B50.svg?style=flat-square)](https://github.com)
+[![Version](https://img.shields.io/badge/release-v1.5.0-168B50.svg?style=flat-square)](https://github.com/kRamu581/nowpilot-servicenow)
 [![License](https://img.shields.io/badge/license-Apache--2.0-080808.svg?style=flat-square)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-184%2F184%20passing-168B50.svg?style=flat-square)](src/test)
-[![ServiceNow](https://img.shields.io/badge/ServiceNow-Xanadu%20%7C%20Washington%20%7C%20Utah-151515.svg?style=flat-square)](INSTALL.md)
+[![ServiceNow](https://img.shields.io/badge/ServiceNow-Xanadu%20%7C%20Washington%20%7C%20Utah%20%7C%20Brazil-151515.svg?style=flat-square)](INSTALL.md)
 [![Architecture](https://img.shields.io/badge/architecture-Scoped%20App%20%2B%20Global%20UI-303030.svg?style=flat-square)](src)
-[![Author](https://img.shields.io/badge/built%20by-Kanam%20Ramu-168B50.svg?style=flat-square)](https://github.com)
+[![Author](https://img.shields.io/badge/built%20by-Kanam%20Ramu-168B50.svg?style=flat-square)](https://github.com/kRamu581)
 
 <p align="center">
   <a href="#overview">Overview</a> •
-  <a href="#project-origin-ownership--attribution">Attribution &amp; Origin</a> •
-  <a href="#does-it-actually-work">Does It Actually Work?</a> •
-  <a href="#brand--the-logo">Brand &amp; Logo</a> •
-  <a href="#what-it-does">What It Does</a> •
+  <a href="#why-now-pilot">Why Now Pilot?</a> •
+  <a href="#comparison-now-pilot-vs-now-assist">Now Pilot vs. Now Assist</a> •
+  <a href="#core-capabilities">Capabilities</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#security--governance">Security &amp; Governance</a> •
-  <a href="#provider-routing--budgets">Providers &amp; Budgets</a> •
-  <a href="#automated-test-suite">Tests</a> •
-  <a href="CONTRIBUTING.md">Contributing</a> •
-  <a href="SECURITY.md">Security</a> •
+  <a href="#contributing--open-source-community">Contributing</a> •
+  <a href="#automated-test-suite">Tests (184/184)</a> •
   <a href="LICENSE">License</a>
 </p>
 
 <p align="center">
-  <img width="1044" height="521" alt="image" src="https://github.com/user-attachments/assets/c4bf3645-785b-434b-ad5f-ef8bfee2e3ad" />
-  <img width="1351" height="549" alt="image" src="https://github.com/user-attachments/assets/324f49eb-ae4d-4a78-a78b-83e155eaab7c" />
-
+  <img width="1044" height="521" alt="Now Pilot Interface" src="https://github.com/user-attachments/assets/c4bf3645-785b-434b-ad5f-ef8bfee2e3ad" />
 </p>
 
 </div>
 
 ---
 
-> **Disclaimer &amp; Independence Notice:** **Now Pilot for ServiceNow** is an independent open-source project **developed and extended by Kanam Ramu**, based on the GMG AI Agent open-source foundation by GMG Technology LLC. **GMG Technology LLC is not involved in the development, maintenance, sponsorship, or endorsement of Now Pilot.** No official partnership, endorsement, or commercial affiliation exists between the author and GMG Technology LLC. ServiceNow, Now Platform, Next Experience, and Polaris are registered trademarks of ServiceNow, Inc. Anthropic and Claude are trademarks of Anthropic PBC. OpenAI is a trademark of OpenAI, Inc. xAI and Grok are trademarks of xAI Corp. This project has no affiliated cryptocurrency, token, or paid sponsorship program. Anything claiming otherwise is unauthorized.
+> **Disclaimer &amp; Attribution Notice:** **Now Pilot for ServiceNow** is an independent open-source project **developed and extended by Kanam Ramu**, based on the GMG AI Agent open-source foundation originally released by GMG Technology LLC under the Apache License 2.0. **GMG Technology LLC is not involved in the development, maintenance, sponsorship, or endorsement of Now Pilot.** ServiceNow, Now Platform, Next Experience, and Polaris are registered trademarks of ServiceNow, Inc. Anthropic and Claude are trademarks of Anthropic PBC. OpenAI is a trademark of OpenAI, Inc. This project has no commercial affiliation with ServiceNow, Inc. or GMG Technology LLC.
 
 ---
 
 ## Overview
 
-**Now Pilot for ServiceNow** is a full-featured, platform-native AI assistant designed specifically for enterprise ServiceNow environments. Operating directly within classic UI16 forms, lists, and Next Experience / Polaris iframes, Now Pilot bridges cutting-edge large language models with ServiceNow platform engineering:
+**Now Pilot for ServiceNow** is a platform-native, sovereign AI assistant and orchestration control plane built directly into ServiceNow. Operating seamlessly inside UI16 classic forms, lists, Service Operations Workspace, and Next Experience / Polaris iframes, Now Pilot unites state-of-the-art LLMs with enterprise ServiceNow governance:
 
-- 🔒 **Zero Unapproved Writes**: The model never touches your database directly. All changes are generated as cryptographically sealed proposals (`GMGSeal`) requiring explicit human sign-off (**Accept / Reject**).
-- 🛡️ **Platform-Native Authorization**: Every record read and search is strictly evaluated through `GlideRecordSecure`, ensuring the AI can only access data authorized for the logged-in user under ServiceNow Access Control Lists (ACLs).
-- 🌐 **Multi-Provider & Gateway Freedom**: Connect seamlessly to **OmniRoute Gateway**, **Anthropic Claude** (with prompt caching), **OpenAI**, or any OpenAI-compatible API (Grok, Ollama, vLLM, LM Studio) with automated secondary fallback.
-- 🔍 **ITSM Intelligence & RAG**: Explainable multi-factor incident similarity search, active published Knowledge Base retrieval, evidence-grounded recommendations, and citation verification with hallucination guards.
-- 💻 **Development Assistant**: Generates, explains, reviews, and debugs Business Rules, Script Includes, Client Scripts, and UI Policies with static platform safety checks that catch dangerous calls (`current.update()`, `eval()`, prototype pollution).
-- ⚡ **Agentic Workflow Automation**: Decomposes complex user goals into structured multi-step plans, executes permitted read tools, pauses safely for approval, and resumes with duplicate-write prevention.
-- 🚀 **Zero-Dependency Local Simulator**: Test the entire frontend panel, REST endpoints, and mock incident context locally on your machine with `node local_runner.js` in under 60 seconds.
-
----
-
-## Project Origin, Ownership & Attribution
-
-### 1. Origin & Upstream Attribution
-> **Based on GMG AI Agent by GMG Technology LLC.**
-
-Now Pilot for ServiceNow originated from the open-source **GMG AI Agent** foundation (v1.0.1) originally developed by **GMG Technology LLC** and distributed under the Apache License, Version 2.0.
-
-**Explicit Independence Notice:** **GMG Technology LLC is not involved in the development, maintenance, sponsorship, or endorsement of Now Pilot.** GMG Technology LLC is not a partner, co-developer, or sponsor of this project, and no commercial, legal, or official affiliation exists between the author and GMG Technology LLC. All upstream trademarks, copyrights, and original notices remain the property of their respective owners and are fully respected and preserved under Apache-2.0.
-
-### 2. Project Ownership & Development Scope
-**Now Pilot for ServiceNow** is an independently developed and maintained open-source project:
-
-- **Developer Credit:** **Developed and extended by Kanam Ramu.**
-- **Foundation & Evolution:** Now Pilot builds upon the initial scoped and global architecture of the GMG AI Agent project. The author makes no claim of having originally created the base foundation code inherited from the original GMG AI Agent v1.0.1 release.
-- **Independent Architecture & Additions:** All subsequent major enhancements—including the OmniRoute multi-provider gateway, Advanced ServiceNow Development Assistant, ITSM Intelligence & RAG retrieval, agentic multi-step workflow automation, centralized diagnostics, correlation ID tracking, SSRF firewall hardening, Graphify-inspired showcase landing page, and the unified dark-and-green Now Pilot branding—were independently designed, engineered, and verified by Kanam Ramu.
-- **Preservation of Upstream Rights:** Existing copyright notices (`Copyright 2026 GMG Technology LLC`) and Apache-2.0 headers in inherited files are strictly preserved. New contributions, extensions, and files are licensed under Apache-2.0.
-
-### 3. Documented Contributions & Subsystem Inventory
-
-To ensure complete clarity regarding code origin and project lineage, the following inventory details which components were inherited versus newly created or extended by Kanam Ramu across versions v1.1.0 through v1.5.0:
-
-#### A. Newly Created Subsystems & Files (Developed by Kanam Ramu)
-
-| Component / Subsystem | New Files Created | Architectural Role & Capabilities |
-| :--- | :--- | :--- |
-| **Development Assistant (v1.2.0)** | [`src/scoped/DevAssistant.js`](file:///src/scoped/DevAssistant.js)<br/>[`src/scoped/DevValidator.js`](file:///src/scoped/DevValidator.js) | Generates and reviews 10 ServiceNow artifact types (Business Rules, Script Includes, Client Scripts, UI Policies, etc.); deterministic AST static validation engine enforcing scoped platform boundaries, blocking `current.update()` recursion, `eval()`, and query injection. |
-| **ITSM Intelligence & RAG (v1.3.0)** | [`src/scoped/ITSMRetriever.js`](file:///src/scoped/ITSMRetriever.js)<br/>[`src/scoped/ITSMContextBuilder.js`](file:///src/scoped/ITSMContextBuilder.js)<br/>[`src/scoped/ITSMAssistant.js`](file:///src/scoped/ITSMAssistant.js) | Explainable multi-factor similarity retrieval (TF-IDF + category/CI match) across historical incidents; active published KB search; prompt sandboxing; grounded troubleshooting recommendations; anti-hallucination citation validator; configurable resolution close codes (`x_gmg_ai.default_close_code`). |
-| **Agentic Workflows (v1.4.0)** | [`src/scoped/WorkflowPlanner.js`](file:///src/scoped/WorkflowPlanner.js)<br/>[`src/scoped/WorkflowEngine.js`](file:///src/scoped/WorkflowEngine.js) | Goal decomposition engine translating natural language into schema-compliant multi-step JSON execution plans; strict target table validation (`ALLOWED_TARGET_TABLES`); state machine orchestrating allowlisted read tools, staging proposals, enforcing human-in-the-loop approvals, and handling interrupted recovery. |
-| **Observability & Diagnostics (v1.5.0)** | [`src/scoped/DiagnosticService.js`](file:///src/scoped/DiagnosticService.js) | Centralized taxonomy of 12 standardized diagnostic error codes; authoritative server correlation IDs (`corr_<ts>_<rand>`); structured audit event logging across 12 lifecycle events; fail-safe write retry prohibition; outbound PII sanitizer (`redactPII`); bounded exponential backoff with jitter (`calculateBackoff`). |
-| **Automated Test Harness** | [`src/test/test_omniroute.js`](file:///src/test/test_omniroute.js)<br/>[`src/test/test_dev_assistant.js`](file:///src/test/test_dev_assistant.js)<br/>[`src/test/test_itsm_intelligence.js`](file:///src/test/test_itsm_intelligence.js)<br/>[`src/test/test_workflow_automation.js`](file:///src/test/test_workflow_automation.js)<br/>[`src/test/test_production_readiness.js`](file:///src/test/test_production_readiness.js) | 5 comprehensive automated test suites (184 total tests, 100% pass rate) providing end-to-end regression coverage, security boundary checks, retry limits, target table allowlist, close-code configurability, outbound PII redaction, SSRF verification, and packaging consistency. |
-| **Local Simulator & Showcase** | [`local_runner.js`](file:///local_runner.js)<br/>[`landing.html`](file:///landing.html)<br/>[`index.html`](file:///index.html)<br/>[`src/assets/now_pilot_logo.png`](file:///src/assets/now_pilot_logo.png)<br/>[`src/assets/now_pilot_landing_mockup.jpg`](file:///src/assets/now_pilot_landing_mockup.jpg) | Zero-dependency local simulation server (port 3000) replicating ServiceNow incident forms and REST APIs; Graphify-inspired responsive enterprise showcase landing page; high-resolution brand identity assets. |
-| **Governance Documentation** | [`CONTRIBUTING.md`](file:///CONTRIBUTING.md)<br/>[`SECURITY.md`](file:///SECURITY.md) | Upstream contribution standards, Developer Certificate of Origin (DCO) sign-off guidance (`git commit -s`), development and test execution instructions, defense-in-depth threat matrix, and responsible vulnerability disclosure policy. |
-
-#### B. Modified Existing Files (Extended by Kanam Ramu)
-
-| File | Upstream Origin | Modifications & Enhancements Added |
-| :--- | :--- | :--- |
-| [`src/scoped/LLMAdapter.js`](file:///src/scoped/LLMAdapter.js) | GMG AI Agent v1.0.1 | Implemented OmniRoute OpenAI-compatible gateway integration, model discovery via `/models`, `Retry-After` rate limit handling, secondary provider fallback, SSRF private IP/cloud metadata blocking, and outbound PII payload sanitization (`sanitizeOutboundText`). |
-| [`src/scoped/AgentCore.js`](file:///src/scoped/AgentCore.js) | GMG AI Agent v1.0.1 | Connected `x_gmg_ai.retry_max_attempts` setting to execution path with bounded exponential backoff and jitter, integrated correlation ID propagation, structured audit event dispatching, multi-mode routing, configurable resolution close codes, and scrubbed error presentation via `DiagnosticService`. |
-| [`src/scoped/WorkflowPlanner.js`](file:///src/scoped/WorkflowPlanner.js) | Now Pilot v1.4.0 | Added strict target table validation (`ALLOWED_TARGET_TABLES`), prevented silent table defaulting, and bound dynamic incident resolution close codes. |
-| [`src/scoped/WorkflowEngine.js`](file:///src/scoped/WorkflowEngine.js) | Now Pilot v1.4.0 | Enforced target table allowlist, rejected missing or unauthorized tables (never defaulting to `incident`), added write ACL checks, prevented write retries, and validated incident states before resolution proposals. |
-| [`src/scoped/AgentTools.js`](file:///src/scoped/AgentTools.js) | GMG AI Agent v1.0.1 | Registered new ITSM and Dev Assistant tools, established schema parameter validators, and enforced strict 32,000-character parameter size bounds. |
-| [`src/scoped/Budget.js`](file:///src/scoped/Budget.js) | GMG AI Agent v1.0.1 | Added unpriced model detection, fallback token accounting, and user daily spend cap enforcement (`x_gmg_ai.user_daily_cap_usd`). |
-| [`src/scoped/GMGSeal.js`](file:///src/scoped/GMGSeal.js) | GMG AI Agent v1.0.1 | Extended HMAC SHA-256 sealing across multi-mode proposals, stale-record conflict detection (`sys_mod_count`), and duplicate submission replay prevention. |
-| [`src/scoped/ActionService.js`](file:///src/scoped/ActionService.js) | GMG AI Agent v1.0.1 | Added correlation ID tracking, structured audit logging (`record_change_applied`, `record_change_rejected`), and duplicate submission conflict handling (`HTTP 409`). |
-| [`src/scoped/rest_health.js`](file:///src/scoped/rest_health.js) | GMG AI Agent v1.0.1 | Added non-leaking provider connectivity checks, safe diagnostic reporting, and SSRF loopback guard checks. |
-| [`src/global/gmg_ai_agent_panel.js`](file:///src/global/gmg_ai_agent_panel.js) | GMG AI Agent v1.0.1 | Re-engineered UI Script with Now Pilot branding, dark-and-green palette (`#168B50` / `#080808` / `#151515` / `#303030`), 4-mode header switcher, anti-duplicate click protection (`working` state), correlation ID badge rendering, and accessible circular launcher. |
-| [`update_sets/gmg_ai_agent_global.xml`](file:///update_sets/gmg_ai_agent_global.xml) | GMG AI Agent v1.0.1 | Re-packaged with the updated Now Pilot UI script and synchronized with XML payloads. |
-| [`update_sets/gmg_ai_agent_scoped.xml`](file:///update_sets/gmg_ai_agent_scoped.xml) | GMG AI Agent v1.0.1 | Re-packaged with the updated Now Pilot Application Menu title, updated script includes (`DiagnosticService`, `WorkflowEngine`, `WorkflowPlanner`, `AgentCore`, `LLMAdapter`, `ITSMAssistant`), and synchronized XML payloads. |
-| [`SHA256SUMS`](file:///SHA256SUMS) | GMG AI Agent v1.0.1 | Recomputed manifest checksums to verify integrity of updated update sets. |
-
-#### C. Inherited Foundation Files (Preserved from Base GMG AI Agent)
-The following foundation utilities provide the platform-level scaffolding and are preserved under their original Apache-2.0 license:
-- `src/scoped/ContextStore.js` (session context storage)
-- `src/scoped/GMGExtensions.js` (hook extension point)
-- `src/scoped/RecordTools.js` (safe `GlideRecordSecure` query wrapper)
-- `src/scoped/rest_action.js`, `src/scoped/rest_chat.js`, `src/scoped/rest_providers.js`, `src/scoped/rest_usage.js` (base REST resource endpoints)
-- `src/global/GMGAIApplier.js` & `src/global/GMGAIApplierCore.js` (global record mutation appliers)
-- `update_sets/gmg_ai_agent_scoped.xml` (base platform tables, dictionary attributes, ACLs, and modules)
-- `DATA_NOTICE.md`, `TRADEMARKS.md`
+- 🔒 **0% Unapproved Database Writes**: The model never touches your production tables directly. Every proposed change (incident update, state change, script edit) is serialized as a cryptographically sealed proposal (`GMGSeal`) requiring explicit human approval.
+- 🛡️ **Native ACL Boundaries**: All record lookups and searches evaluate strictly through `GlideRecordSecure`, enforcing the caller's actual ServiceNow Access Control Lists (ACLs).
+- 🌐 **Multi-Gateway Freedom**: Connect seamlessly to **OmniRoute Gateway**, **OpenRouter**, **Anthropic Claude** (with prompt caching), **OpenAI** (GPT-4o), or **local private LLMs** (vLLM, Ollama, LM Studio) with automated secondary failover.
+- 🔍 **Deterministic ITSM Intelligence**: Explainable multi-factor similarity retrieval (TF-IDF + category/CI match), active published Knowledge Base search, grounded recommendations, and anti-hallucination citation verification.
+- 💻 **ServiceNow Development Assistant**: Generates, reviews, and debugs Business Rules, Script Includes, Client Scripts, and UI Policies with static AST analysis (`DevValidator`) that actively forbids dangerous patterns like `current.update()` and `eval()`.
+- ⚡ **Agentic Multi-Step Workflows**: Decomposes natural language requests into structured execution plans, runs permitted read tools, pauses safely for approvals, and safely handles resumes without duplicate writes.
+- 🚀 **Zero-Dependency Local Simulator**: Test the entire frontend panel, REST endpoints, and mock incident context locally on your machine with `node local_runner.js` in under 60 seconds without needing a live ServiceNow instance.
 
 ---
 
-## Does It Actually Work?
+## Why Now Pilot?
 
-Enterprise ServiceNow instances run mission-critical workflows: incident outages, customer requests, infrastructure assets, and platform scripts. Yet most enterprise AI offerings for ServiceNow fall into two extremes:
+ServiceNow instances run mission-critical enterprise workloads—incident response, customer service, change management, and infrastructure automation. However, traditional enterprise AI options present difficult trade-offs:
 
-1. **Rigid, proprietary SaaS add-ons** with steep per-seat recurring fees, closed models, and little visibility into where your data travels.
-2. **Naive chat wrappers** that execute unvetted code, hallucinate ticket numbers, or lack basic human-in-the-loop safeguards.
-
-Now Pilot was engineered by ServiceNow platform architects and AI engineers to solve this real-world problem. 
-
-We built Now Pilot to run **where you already work**: inside your ServiceNow browser session or in a local testing sandbox. It respects your existing platform roles, enforces strict execution deadlines and token spend limits, redacts credentials before logs are written, and rejects stale records if someone else modified them while the proposal was being generated.
-
-Every capability in this repository is backed by real, deterministic code—not mocked marketing promises. **All 150 automated verification tests pass across our 5 test suites.**
-
----
-
-## Brand & The Logo
-
-<div align="center">
-  <table>
-    <tr>
-      <td align="center" width="200">
-        <img src="src/assets/now_pilot_logo.png" alt="Now Pilot Emblem" width="120" />
-      </td>
-      <td>
-        <b>Official Brand Asset</b>: <code>src/assets/now_pilot_logo.png</code><br/>
-        <b>Dimensions</b>: 1024 &times; 972 transparent alpha PNG<br/>
-        <b>Visual Identity</b>: The green Now Pilot robot symbol represents autonomous guidance, speed, and precision.<br/>
-        <b>UI Launcher Button</b>: Renders as a <code>56px &times; 56px</code> circular button (<code>border-radius: 50%</code>) with a dark <code>#080808</code> background, a <code>#303030</code> border, and an accessible <code>#168B50</code> hover ring in the bottom-right corner of every ServiceNow form and list.
-      </td>
-    </tr>
-  </table>
-</div>
-
-### Design Tokens & Color Palette
-Now Pilot uses a refined dark-and-green visual system optimized for enterprise contrast and readability:
-
-| Element | Color Hex | Role & Application |
-| :--- | :--- | :--- |
-| **Primary Accent** | `#168B50` | User message bubbles, primary buttons, active tab indicators, focus outlines |
-| **Hover Green** | `#117342` | Primary button hover and interactive state |
-| **Active Green** | `#0D5D35` | Button pressed / active state |
-| **Dark Panel** | `#080808` | Panel background, header background, launcher button background |
-| **Elevated Surface** | `#151515` | Message viewport, suggestion cards, proposal cards, textarea input |
-| **Border** | `#303030` | Container boundaries, card dividers, mode switcher borders |
-| **Main Text** | `#F5F5F5` | Headings, primary message copy, code snippets |
-| **Secondary Text** | `#A3A3A3` | Subtitles, author attribution, cost chips, timestamps |
+| Problem with Closed AI Add-ons | How Now Pilot Solves It |
+| :--- | :--- |
+| **Steep Per-Seat License Fees**: Enterprise GenAI add-ons typically add \$30–\$70+ per user/month on expensive *Pro Plus* tiers. | **\$0 Platform License Cost**: Free, fully open-source core under Apache-2.0. Pay only wholesale token rates to your chosen LLM provider. |
+| **Vendor & Model Lock-In**: Restricted to vendor-hosted models with pre-allocated consumption units. | **Complete Multi-Provider Freedom**: Route to Claude, GPT-4o, Grok, DeepSeek, or private self-hosted Ollama/vLLM instances via OmniRoute. |
+| **Unpredictable AI Overwrites**: Autonomous LLMs writing directly to production records without clear diff previews. | **Deterministic GMGSeal Verification**: HMAC-SHA256 sealed proposals with visual field diffs and stale-record conflict detection. |
+| **Bad Script Generation**: Generic AI models generating `current.update()` in Business Rules, triggering infinite recursion loops. | **Static AST Safety Guard (`DevValidator`)**: 8 platform-specific static analysis rules block unsafe scripts before they can be staged. |
+| **Zero Offline Visibility**: Closed SaaS solutions cannot be tested, simulated, or integrated into local CI/CD pipelines. | **Local Interactive Simulator**: Run the full mock environment offline with `node local_runner.js` and 184 automated tests. |
 
 ---
 
-## What It Does
+## Comparison: Now Pilot vs. Now Assist
+
+```
+  DIMENSION               NOW PILOT (v1.5.0)                      SERVICENOW NOW ASSIST
+┌───────────────────────┬───────────────────────────────────────┬──────────────────────────────────────┐
+│ Model Independence    │ ★ Multi-Gateway (OmniRoute, Claude,   │ Closed (ServiceNow / Azure OpenAI    │
+│                       │   OpenAI, Grok, Local Ollama/vLLM)    │   managed tenant only)               │
+├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
+│ Pricing Model         │ 100% Free Open-Source Core + Wholesale│ $$$$$ / User / Month (Pro Plus SKU)  │
+│                       │ Token Cost (e.g., $0.0001 / summary) │ + Assist Consumption Units (ACUs)    │
+├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
+│ Safety & Governance   │ Cryptographic GMGSeal (HMAC-SHA256)   │ Standard ServiceNow approval flows;  │
+│                       │ with Visual Field Diffs               │ no cryptographic tamper sealing      │
+├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
+│ Code Linting (AST)    │ DevValidator blocks `current.update()`,│ None; generates generic code snippets │
+│                       │ infinite loops, and unescaped queries │ without platform AST linting         │
+├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
+│ PII & Redaction       │ Automatic Outbound PII Redaction      │ ServiceNow Cloud Data Fabric masking │
+│                       │ (Emails, Phone, SSN, Credit Cards)   │ (enterprise setup required)          │
+├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
+│ SSRF & Cloud Defense  │ Blocks AWS/Azure metadata IPs         │ Handled by ServiceNow backend        │
+│                       │ (169.254.169.254) & private subnets   │ infrastructure                       │
+├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
+│ Offline Simulator     │ Standalone simulator + 184 tests      │ None; requires live cloud instance   │
+└───────────────────────┴───────────────────────────────────────┴──────────────────────────────────────┘
+```
+
+---
+
+## Core Capabilities
 
 Now Pilot features four dedicated operational modes accessible via the top mode switcher:
 
@@ -182,34 +106,33 @@ Now Pilot features four dedicated operational modes accessible via the top mode 
 ```
 
 ### 1. 💬 Context-Aware Chat
-- **Follows You Everywhere**: The floating panel rendered into the top-level window follows you seamlessly across forms, list views, and Next Experience iframe navigations.
-- **Form Context**: Inspects current form table name, sys_id, and visible fields through `g_form` without sending unauthorized data.
-- **Cross-User Isolation**: Browser session storage is scoped strictly to the authenticated `g_user.userID`. Switching user logins in the same tab immediately purges other users' state.
+- **Follows You Across Frames**: The lightweight floating panel rendered in the top-level window follows you across forms, list views, and Next Experience iframe navigations.
+- **Dynamic Context**: Automatically reads current table name, `sys_id`, and active form fields via `g_form` without sending sensitive unneeded records.
+- **Cross-User Isolation**: Browser session storage is scoped strictly to `g_user.userID`. Switching user logins in the same browser tab immediately purges other users' cached state.
 
 ### 2. 🔍 ITSM Intelligence & RAG
-- **Deterministic Incident Retrieval**: Ranks historical resolved incidents using explainable multi-factor scoring (text similarity + category/subcategory match + CI relationship) rather than black-box embeddings.
-- **Knowledge Base Retrieval**: Queries active, published articles; strictly filters out draft, expired, or retired articles, respecting caller user criteria.
-- **Grounded Recommendations**: Formats structured root-cause explanations and resolution summaries.
-- **Citation Guard & Anti-Hallucination**: Automatically scans generated responses against the retrieved source registry. If the model cites an incident (e.g. `INC0010999`) that was not part of the retrieved evidence, Now Pilot displays an explicit red **Citation Warning** banner.
+- **Explainable Incident Similarity**: Evaluates historical resolved tickets using multi-factor scoring (text relevance + category match + Configuration Item alignment) rather than black-box embeddings.
+- **Knowledge Base Retrieval**: Discovers active, published articles; strictly filters out draft, expired, or retired articles under caller user criteria.
+- **Citation Guard & Anti-Hallucination**: Cross-references citations in model responses against the retrieved evidence. If the model cites an incident (e.g. `INC0010999`) not in the retrieved dataset, Now Pilot flags an explicit red **Citation Warning** banner.
 
-### 3. 💻 Dev Assistant & Static Validation
+### 3. 💻 Dev Assistant & Static Validation (`DevValidator`)
 - **Artifact Generation**: Generates Business Rules (before, after, async), Script Includes (Class prototype & AbstractAjaxProcessor), Client Scripts (with `isLoading` guards), and UI Policies.
-- **Static Validation Engine (`DevValidator`)**:
-  - Enforces ServiceNow best practices: strictly blocks `current.update()` in Business Rules to prevent recursive platform freezes.
-  - Flags dangerous JavaScript functions: `eval()`, `new Function()`, and dynamic string timeouts.
+- **Static Platform Safety**:
+  - Strictly blocks `current.update()` in Business Rules to prevent infinite recursive loop freezes.
+  - Flags dangerous functions: `eval()`, `new Function()`, and dynamic string timeouts.
   - Sanitizes encoded queries to prevent injection vulnerabilities.
 - **8-Point Architectural Review**: Analyzes existing scripts against platform execution context, performance bottlenecks, and security standards.
 
 ### 4. ⚡ Agentic Workflow Automation
-- **Autonomous Multi-Step Planning (`WorkflowPlanner`)**: Accepts broad user goals (e.g., *"Investigate INC0010001, find matching resolved tickets, and propose a resolution note"*) and decomposes them into an ordered, executable JSON plan.
+- **Autonomous Multi-Step Planning (`WorkflowPlanner`)**: Accepts user goals (e.g., *"Investigate INC0010001, find matching resolved tickets, and propose a resolution note"*) and decomposes them into an ordered, executable JSON plan.
 - **Controlled Tool Execution (`WorkflowEngine`)**:
   - Permitted read tools (`record_read`, `record_search`, `kb_search`, `code_read`) run automatically.
   - Write tools (`record_create`, `record_update`, `kb_create`) stage proposed changes as pending cards.
-- **Safe Pause & Resume**: The workflow enters `waiting_approval` status until the user clicks **Accept**. If interrupted or reloaded, resume logic detects already-applied proposals and skips re-execution to prevent duplicate platform writes.
+- **Safe Pause & Resume**: The workflow enters `waiting_approval` status until the user clicks **Accept**. If interrupted or reloaded, resume logic detects already-applied proposals and skips re-execution.
 
 ### 5. 🛡️ Cryptographic Proposal Integrity (`GMGSeal`)
-- **HMAC SHA-256 Seal**: Proposals generated by the agent carry a cryptographic tamper seal. Any client-side parameter alteration invalidates the seal.
-- **Stale Record Protection**: Before applying an approved proposal, the engine checks `sys_mod_count` and `sys_updated_on`. If another admin or user edited the record in the background, the transaction is rejected (`STALE_CONFLICT`).
+- **HMAC SHA-256 Seal**: Proposals carry a cryptographic tamper seal. Any client-side parameter alteration invalidates the seal.
+- **Stale Record Protection**: Before applying an approved proposal, the engine checks `sys_mod_count` and `sys_updated_on`. If another admin edited the record in the background, the transaction is rejected (`STALE_CONFLICT`).
 - **Replay Protection**: Applying an already-applied proposal returns `HTTP 409 Conflict`.
 
 ---
@@ -220,9 +143,9 @@ Now Pilot features four dedicated operational modes accessible via the top mode 
 flowchart TD
     subgraph Browser ["ServiceNow UI / Browser"]
         UI["Floating Agent Panel<br/>(gmg_ai_agent_panel.js)"]
-        Launcher["Circular Launcher<br/>(now_pilot_logo.png)"]
+        Launcher["Inline Vector Launcher Badge<br/>(SVG / Dark Emerald)"]
         User(["ServiceNow User / Admin"])
-        User <-->|Click / Review| UI
+        User <-->|Click / Review / Approve| UI
         Launcher -->|Toggle| UI
     end
 
@@ -232,7 +155,7 @@ flowchart TD
         Security["GlideRecordSecure<br/>ACL & Context Boundary"]
         Diagnostic["DiagnosticService<br/>(12 Error Codes + Corr IDs)"]
         GMGSeal["GMGSeal<br/>(HMAC SHA-256 Proposal Signer)"]
-        DevValidator["DevValidator<br/>(Static AST & Rule Guard)"]
+        DevValidator["DevValidator<br/>(Static AST & Safety Guard)"]
         ITSM["ITSMRetriever & ContextBuilder<br/>(RAG & Citation Verifier)"]
         Workflow["WorkflowEngine & Planner<br/>(State Machine)"]
     end
@@ -268,156 +191,126 @@ flowchart TD
 
 ## Quick Start
 
-You can test Now Pilot in two ways: either immediately using the zero-dependency local simulator, or by deploying update sets to a ServiceNow sub-production instance.
+You can test Now Pilot immediately via the local simulator or deploy to a ServiceNow instance in 2 minutes:
 
 ### Option 1: Instant Local Sandbox (1 Minute)
 
-No ServiceNow instance or external cloud accounts required. The repository includes an interactive local simulator replicating the ServiceNow client environment, incident forms, and agent endpoints:
+No ServiceNow instance or cloud account required:
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/servicenow-ai-agent.git
-   cd servicenow-ai-agent
-   ```
-2. **Start the local runner**:
-   ```bash
-   node local_runner.js
-   ```
-3. **Open in your browser**:
-   ```
-   http://localhost:3000
-   ```
-4. Click the circular **Now Pilot** launcher button at the bottom-right corner to test Chat, ITSM, Dev Assistant, and Workflows against mock incident `INC0010001`!
+```bash
+# 1. Clone the repository
+git clone https://github.com/kRamu581/nowpilot-servicenow.git
+cd nowpilot-servicenow
+
+# 2. Start the local simulation server
+node local_runner.js
+
+# 3. Open your browser
+# http://localhost:3000
+```
+Click the circular **Now Pilot** launcher button at the bottom-right corner to interact with mock incident `INC0010001`!
 
 ---
 
 ### Option 2: Deploying to a ServiceNow Instance
 
 #### System Requirements
-- ServiceNow **Vancouver**, **Washington DC**, **Xanadu**, or **Australia** (Patch 7+).
+- ServiceNow **Vancouver**, **Washington DC**, **Xanadu**, or **Brazil** (Patch 7+).
 - System Administrator privileges (`admin` role).
 - Always install and test on a **sub-production (dev/test)** instance first.
 
-#### Step 1: Import the Update Sets
-Import the update sets in strict sequential order:
-
+#### Step 1: Import Update Sets in Order
 1. Go to **System Update Sets > Retrieved Update Sets**.
-2. Select **Import Update Set from XML**.
-3. Upload and commit the **Scoped Update Set** first:
-   - File: `update_sets/gmg_ai_agent_scoped.xml`
-   - Contains: Scoped application `x_gmg_ai` (330 records, tables, ACLs, Script Includes, REST resources, settings, and the **Now Pilot** application menu).
+2. Click **Import Update Set from XML**.
+3. Upload and commit the **Global Update Set** first:
+   - File: [`update_sets/now_pilot_global.xml`](update_sets/now_pilot_global.xml)
    - Click **Preview Update Set** &rarr; Verify 0 errors &rarr; Click **Commit Update Set**.
-4. Upload and commit the **Global Update Set** second:
-   - File: `update_sets/gmg_ai_agent_global.xml`
-   - Contains: Global UI Script `gmg_ai_agent_panel` and applier helper includes.
+4. Upload and commit the **Scoped Update Set** second:
+   - File: [`update_sets/now_pilot_scoped.xml`](update_sets/now_pilot_scoped.xml)
    - Click **Preview Update Set** &rarr; Verify 0 errors &rarr; Click **Commit Update Set**.
 
-#### Step 2: Assign User Roles
-Assign the `x_gmg_ai.user` role to users who should have access to the agent launcher and chat panel:
-- Users with `x_gmg_ai.user` can see the launcher and interact with the panel.
-- Administrative settings and provider configurations require `admin`.
+#### Step 2: Configure AI Providers
+In Filter Navigator, type `x_gmg_ai_provider.list` and click **New**:
+- **OmniRoute / OpenRouter**:
+  - Name: `OmniRoute Gateway`
+  - Type: `omniroute` *(or `openai_compatible`)*
+  - Base URL: `https://openrouter.ai/api/v1` *(or your custom gateway URL)*
+  - Model: `openai/gpt-4o-mini`
+  - API Key: Encrypted secret key
+  - Is default: **Checked `[x]`**
+  - Active: **Checked `[x]`**
 
-#### Step 3: Configure AI Providers
-Navigate to **Now Pilot > Providers** (or open `x_gmg_ai_provider.list` in the filter navigator) and click **New**:
-- **OmniRoute Gateway**:
-  - Name: `OmniRoute Primary`
-  - Type: `omniroute`
-  - Base URL: `https://omniroute.internal.corp/v1`
-  - Model: `omniroute/gpt-4o-mini` (or your preferred enterprise model)
-  - API Key: Encrypted gateway secret key
-- **Anthropic Claude**:
-  - Name: `Anthropic Claude`
-  - Type: `anthropic`
-  - Model: `claude-3-5-sonnet-20241022`
-  - API Key: Encrypted `sk-ant-...` key
-- **OpenAI / OpenAI-Compatible**:
-  - Name: `OpenAI Gateway`
-  - Type: `openai_compatible`
-  - Base URL: `https://api.openai.com/v1`
-  - Model: `gpt-4o-mini`
-  - API Key: Encrypted `sk-...` key
-
-#### Step 4: Verify System Properties
-Navigate to **Now Pilot > Settings** (or filter `sys_properties.list` by `x_gmg_ai`):
-- `x_gmg_ai.retry_max_attempts`: Bounded retry attempts (default: `2`, max: `5`). Backoff uses bounded exponential delay with randomized jitter and respects `Retry-After`.
-- `x_gmg_ai.default_close_code`: Default incident resolution close code (default: `Solved (Permanently)`). Can be customized to match your instance choice list in `sys_choice`.
-- `x_gmg_ai.redact_outbound_pii`: Privacy protection (default: `true`). Redacts emails, phone numbers, SSNs, payment card numbers, and API keys before sending outbound requests to LLMs.
-- `x_gmg_ai.fallback_providers`: Comma-separated list of secondary providers for automatic retry on rate limits (HTTP 429) or temporary gateway errors.
-- `x_gmg_ai.model_allowlist`: Optional comma-separated model identifiers allowed for user selection in the panel dropdown.
-- `x_gmg_ai.time_budget_ms`: Execution deadline per round (default: `45000` ms). Enforces a 3000ms safety margin before network dispatches.
-- `x_gmg_ai.allow_non_admin_writes`: Default `true`. Set to `false` to make the agent strictly read-only for non-admin users.
-- `x_gmg_ai.allow_http_localhost`: Default `false`. Set to `true` only in local developer labs where gateways run on `127.0.0.1`.
+#### Step 3: Flush Cache & Refresh
+1. Navigate to: `https://your-instance.service-now.com/cache.do`
+2. Open any Incident and press **`Ctrl + F5`**.
 
 ---
 
-### Personal Developer Instance (PDI) Checklist & Scope Compatibility Notes
+## Contributing & Open Source Community
 
-#### Scope Isolation vs. Platform Integrity
-In ServiceNow, application scope prefixes (`x_gmg_ai`) dictate database table naming (`x_gmg_ai_*`), dictionary column prefixes, Cross-Scope Access (CSA) privileges, and Script Include namespaces. Blindly renaming the internal scope prefix across hundreds of XML records causes schema corruption, broken foreign keys, and upgrade failures.
-
-To balance complete brand separation with platform stability:
-- **User-Facing Touchpoints**: Fully branded as **Now Pilot** (Application Menu in left navigator, panel header, floating launcher tooltip, accessibility labels, and documentation).
-- **Internal Database Scope**: Retained under `x_gmg_ai` to ensure rock-solid stability, zero broken references, and seamless compatibility across all ServiceNow instance versions (Utah, Washington DC, Xanadu).
-- **Global Objects**: `GMGAIApplierCore` and the UI script remain globally accessible to inject into the ServiceNow top-level frame without violating cross-scope restrictions.
-
-#### Step-by-Step PDI Testing Checklist
-1. **Prepare PDI**: Request a fresh Washington DC or Xanadu instance from [developer.servicenow.com](https://developer.servicenow.com).
-2. **Import XMLs**: Import and commit `update_sets/gmg_ai_agent_scoped.xml`, then `update_sets/gmg_ai_agent_global.xml`.
-3. **Verify Application Menu**: Verify the left navigation menu displays **Now Pilot** with sub-modules (*Chat*, *Providers*, *Logs*, *Pending Actions*, *Settings*).
-4. **Configure Provider**: Open **Now Pilot > Providers**, create a new record, and input your API key.
-5. **Verify Role**: Ensure your test user has `x_gmg_ai.user` (and `admin` for configuration).
-6. **Test Launcher**: Open `incident.do?sys_id=-1` or an existing ticket. Confirm the circular green Now Pilot launcher appears in the bottom right corner.
-7. **Test Gated Proposals**: In Workflows or ITSM mode, propose a resolution or work note. Confirm the **Accept / Reject** proposal card is rendered and requires a manual click before applying.
-
----
-
-## Security & Governance
-
-Now Pilot is designed to meet strict enterprise information security standards:
+Now Pilot is an **open-source, community-driven project**. We actively invite developers, ServiceNow administrators, platform architects, and AI researchers from around the world to contribute!
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                   NOW PILOT SECURITY ARCHITECTURE                      │
+│                   HOW YOU CAN CONTRIBUTE TO NOW PILOT                  │
 ├────────────────────────────────────────────────────────────────────────┤
-│ 1. Zero Unapproved Writes      All writes require explicit click       │
-│ 2. SSRF Firewall               Blocks cloud metadata (169.254...)      │
-│ 3. Platform ACLs               GlideRecordSecure enforced on all reads │
-│ 4. Cryptographic Sealing       GMGSeal HMAC-SHA256 tamper detection    │
-│ 5. Secret Redaction            Keys & passwords scrubbed from all logs │
-│ 6. Observability               Authoritative correlation IDs (corr_*)  │
+│ 1. 🤖 New LLM Providers      Add support for DeepSeek, AWS Bedrock,    │
+│                              Azure OpenAI, or Ollama templates         │
+│ 2. 🛡️ DevValidator Rules     Add AST rules for Flow Designer,          │
+│                              IntegrationHub, and Scripted REST APIs    │
+│ 3. 🔍 ITSM Algorithms        Improve BM25/TF-IDF scoring, CMDB graph   │
+│                              traversals, and Major Incident playbooks  │
+│ 4. ⚡ Agentic Workflows      Contribute pre-built multi-step workflows │
+│                              for Change Reviews, Access, and HR Cases  │
+│ 5. 🧪 Testing & CI/CD        Add test fixtures for upcoming ServiceNow │
+│                              releases and edge-case security checks    │
+│ 6. 🎨 UI & Accessibility     Enhance panel accessibility, themes, and  │
+│                              keyboard navigation shortcuts             │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-1. **SSRF Mitigation**: Outbound HTTP calls reject private subnets (RFC 1918), carrier-grade NAT, and cloud metadata services (`169.254.169.254`). Remote endpoints require HTTPS.
-2. **Context Sandboxing**: Record text from tickets or Knowledge Base articles is tagged as untrusted input and sandboxed with strict boundary prompts to mitigate prompt injection.
-3. **Audit Logging & Correlation IDs**: Every inbound request is assigned an authoritative server correlation ID (`corr_<timestamp>_<randomHex>`). Structured audit events are recorded in `x_gmg_ai_log` across all key state boundaries.
-4. **Secret Scrubbing**: API keys, passwords, bearer tokens, and session credentials are systematically stripped before any diagnostic or log record is saved.
+### Contributor Workflow (5 Easy Steps)
 
-For full architectural details and vulnerability reporting protocols, see [SECURITY.md](SECURITY.md).
+1. **Fork & Clone**:
+   ```bash
+   git clone https://github.com/kRamu581/nowpilot-servicenow.git
+   cd nowpilot-servicenow
+   ```
+2. **Create a Feature Branch**:
+   ```bash
+   git checkout -b feature/my-new-capability
+   ```
+3. **Develop & Test Locally**:
+   ```bash
+   # Run the local simulator
+   node local_runner.js
+   
+   # Run all 184 verification tests
+   node src/test/test_production_readiness.js
+   ```
+4. **Sign Off Your Commits** (DCO):
+   ```bash
+   git commit -s -m "feat(provider): add AWS Bedrock adapter"
+   ```
+5. **Open a Pull Request**:
+   - Push your branch to GitHub and open a PR against `main`.
+   - Ensure all automated tests pass with 100% green status.
 
----
-
-## Provider Routing & Budgets
-
-Now Pilot provides enterprise cost controls and usage tracking:
-- **Token Spend Tracking**: Displays exact costs in cents (`¢`) directly inside assistant response cards when prices per million tokens (`price_input_per_m`, `price_output_per_m`) are configured on the provider record.
-- **Provider Budgets**: Enforces `daily_budget` and `monthly_budget` caps on individual providers.
-- **User Spend Caps**: Set `x_gmg_ai.user_daily_cap_usd` to restrict daily per-user spend (set to `0` for unlimited).
-- **Graceful Fallback**: If a primary provider encounters a rate limit (HTTP 429) or 5xx server error, Now Pilot automatically attempts the configured fallback provider within the remaining execution time budget. Non-retryable errors (e.g. HTTP 401 Auth Failure) fail immediately without exhausting budget.
+For full guidelines on coding conventions, update set synchronization, and our threat model, read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
 ## Automated Test Suite
 
-Now Pilot includes a comprehensive automated test harness covering all major subsystems. All 184 tests execute without external network dependencies:
+Now Pilot features a 100% offline, zero-network-dependency automated test harness covering all critical subsystems:
 
 | Test Suite | File | Tests | Focus Area |
 | :--- | :--- | :---: | :--- |
-| **OmniRoute Integration** | `src/test/test_omniroute.js` | 13 | SSRF defense, model allowlist, fallback, token accounting |
-| **Dev Assistant** | `src/test/test_dev_assistant.js` | 20 | Code generation, static AST validation, `current.update` guard |
-| **ITSM Intelligence** | `src/test/test_itsm_intelligence.js` | 22 | Incident similarity, KB search, citation verification, prompt safety |
-| **Workflow Automation** | `src/test/test_workflow_automation.js` | 22 | Goal planning, tool execution, pause/resume, lifecycle invariants |
-| **Production Readiness & Hardening** | `src/test/test_production_readiness.js` | 107 | Diagnostics, correlation IDs, retry backoff with jitter, table validation, close codes, outbound PII redaction, manifest consistency |
+| **OmniRoute Integration** | [`src/test/test_omniroute.js`](src/test/test_omniroute.js) | 13 | SSRF defense, model allowlist, fallback, token accounting |
+| **Dev Assistant** | [`src/test/test_dev_assistant.js`](src/test/test_dev_assistant.js) | 20 | Code generation, static AST validation, `current.update` guard |
+| **ITSM Intelligence** | [`src/test/test_itsm_intelligence.js`](src/test/test_itsm_intelligence.js) | 22 | Incident similarity, KB search, citation verification, prompt safety |
+| **Workflow Automation** | [`src/test/test_workflow_automation.js`](src/test/test_workflow_automation.js) | 22 | Goal planning, tool execution, pause/resume, lifecycle invariants |
+| **Production Readiness & Hardening** | [`src/test/test_production_readiness.js`](src/test/test_production_readiness.js) | 107 | Diagnostics, correlation IDs, retry backoff with jitter, table validation, close codes, outbound PII redaction, manifest consistency |
 | **Total** | | **184** | **100% Pass Rate** |
 
 ### Run Tests Locally
@@ -429,32 +322,47 @@ node src/test/test_itsm_intelligence.js
 node src/test/test_workflow_automation.js
 node src/test/test_production_readiness.js
 
-# Or run the complete test suite at once:
+# Or run all 184 tests in one command:
 node -e "['test_omniroute.js','test_dev_assistant.js','test_itsm_intelligence.js','test_workflow_automation.js','test_production_readiness.js'].forEach(f=>require('./src/test/'+f));"
 ```
+
+---
+
+## Security & Governance
+
+Now Pilot is designed to satisfy stringent enterprise information security standards:
+
+1. **SSRF Mitigation**: Outbound HTTP calls reject private subnets (RFC 1918), carrier-grade NAT, and cloud metadata services (`169.254.169.254`). Remote endpoints require HTTPS.
+2. **Context Sandboxing**: Record text from tickets or Knowledge Base articles is tagged as untrusted input and sandboxed with strict boundary prompts to mitigate prompt injection.
+3. **Audit Logging & Correlation IDs**: Every inbound request is assigned an authoritative server correlation ID (`corr_<timestamp>_<randomHex>`). Structured audit events are recorded in `x_gmg_ai_log` across all key state boundaries.
+4. **Secret & PII Scrubbing**: API keys, passwords, bearer tokens, emails, phone numbers, and SSNs are systematically scrubbed before any outbound LLM call or diagnostic record is saved.
+
+For complete architectural details and disclosure protocols, see [SECURITY.md](SECURITY.md).
 
 ---
 
 ## Project Structure
 
 ```
-servicenow-ai-agent/
-├── README.md                      # Complete project documentation
-├── CONTRIBUTING.md                # Contribution guidelines and coding standards
-├── SECURITY.md                    # Security policy, threat model & disclosure
-├── INSTALL.md                     # ServiceNow installation guide & release notes
+nowpilot-servicenow/
+├── README.md                      # Comprehensive project documentation
+├── CONTRIBUTING.md                # Community contribution guidelines & standards
+├── SECURITY.md                    # Threat model, SSRF defense & vulnerability disclosure
+├── INSTALL.md                     # Step-by-step ServiceNow installation guide
 ├── FEATURES.md                    # Detailed capability breakdown across versions
 ├── DATA_NOTICE.md                 # Privacy and network egress disclosure
 ├── TRADEMARKS.md                  # Trademark notices and brand attributions
-├── LICENSE                        # Apache License 2.0 with copyright & author attribution
+├── LICENSE                        # Apache License 2.0 with copyright attribution
 ├── NOTICE                         # Formal Apache notice file
 ├── SHA256SUMS                     # SHA-256 verification hashes for XML update sets
-├── local_runner.js                # Zero-dependency local testing environment (port 3000)
+├── local_runner.js                # Zero-dependency local simulation server (port 3000)
+├── landing.html                   # Graphify-style responsive showcase landing page
 ├── src/
 │   ├── assets/
-│   │   ├── now_pilot_logo.png     # Official high-resolution transparent logo
-│   │   └── takeoff_logo.png       # Legacy logo asset (maintained for compatibility)
+│   │   └── now_pilot_logo.png     # Official high-resolution transparent logo
 │   ├── global/
+│   │   ├── GMGAIApplier.js        # Global record applier facade
+│   │   ├── GMGAIApplierCore.js    # Global privileged mutation applier
 │   │   └── gmg_ai_agent_panel.js  # Global UI Script (UI16 & Next Experience launcher)
 │   ├── scoped/                    # Scoped application Script Includes (x_gmg_ai)
 │   │   ├── ActionService.js       # Proposal execution & record mutation handler
@@ -473,22 +381,18 @@ servicenow-ai-agent/
 │   │   ├── WorkflowEngine.js      # State machine & tool execution coordinator
 │   │   ├── WorkflowPlanner.js     # Goal decomposition & step planner
 │   │   └── rest_health.js         # Health check and diagnostic REST resource
-│   └── test/                      # 150 automated verification tests
+│   └── test/                      # 184 automated verification tests
 │       ├── test_dev_assistant.js
 │       ├── test_itsm_intelligence.js
 │       ├── test_omniroute.js
 │       ├── test_production_readiness.js
 │       └── test_workflow_automation.js
 └── update_sets/
-    ├── gmg_ai_agent_global.xml    # Global update set (3 updates, UI script + applier)
-    └── gmg_ai_agent_scoped.xml    # Scoped application update set (330 updates)
+    ├── now_pilot_global.xml       # Global update set (UI script + applier)
+    ├── now_pilot_scoped.xml       # Scoped application update set (330 updates)
+    ├── gmg_ai_agent_global.xml    # Global update set (alias)
+    └── gmg_ai_agent_scoped.xml    # Scoped application update set (alias)
 ```
-
----
-
-## Contributing
-
-We welcome community feedback, issue reports, and pull requests! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) guide for our upstream merge criteria, Developer Certificate of Origin (DCO) commit sign-off (`git commit -s`), development workflow, and update set synchronization process.
 
 ---
 
@@ -498,7 +402,7 @@ This project is licensed under the **Apache License, Version 2.0**. See the [LIC
 
 ```
 Copyright 2026 GMG Technology LLC
-Built by Kanam Ramu
+Developed and extended by Kanam Ramu
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -510,5 +414,5 @@ You may obtain a copy of the License at
 ---
 
 <div align="center">
-  <b>Now Pilot for ServiceNow</b> &bull; Built by Kanam Ramu &bull; <i>From Ticket to Takeoff.</i>
+  <b>Now Pilot for ServiceNow</b> &bull; Built by Kanam Ramu &bull; Open Source for Enterprise IT
 </div>
