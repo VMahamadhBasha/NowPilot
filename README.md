@@ -27,7 +27,8 @@
 </p>
 
 <p align="center">
-  <img width="1044" height="521" alt="Now Pilot Interface" src="https://github.com/user-attachments/assets/c4bf3645-785b-434b-ad5f-ef8bfee2e3ad" />
+ <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/f961dce5-2400-4e0f-9064-467ac6e46605" />
+
 </p>
 
 </div>
