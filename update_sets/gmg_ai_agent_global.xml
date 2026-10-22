@@ -857,13 +857,13 @@ GMGAIApplier.prototype = {
 /* Now Pilot for ServiceNow - global desktop UI Script (UI16 + classic pages inside the Next Experience/Polaris iframe).
  * Built by Kanam Ramu.
  * Runs in every classic page/frame. The panel is rendered into the TOP window (same origin), and each
- * content frame registers a context provider there, so the agent "follows" the user across navigations.
+ * content frame registers a context provider there, so the agent &amp;quot;follows&amp;quot; the user across navigations.
  * Chat state lives in top.sessionStorage (keys scoped to the session user) so it survives page loads.
  */
 (function() {
     var ROLE = 'x_gmg_ai.user', API = '/api/x_gmg_ai/agent/chat', KEY_BASE = 'gmgai_state_v1', CONV_BASE = 'gmgai_conv_id';
-    var LOGO_SVG = '&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="26" height="26" style="flex-shrink:0;vertical-align:middle;border-radius:50%;background:#041B12;border:1.5px solid #168B50;box-shadow:0 0 8px rgba(74,222,128,0.3)"&gt;&lt;circle cx="16" cy="16" r="14" fill="#0A3C24"/&gt;&lt;path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#4ADE80"/&gt;&lt;path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.2"/&gt;&lt;/svg&gt;';
-    var BTN_LOGO_SVG = '&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="34" height="34" style="vertical-align:middle;display:block"&gt;&lt;circle cx="16" cy="16" r="15" fill="#0A3C24" stroke="#168B50" stroke-width="1.5"/&gt;&lt;path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#4ADE80"/&gt;&lt;path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.5"/&gt;&lt;/svg&gt;';
+    var LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;26&amp;quot; height=&amp;quot;26&amp;quot; style=&amp;quot;flex-shrink:0;vertical-align:middle;border-radius:50%;background:#041B12;border:1.5px solid #168B50;box-shadow:0 0 8px rgba(74,222,128,0.3)&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;16&amp;quot; cy=&amp;quot;16&amp;quot; r=&amp;quot;14&amp;quot; fill=&amp;quot;#0A3C24&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L25 8 L18 24 L14 17 Z&amp;quot; fill=&amp;quot;#4ADE80&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M14 17 L25 8&amp;quot; stroke=&amp;quot;#041B12&amp;quot; stroke-width=&amp;quot;1.2&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
+    var BTN_LOGO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; viewBox=&amp;quot;0 0 32 32&amp;quot; width=&amp;quot;34&amp;quot; height=&amp;quot;34&amp;quot; style=&amp;quot;vertical-align:middle;display:block&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;16&amp;quot; cy=&amp;quot;16&amp;quot; r=&amp;quot;15&amp;quot; fill=&amp;quot;#0A3C24&amp;quot; stroke=&amp;quot;#168B50&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M7 16 L25 8 L18 24 L14 17 Z&amp;quot; fill=&amp;quot;#4ADE80&amp;quot;/&amp;gt;&amp;lt;path d=&amp;quot;M14 17 L25 8&amp;quot; stroke=&amp;quot;#041B12&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
     var w = window, top;
     try { top = window.top; void top.document.body; } catch (e) { top = window; }
     var tdoc = top.document;
@@ -874,8 +874,8 @@ GMGAIApplier.prototype = {
      * lazily (ensureUser) on every load/save/convId/Clear; until it is known, state lives only in memory for this page (MEM). */
     function curUser() {
         var c = [w, top], i, u;
-        for (i = 0; i &lt; c.length; i++) { try { u = c[i].g_user &amp;&amp; c[i].g_user.userID; if (u) return String(u); } catch (e) {} }
-        for (i = 0; i &lt; c.length; i++) { try { u = c[i].NOW &amp;&amp; c[i].NOW.user_id; if (u) return String(u); } catch (e2) {} }
+        for (i = 0; i &amp;lt; c.length; i++) { try { u = c[i].g_user &amp;amp;&amp;amp; c[i].g_user.userID; if (u) return String(u); } catch (e) {} }
+        for (i = 0; i &amp;lt; c.length; i++) { try { u = c[i].NOW &amp;amp;&amp;amp; c[i].NOW.user_id; if (u) return String(u); } catch (e2) {} }
         return '';
     }
     var UID = '', KEY = '', CONV_KEY = '', MEM = null, MEM_CONV = null;
@@ -892,26 +892,26 @@ GMGAIApplier.prototype = {
     function purgeOtherUsers() {
         try {
             var st = top.sessionStorage, drop = [], i, k;
-            for (i = 0; i &lt; st.length; i++) {
+            for (i = 0; i &amp;lt; st.length; i++) {
                 k = st.key(i);
                 if (k == KEY_BASE || k == CONV_BASE) { drop.push(k); continue; }
                 if (!UID) { if (k == KEY_BASE + ':' || k == CONV_BASE + ':') drop.push(k); continue; }   // user not known yet: keep scoped keys until ensureUser
-                if ((k.indexOf(KEY_BASE + ':') === 0 || k.indexOf(CONV_BASE + ':') === 0) &amp;&amp; k != KEY &amp;&amp; k != CONV_KEY) drop.push(k);
+                if ((k.indexOf(KEY_BASE + ':') === 0 || k.indexOf(CONV_BASE + ':') === 0) &amp;amp;&amp;amp; k != KEY &amp;amp;&amp;amp; k != CONV_KEY) drop.push(k);
             }
-            for (i = 0; i &lt; drop.length; i++) st.removeItem(drop[i]);
+            for (i = 0; i &amp;lt; drop.length; i++) st.removeItem(drop[i]);
         } catch (e) {}
     }
     purgeOtherUsers();
     ensureUser();
 
     function hasRole() {
-        try { return !!(w.g_user &amp;&amp; (w.g_user.hasRole(ROLE) || w.g_user.hasRoleExactly &amp;&amp; w.g_user.hasRoleExactly(ROLE))); } catch (e) { return false; }
+        try { return !!(w.g_user &amp;amp;&amp;amp; (w.g_user.hasRole(ROLE) || w.g_user.hasRoleExactly &amp;amp;&amp;amp; w.g_user.hasRoleExactly(ROLE))); } catch (e) { return false; }
     }
     /* Skip shells that only host the content frame (UI16 navpage); the frame does the work. */
     /* AC-R1.5: also the Next Experience shell (/now/... top document): it never boots or polls; the classic frame inside it does. */
     function isShellOnly() {
         if (w !== top) return false;
-        return !!document.getElementById('gsft_main') || /^\/now(\/|$)/.test(w.location.pathname || '') || !!document.querySelector &amp;&amp; !!document.querySelector('macroponent-f51912f4c700201072b211d4d8c26010, sn-polaris-layout, [data-polaris-shell]');
+        return !!document.getElementById('gsft_main') || /^\/now(\/|$)/.test(w.location.pathname || '') || !!document.querySelector &amp;amp;&amp;amp; !!document.querySelector('macroponent-f51912f4c700201072b211d4d8c26010, sn-polaris-layout, [data-polaris-shell]');
     }
 
     function tableFromPath(p) {
@@ -919,7 +919,7 @@ GMGAIApplier.prototype = {
         return m ? {table: m[1], list: !!m[2]} : null;
     }
     function param(name, search) {
-        var m = new RegExp('[?&amp;]' + name + '=([^&amp;#]*)').exec(search);
+        var m = new RegExp('[?&amp;amp;]' + name + '=([^&amp;amp;#]*)').exec(search);
         return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : '';
     }
 
@@ -930,10 +930,10 @@ GMGAIApplier.prototype = {
 
     function getContext() {
         var c = {url: top.location.pathname + top.location.search, frame_url: w.location.pathname + w.location.search,
-                 ui: (top !== w &amp;&amp; /\/now\//.test(top.location.pathname)) ? 'next_experience_iframe' : (top !== w ? 'ui16_frame' : 'ui16')};
+                 ui: (top !== w &amp;amp;&amp;amp; /\/now\//.test(top.location.pathname)) ? 'next_experience_iframe' : (top !== w ? 'ui16_frame' : 'ui16')};
         var t = tableFromPath(w.location.pathname);
         try {
-            if (w.g_form &amp;&amp; w.g_form.getTableName) {
+            if (w.g_form &amp;amp;&amp;amp; w.g_form.getTableName) {
                 c.kind = 'form';
                 c.table = w.g_form.getTableName();
                 c.sys_id = w.g_form.getUniqueValue();
@@ -961,9 +961,9 @@ GMGAIApplier.prototype = {
 
     function suggestions(c) {
         var t = c.table || '';
-        if (t == 'incident' &amp;&amp; c.kind == 'form') return ['Summarize this incident', 'Find similar incidents and how they were resolved', 'What should I check next?'];
+        if (t == 'incident' &amp;amp;&amp;amp; c.kind == 'form') return ['Summarize this incident', 'Find similar incidents and how they were resolved', 'What should I check next?'];
         if (t == 'incident') return ['Summarize the incidents in this list', 'Which of these are P1/P2?', 'Any patterns by assignment group?'];
-        if (t == 'change_request' &amp;&amp; c.kind == 'form') return ['Summarize this change and its risk', 'Any open incidents on this CI?', 'Other changes on the same CI?'];
+        if (t == 'change_request' &amp;amp;&amp;amp; c.kind == 'form') return ['Summarize this change and its risk', 'Any open incidents on this CI?', 'Other changes on the same CI?'];
         if (t == 'change_request') return ['Summarize these changes', 'Which changes are high risk?', 'What is scheduled this week?'];
         if (t == 'problem') return ['Summarize this problem', 'Which incidents relate to it?', 'Similar past problems?'];
         if (t.indexOf('cmdb_ci') === 0) return ['What is this CI and who supports it?', 'Open incidents on this CI', 'Recent changes on this CI'];
@@ -975,46 +975,46 @@ GMGAIApplier.prototype = {
         ensureUser();
         var d = {open: false, messages: [], owner: UID};
         if (!UID) { try { return MEM ? JSON.parse(MEM) : d; } catch (e0) { return d; } }   // a copy, same as a sessionStorage read
-        try { var s = JSON.parse(top.sessionStorage.getItem(KEY)); if (!s || (s.owner &amp;&amp; s.owner != UID)) return d; s.owner = UID; return s; } catch (e) { return d; }
+        try { var s = JSON.parse(top.sessionStorage.getItem(KEY)); if (!s || (s.owner &amp;amp;&amp;amp; s.owner != UID)) return d; s.owner = UID; return s; } catch (e) { return d; }
     }
     function save(s) { if (!ensureUser()) { try { MEM = JSON.stringify(s); } catch (e0) {} return; } try { s.owner = UID; top.sessionStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
-    function esc(s) { return String(s).replace(/[&amp;&lt;&gt;"']/g, function(ch) { return {'&amp;': '&amp;amp;', '&lt;': '&amp;lt;', '&gt;': '&amp;gt;', '"': '&amp;quot;', "'": '&amp;#39;'}[ch]; }); }
+    function esc(s) { return String(s).replace(/[&amp;amp;&amp;lt;&amp;gt;&amp;quot;']/g, function(ch) { return {'&amp;amp;': '&amp;amp;amp;', '&amp;lt;': '&amp;amp;lt;', '&amp;gt;': '&amp;amp;gt;', '&amp;quot;': '&amp;amp;quot;', &amp;quot;'&amp;quot;: '&amp;amp;#39;'}[ch]; }); }
     /* SCREEN-REVIEW #25: no emoji from model text (our own marks are added by the panel, not by content) */
     function noEmoji(t) { return String(t == null ? '' : t).replace(/[\uD83C-\uD83E][\uDC00-\uDFFF]|[\u2600-\u27BF]\uFE0F?|\uFE0F/g, ''); }
-    /* SCREEN-REVIEW #24: minimal safe markdown (escape FIRST, then **bold**, `code`, "- " / "* " / "1. " lists, line breaks). No links, no raw HTML.
+    /* SCREEN-REVIEW #24: minimal safe markdown (escape FIRST, then **bold**, `code`, &amp;quot;- &amp;quot; / &amp;quot;* &amp;quot; / &amp;quot;1. &amp;quot; lists, line breaks). No links, no raw HTML.
      * GitHub-style tables. A '|' header row followed by a '|---|' separator row, then '|' body rows, becomes an HTML
      * table (header th, alignment from ':---:' / '---:'). Cells are escaped text with the same inline **bold** / `code`; '\|' is a literal pipe.
      * Rows with fewer cells are padded and extra cells are dropped (header count wins). Anything else, e.g. a lone '|' line, stays text. */
     var MD_SEP = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$/;
     function mdCells(line) {
         var x = String(line).replace(/^\s*\|/, '').replace(/\|\s*$/, ''), cells = [], cur = '', i;
-        for (i = 0; i &lt; x.length; i++) {
-            if (x.charAt(i) == '\\' &amp;&amp; x.charAt(i + 1) == '|') { cur += '|'; i++; continue; }
+        for (i = 0; i &amp;lt; x.length; i++) {
+            if (x.charAt(i) == '\\' &amp;amp;&amp;amp; x.charAt(i + 1) == '|') { cur += '|'; i++; continue; }
             if (x.charAt(i) == '|') { cells.push(cur.replace(/^\s+|\s+$/g, '')); cur = ''; continue; }
             cur += x.charAt(i);
         }
         cells.push(cur.replace(/^\s+|\s+$/g, ''));
         return cells;
     }
-    function mdIsRow(line) { return /^\s*\|.*\|\s*$/.test(line) || (/\|/.test(line) &amp;&amp; /^\s*[^|\s].*\|.*[^|\s]\s*$/.test(line) &amp;&amp; mdCells(line).length &gt; 1); }
+    function mdIsRow(line) { return /^\s*\|.*\|\s*$/.test(line) || (/\|/.test(line) &amp;amp;&amp;amp; /^\s*[^|\s].*\|.*[^|\s]\s*$/.test(line) &amp;amp;&amp;amp; mdCells(line).length &amp;gt; 1); }
     function md(t) {
         var out = [], list = null, lines = esc(noEmoji(t)).split('\n'), i, j;
-        var inl = function(x) { return x.replace(/\*\*([^*]+)\*\*/g, '&lt;b&gt;$1&lt;/b&gt;').replace(/`([^`]+)`/g, '&lt;code&gt;$1&lt;/code&gt;'); };
-        var endList = function() { if (list) { out.push('&lt;/' + list.tag + '&gt;'); list = null; } };
-        for (i = 0; i &lt; lines.length; i++) {
+        var inl = function(x) { return x.replace(/\*\*([^*]+)\*\*/g, '&amp;lt;b&amp;gt;$1&amp;lt;/b&amp;gt;').replace(/`([^`]+)`/g, '&amp;lt;code&amp;gt;$1&amp;lt;/code&amp;gt;'); };
+        var endList = function() { if (list) { out.push('&amp;lt;/' + list.tag + '&amp;gt;'); list = null; } };
+        for (i = 0; i &amp;lt; lines.length; i++) {
             var line = lines[i];
-            if (mdIsRow(line) &amp;&amp; i + 1 &lt; lines.length &amp;&amp; MD_SEP.test(lines[i + 1]) &amp;&amp; /\|/.test(lines[i + 1])) {
+            if (mdIsRow(line) &amp;amp;&amp;amp; i + 1 &amp;lt; lines.length &amp;amp;&amp;amp; MD_SEP.test(lines[i + 1]) &amp;amp;&amp;amp; /\|/.test(lines[i + 1])) {
                 var head = mdCells(line), n = head.length, al = mdCells(lines[i + 1]).map(function(c) { return /^:-+:$/.test(c) ? 'center' : /-:$/.test(c) ? 'right' : ''; });
-                var cell = function(tag, v, k) { return '&lt;' + tag + (al[k] ? ' style="text-align:' + al[k] + '"' : '') + '&gt;' + inl(v) + '&lt;/' + tag + '&gt;'; };
-                var h = '&lt;div class="gmgai-tw"&gt;&lt;table class="gmgai-mt"&gt;&lt;thead&gt;&lt;tr&gt;' + head.map(function(c, k) { return cell('th', c, k); }).join('') + '&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;';
-                for (j = i + 2; j &lt; lines.length &amp;&amp; mdIsRow(lines[j]) &amp;&amp; !MD_SEP.test(lines[j]); j++) {
-                    var c = mdCells(lines[j]).slice(0, n); while (c.length &lt; n) c.push('');
-                    h += '&lt;tr&gt;' + c.map(function(v, k) { return cell('td', v, k); }).join('') + '&lt;/tr&gt;';
+                var cell = function(tag, v, k) { return '&amp;lt;' + tag + (al[k] ? ' style=&amp;quot;text-align:' + al[k] + '&amp;quot;' : '') + '&amp;gt;' + inl(v) + '&amp;lt;/' + tag + '&amp;gt;'; };
+                var h = '&amp;lt;div class=&amp;quot;gmgai-tw&amp;quot;&amp;gt;&amp;lt;table class=&amp;quot;gmgai-mt&amp;quot;&amp;gt;&amp;lt;thead&amp;gt;&amp;lt;tr&amp;gt;' + head.map(function(c, k) { return cell('th', c, k); }).join('') + '&amp;lt;/tr&amp;gt;&amp;lt;/thead&amp;gt;&amp;lt;tbody&amp;gt;';
+                for (j = i + 2; j &amp;lt; lines.length &amp;amp;&amp;amp; mdIsRow(lines[j]) &amp;amp;&amp;amp; !MD_SEP.test(lines[j]); j++) {
+                    var c = mdCells(lines[j]).slice(0, n); while (c.length &amp;lt; n) c.push('');
+                    h += '&amp;lt;tr&amp;gt;' + c.map(function(v, k) { return cell('td', v, k); }).join('') + '&amp;lt;/tr&amp;gt;';
                 }
-                endList(); out.push(h + '&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;'); i = j - 1; continue;
+                endList(); out.push(h + '&amp;lt;/tbody&amp;gt;&amp;lt;/table&amp;gt;&amp;lt;/div&amp;gt;'); i = j - 1; continue;
             }
             var m = /^\s*(?:[-*]|(\d+)\.)\s+(.*)$/.exec(line);
-            if (m) { var tag = m[1] ? 'ol' : 'ul'; if (!list || list.tag != tag) { endList(); list = {tag: tag}; out.push('&lt;' + tag + '&gt;'); } out.push('&lt;li&gt;' + inl(m[2]) + '&lt;/li&gt;'); continue; }
+            if (m) { var tag = m[1] ? 'ol' : 'ul'; if (!list || list.tag != tag) { endList(); list = {tag: tag}; out.push('&amp;lt;' + tag + '&amp;gt;'); } out.push('&amp;lt;li&amp;gt;' + inl(m[2]) + '&amp;lt;/li&amp;gt;'); continue; }
             endList();
             out.push(inl(line) + '\n');
         }
@@ -1024,39 +1024,39 @@ GMGAIApplier.prototype = {
 
 
     /* SCREEN-REVIEW #23/#27 (AC16): one cost chip in cents; no usage counts or provider names. */
-    function cents(n) { n = parseFloat(n) || 0; var c = Math.round(n * 100); return (n &gt; 0 &amp;&amp; c &lt; 1 ? '&lt;1' : String(c).replace(/\B(?=(\d{3})+(?!\d))/g, ',')) + '\u00a2'; }
+    function cents(n) { n = parseFloat(n) || 0; var c = Math.round(n * 100); return (n &amp;gt; 0 &amp;amp;&amp;amp; c &amp;lt; 1 ? '&amp;lt;1' : String(c).replace(/\B(?=(\d{3})+(?!\d))/g, ',')) + '\u00a2'; }
     function footer(m) {
         var p = [];
         if (m.cost != null) p.push(cents(m.cost));
-        if (m.month != null) p.push(cents(m.month) + (m.monthly_budget &gt; 0 ? ' of ' + cents(m.monthly_budget) : '') + ' this month');
-        return p.length ? '&lt;span class="gmgai-cost"&gt;' + esc(p.join(' \u00b7 ')) + '&lt;/span&gt;' : '';
+        if (m.month != null) p.push(cents(m.month) + (m.monthly_budget &amp;gt; 0 ? ' of ' + cents(m.monthly_budget) : '') + ' this month');
+        return p.length ? '&amp;lt;span class=&amp;quot;gmgai-cost&amp;quot;&amp;gt;' + esc(p.join(' \u00b7 ')) + '&amp;lt;/span&amp;gt;' : '';
     }
-    /* SCREEN-REVIEW #29 (shared with build_new_client.js, kept identical; test_panel_review checks): diff text -&gt; before/after rows.
-     * 'field: before -&gt; after' lines, '-'/'+' line pairs (script diffs), anything else = a note row. */
+    /* SCREEN-REVIEW #29 (shared with build_new_client.js, kept identical; test_panel_review checks): diff text -&amp;gt; before/after rows.
+     * 'field: before -&amp;gt; after' lines, '-'/'+' line pairs (script diffs), anything else = a note row. */
     function CAT_NONE(v) { v = String(v || '').replace(/^\s+|\s+$/g, ''); return !v || /^\(none\)$/i.test(v) ? 'None' : v; }
     var INACTIVE_TAG = /\s*\[created\s+INACTIVE(?:,[^\]]*)?\]\s*$/i;
     function changeRows(lines) {
-        var rows = [], unq = function(v) { v = String(v).replace(/^\s+|\s+$/g, ''); return /^".*"$/.test(v) ? v.slice(1, -1) : v; }, pend = null;
+        var rows = [], unq = function(v) { v = String(v).replace(/^\s+|\s+$/g, ''); return /^&amp;quot;.*&amp;quot;$/.test(v) ? v.slice(1, -1) : v; }, pend = null;
         (lines || []).forEach(function(l) { l = String(l == null ? '' : l);
-            var m = /^\s*([A-Za-z0-9_ .\/()-]{1,60}):\s(.*?)\s(?:-&gt;|\u2192)\s(.*)$/.exec(l);
+            var m = /^\s*([A-Za-z0-9_ .\/()-]{1,60}):\s(.*?)\s(?:-&amp;gt;|\u2192)\s(.*)$/.exec(l);
             if (m) { if (pend) { rows.push(pend); pend = null; } rows.push({field: m[1], before: unq(m[2]), after: unq(m[3])}); return; }
             if (/^-(?!--)/.test(l)) { if (pend) rows.push(pend); pend = {field: '', before: l.substring(1), after: ''}; return; }
-            if (/^\+(?!\+\+)/.test(l)) { if (pend &amp;&amp; pend.after === '') { pend.after = l.substring(1); rows.push(pend); pend = null; } else rows.push({field: '', before: '', after: l.substring(1)}); return; }
+            if (/^\+(?!\+\+)/.test(l)) { if (pend &amp;amp;&amp;amp; pend.after === '') { pend.after = l.substring(1); rows.push(pend); pend = null; } else rows.push({field: '', before: '', after: l.substring(1)}); return; }
             if (pend) { rows.push(pend); pend = null; }
             var cc = /^\s*Catalog:\s(.*?)\s{2,}Category:\s(.*)$/.exec(l);   // design review (2): one row each (older stored diffs still carry them on one line)
             if (cc) { rows.push({note: 'Catalog: ' + cc[1]}); rows.push({note: 'Category: ' + CAT_NONE(cc[2])}); return; }
-            if (/\S/.test(l) &amp;&amp; !/^(@@|---|\+\+\+)/.test(l)) rows.push({note: l.replace(/^\s+/, '')});
+            if (/\S/.test(l) &amp;amp;&amp;amp; !/^(@@|---|\+\+\+)/.test(l)) rows.push({note: l.replace(/^\s+/, '')});
         });
         if (pend) rows.push(pend);
         return rows;
     }
-    function changeCard(lines) {   // escaped HTML: field | old (struck) -&gt; new; max 40 rows
-        var rows = changeRows(lines), more = rows.length &gt; 40 ? rows.length - 40 : 0;
-        return '&lt;div class="gmgai-chg"&gt;' + rows.slice(0, 40).map(function(r) {
-            if (r.note != null) { var inact = INACTIVE_TAG.test(r.note); return '&lt;div class="gmgai-cn"&gt;' + esc(inact ? r.note.replace(INACTIVE_TAG, '') : r.note) + (inact ? ' &lt;span class="gmgai-chip-inactive"&gt;Starts inactive&lt;/span&gt;' : '') + '&lt;/div&gt;'; }   // design review ruling: same 14px chip as the plan page, no scope
-            return '&lt;div class="gmgai-cr"&gt;' + (r.field ? '&lt;span class="f"&gt;' + esc(r.field) + '&lt;/span&gt;' : '') + (r.before !== '' ? '&lt;s&gt;' + esc(r.before) + '&lt;/s&gt;' : '&lt;i&gt;new&lt;/i&gt;') +
-                ' &lt;span class="ar" aria-label="becomes"&gt;\u2192&lt;/span&gt; ' + (r.after !== '' ? '&lt;b&gt;' + esc(r.after) + '&lt;/b&gt;' : '&lt;i&gt;removed&lt;/i&gt;') + '&lt;/div&gt;';
-        }).join('') + (more ? '&lt;div class="gmgai-cn"&gt;+' + more + ' more lines&lt;/div&gt;' : '') + '&lt;/div&gt;';
+    function changeCard(lines) {   // escaped HTML: field | old (struck) -&amp;gt; new; max 40 rows
+        var rows = changeRows(lines), more = rows.length &amp;gt; 40 ? rows.length - 40 : 0;
+        return '&amp;lt;div class=&amp;quot;gmgai-chg&amp;quot;&amp;gt;' + rows.slice(0, 40).map(function(r) {
+            if (r.note != null) { var inact = INACTIVE_TAG.test(r.note); return '&amp;lt;div class=&amp;quot;gmgai-cn&amp;quot;&amp;gt;' + esc(inact ? r.note.replace(INACTIVE_TAG, '') : r.note) + (inact ? ' &amp;lt;span class=&amp;quot;gmgai-chip-inactive&amp;quot;&amp;gt;Starts inactive&amp;lt;/span&amp;gt;' : '') + '&amp;lt;/div&amp;gt;'; }   // design review ruling: same 14px chip as the plan page, no scope
+            return '&amp;lt;div class=&amp;quot;gmgai-cr&amp;quot;&amp;gt;' + (r.field ? '&amp;lt;span class=&amp;quot;f&amp;quot;&amp;gt;' + esc(r.field) + '&amp;lt;/span&amp;gt;' : '') + (r.before !== '' ? '&amp;lt;s&amp;gt;' + esc(r.before) + '&amp;lt;/s&amp;gt;' : '&amp;lt;i&amp;gt;new&amp;lt;/i&amp;gt;') +
+                ' &amp;lt;span class=&amp;quot;ar&amp;quot; aria-label=&amp;quot;becomes&amp;quot;&amp;gt;\u2192&amp;lt;/span&amp;gt; ' + (r.after !== '' ? '&amp;lt;b&amp;gt;' + esc(r.after) + '&amp;lt;/b&amp;gt;' : '&amp;lt;i&amp;gt;removed&amp;lt;/i&amp;gt;') + '&amp;lt;/div&amp;gt;';
+        }).join('') + (more ? '&amp;lt;div class=&amp;quot;gmgai-cn&amp;quot;&amp;gt;+' + more + ' more lines&amp;lt;/div&amp;gt;' : '') + '&amp;lt;/div&amp;gt;';
     }
     function workflowCard(wf) {
         if (!wf || typeof wf !== 'object') return '';
@@ -1069,180 +1069,180 @@ GMGAIApplier.prototype = {
             'rejected': '#9CA3AF'
         };
         var stColor = statusColors[wf.status] || '#4B5563';
-        var out = '&lt;div class="gmgai-wf-card" style="margin-top:8px;border:1px solid #D1D5DB;border-radius:6px;padding:8px;background:#F9FAFB"&gt;';
-        out += '&lt;div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"&gt;' +
-               '&lt;b&gt;Workflow: ' + esc(wf.type || 'Automation') + '&lt;/b&gt;' +
-               '&lt;span style="font-size:10px;padding:2px 6px;border-radius:4px;color:#fff;background:' + stColor + ';text-transform:uppercase;font-weight:600"&gt;' + esc(wf.status || '') + '&lt;/span&gt;' +
-               '&lt;/div&gt;';
-        if (wf.goal) out += '&lt;div style="font-size:11px;color:#4B5563;margin-bottom:6px"&gt;&lt;i&gt;Goal: ' + esc(wf.goal) + '&lt;/i&gt;&lt;/div&gt;';
-        if (wf.steps &amp;&amp; wf.steps.length) {
-            out += '&lt;div style="display:flex;flex-direction:column;gap:4px"&gt;';
+        var out = '&amp;lt;div class=&amp;quot;gmgai-wf-card&amp;quot; style=&amp;quot;margin-top:8px;border:1px solid #D1D5DB;border-radius:6px;padding:8px;background:#F9FAFB&amp;quot;&amp;gt;';
+        out += '&amp;lt;div style=&amp;quot;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px&amp;quot;&amp;gt;' +
+               '&amp;lt;b&amp;gt;Workflow: ' + esc(wf.type || 'Automation') + '&amp;lt;/b&amp;gt;' +
+               '&amp;lt;span style=&amp;quot;font-size:10px;padding:2px 6px;border-radius:4px;color:#fff;background:' + stColor + ';text-transform:uppercase;font-weight:600&amp;quot;&amp;gt;' + esc(wf.status || '') + '&amp;lt;/span&amp;gt;' +
+               '&amp;lt;/div&amp;gt;';
+        if (wf.goal) out += '&amp;lt;div style=&amp;quot;font-size:11px;color:#4B5563;margin-bottom:6px&amp;quot;&amp;gt;&amp;lt;i&amp;gt;Goal: ' + esc(wf.goal) + '&amp;lt;/i&amp;gt;&amp;lt;/div&amp;gt;';
+        if (wf.steps &amp;amp;&amp;amp; wf.steps.length) {
+            out += '&amp;lt;div style=&amp;quot;display:flex;flex-direction:column;gap:4px&amp;quot;&amp;gt;';
             wf.steps.forEach(function(step, idx) {
                 var stepColor = statusColors[step.status] || '#9CA3AF';
-                var icon = step.status === 'completed' ? '&amp;#10003;' : (step.status === 'failed' ? '&amp;#10007;' : (step.status === 'waiting_approval' ? '&amp;#9888;' : String(idx + 1)));
-                out += '&lt;div style="display:flex;align-items:center;gap:6px;font-size:11px;padding:3px 6px;border-radius:4px;background:#FFFFFF;border:1px solid #E5E7EB"&gt;' +
-                       '&lt;span style="width:16px;height:16px;border-radius:50%;background:' + stepColor + ';color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold"&gt;' + icon + '&lt;/span&gt;' +
-                       '&lt;span style="flex:1;font-weight:' + (step.status === 'running' ? '600' : '400') + '"&gt;' + esc(step.name || step.tool) + '&lt;/span&gt;' +
-                       '&lt;span style="font-size:10px;color:' + stepColor + ';font-weight:600"&gt;' + esc(step.status) + '&lt;/span&gt;' +
-                       '&lt;/div&gt;';
+                var icon = step.status === 'completed' ? '&amp;amp;#10003;' : (step.status === 'failed' ? '&amp;amp;#10007;' : (step.status === 'waiting_approval' ? '&amp;amp;#9888;' : String(idx + 1)));
+                out += '&amp;lt;div style=&amp;quot;display:flex;align-items:center;gap:6px;font-size:11px;padding:3px 6px;border-radius:4px;background:#FFFFFF;border:1px solid #E5E7EB&amp;quot;&amp;gt;' +
+                       '&amp;lt;span style=&amp;quot;width:16px;height:16px;border-radius:50%;background:' + stepColor + ';color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold&amp;quot;&amp;gt;' + icon + '&amp;lt;/span&amp;gt;' +
+                       '&amp;lt;span style=&amp;quot;flex:1;font-weight:' + (step.status === 'running' ? '600' : '400') + '&amp;quot;&amp;gt;' + esc(step.name || step.tool) + '&amp;lt;/span&amp;gt;' +
+                       '&amp;lt;span style=&amp;quot;font-size:10px;color:' + stepColor + ';font-weight:600&amp;quot;&amp;gt;' + esc(step.status) + '&amp;lt;/span&amp;gt;' +
+                       '&amp;lt;/div&amp;gt;';
             });
-            out += '&lt;/div&gt;';
+            out += '&amp;lt;/div&amp;gt;';
         }
         if (wf.error) {
-            out += '&lt;div style="margin-top:6px;font-size:11px;color:#DC2626"&gt;&lt;b&gt;Error:&lt;/b&gt; ' + esc(wf.error) + '&lt;/div&gt;';
+            out += '&amp;lt;div style=&amp;quot;margin-top:6px;font-size:11px;color:#DC2626&amp;quot;&amp;gt;&amp;lt;b&amp;gt;Error:&amp;lt;/b&amp;gt; ' + esc(wf.error) + '&amp;lt;/div&amp;gt;';
         }
-        out += '&lt;/div&gt;';
+        out += '&amp;lt;/div&amp;gt;';
         return out;
     }
     function actionCard(a) {
-        var h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc((a.operation == 'update' ? 'Update ' : 'Create ') + a.type.replace('_', ' ')) + ': ' + esc(a.target || '') + '&lt;/h4&gt;';
+        var h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc((a.operation == 'update' ? 'Update ' : 'Create ') + a.type.replace('_', ' ')) + ': ' + esc(a.target || '') + '&amp;lt;/h4&amp;gt;';
         if (a.type == 'knowledge_draft') {
-            h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc(a.summary || a.title || 'Knowledge Article Draft') + '&lt;/h4&gt;';
-            h += '&lt;div class="meta"&gt;&lt;span class="gmgai-chip" style="background:#EFF6FF;color:#1D4ED8;border-color:#BFDBFE"&gt;Knowledge Draft&lt;/span&gt; &amp;middot; State: &lt;b&gt;Draft (Review Only)&lt;/b&gt;' + (a.incident_number ? ' &amp;middot; Source: &lt;b&gt;' + esc(a.incident_number) + '&lt;/b&gt;' : '') + '&lt;/div&gt;';
+            h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc(a.summary || a.title || 'Knowledge Article Draft') + '&amp;lt;/h4&amp;gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;gmgai-chip&amp;quot; style=&amp;quot;background:#EFF6FF;color:#1D4ED8;border-color:#BFDBFE&amp;quot;&amp;gt;Knowledge Draft&amp;lt;/span&amp;gt; &amp;amp;middot; State: &amp;lt;b&amp;gt;Draft (Review Only)&amp;lt;/b&amp;gt;' + (a.incident_number ? ' &amp;amp;middot; Source: &amp;lt;b&amp;gt;' + esc(a.incident_number) + '&amp;lt;/b&amp;gt;' : '') + '&amp;lt;/div&amp;gt;';
 
-            if (a.sources &amp;&amp; a.sources.length) {
-                h += '&lt;div style="margin:4px 0;font-size:12px;color:#4B5563"&gt;&lt;b&gt;Citations &amp; Evidence Sources:&lt;/b&gt; ';
+            if (a.sources &amp;amp;&amp;amp; a.sources.length) {
+                h += '&amp;lt;div style=&amp;quot;margin:4px 0;font-size:12px;color:#4B5563&amp;quot;&amp;gt;&amp;lt;b&amp;gt;Citations &amp;amp; Evidence Sources:&amp;lt;/b&amp;gt; ';
                 h += a.sources.map(function(s) {
                     var sNum = (typeof s == 'object' ? s.number || s.tag : s);
-                    return '&lt;span class="gmgai-chip" style="background:#F3F4F6;color:#374151;border-color:#D1D5DB"&gt;' + esc(sNum) + '&lt;/span&gt;';
+                    return '&amp;lt;span class=&amp;quot;gmgai-chip&amp;quot; style=&amp;quot;background:#F3F4F6;color:#374151;border-color:#D1D5DB&amp;quot;&amp;gt;' + esc(sNum) + '&amp;lt;/span&amp;gt;';
                 }).join(' ');
-                h += '&lt;/div&gt;';
+                h += '&amp;lt;/div&amp;gt;';
             }
 
-            h += '&lt;div style="background:#EFF6FF;border:1px solid #BFDBFE;color:#1E40AF;border-radius:6px;padding:6px 8px;margin:5px 0;font-size:12px"&gt;&lt;b&gt;KNOWLEDGE GOVERNANCE:&lt;/b&gt; Draft created for review. By policy, knowledge articles are never automatically published. Copy or create in Knowledge &amp;gt; Articles &amp;gt; Create New.&lt;/div&gt;';
+            h += '&amp;lt;div style=&amp;quot;background:#EFF6FF;border:1px solid #BFDBFE;color:#1E40AF;border-radius:6px;padding:6px 8px;margin:5px 0;font-size:12px&amp;quot;&amp;gt;&amp;lt;b&amp;gt;KNOWLEDGE GOVERNANCE:&amp;lt;/b&amp;gt; Draft created for review. By policy, knowledge articles are never automatically published. Copy or create in Knowledge &amp;amp;gt; Articles &amp;amp;gt; Create New.&amp;lt;/div&amp;gt;';
 
             if (a.content) {
-                h += '&lt;div class="gmgai-code-wrap" style="position:relative;margin:6px 0"&gt;';
-                h += '&lt;div style="display:flex;justify-content:space-between;align-items:center;background:#E5E7EB;padding:3px 8px;border-radius:6px 6px 0 0;font-size:12px"&gt;';
-                h += '&lt;span&gt;' + esc(a.title || 'Article Content') + '&lt;/span&gt;';
-                h += '&lt;button class="gmgai-copy-btn" data-code="' + esc(encodeURIComponent(a.content)) + '" style="background:#FFFFFF;border:1px solid #D1D5DB;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer"&gt;Copy Article&lt;/button&gt;';
-                h += '&lt;/div&gt;';
-                h += '&lt;div class="gmgai-diff" style="margin:0;border-radius:0 0 6px 6px;max-height:220px;overflow:auto;white-space:pre-wrap"&gt;' + esc(a.content) + '&lt;/div&gt;';
-                h += '&lt;/div&gt;';
+                h += '&amp;lt;div class=&amp;quot;gmgai-code-wrap&amp;quot; style=&amp;quot;position:relative;margin:6px 0&amp;quot;&amp;gt;';
+                h += '&amp;lt;div style=&amp;quot;display:flex;justify-content:space-between;align-items:center;background:#E5E7EB;padding:3px 8px;border-radius:6px 6px 0 0;font-size:12px&amp;quot;&amp;gt;';
+                h += '&amp;lt;span&amp;gt;' + esc(a.title || 'Article Content') + '&amp;lt;/span&amp;gt;';
+                h += '&amp;lt;button class=&amp;quot;gmgai-copy-btn&amp;quot; data-code=&amp;quot;' + esc(encodeURIComponent(a.content)) + '&amp;quot; style=&amp;quot;background:#FFFFFF;border:1px solid #D1D5DB;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer&amp;quot;&amp;gt;Copy Article&amp;lt;/button&amp;gt;';
+                h += '&amp;lt;/div&amp;gt;';
+                h += '&amp;lt;div class=&amp;quot;gmgai-diff&amp;quot; style=&amp;quot;margin:0;border-radius:0 0 6px 6px;max-height:220px;overflow:auto;white-space:pre-wrap&amp;quot;&amp;gt;' + esc(a.content) + '&amp;lt;/div&amp;gt;';
+                h += '&amp;lt;/div&amp;gt;';
             }
-            return h + '&lt;/div&gt;';
+            return h + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'incident_resolution') {
-            h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc(a.summary || 'Propose Incident Resolution') + '&lt;/h4&gt;';
-            h += '&lt;div class="meta"&gt;&lt;span class="gmgai-chip" style="background:#ECFDF5;color:#065F46;border-color:#A7F3D0"&gt;Resolution Proposal&lt;/span&gt;' + (a.target_sys_id ? ' &amp;middot; Record: &lt;b&gt;' + esc(a.target_sys_id) + '&lt;/b&gt;' : '') + '&lt;/div&gt;';
+            h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc(a.summary || 'Propose Incident Resolution') + '&amp;lt;/h4&amp;gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;gmgai-chip&amp;quot; style=&amp;quot;background:#ECFDF5;color:#065F46;border-color:#A7F3D0&amp;quot;&amp;gt;Resolution Proposal&amp;lt;/span&amp;gt;' + (a.target_sys_id ? ' &amp;amp;middot; Record: &amp;lt;b&amp;gt;' + esc(a.target_sys_id) + '&amp;lt;/b&amp;gt;' : '') + '&amp;lt;/div&amp;gt;';
 
-            h += '&lt;div style="margin:5px 0;font-size:13px"&gt;';
-            h += '&lt;div&gt;&lt;b&gt;Close Code:&lt;/b&gt; &lt;code&gt;' + esc(a.close_code || 'Solved (Permanently)') + '&lt;/code&gt;&lt;/div&gt;';
-            h += '&lt;div style="margin-top:4px"&gt;&lt;b&gt;Resolution Notes:&lt;/b&gt;&lt;/div&gt;';
-            h += '&lt;div class="gmgai-diff" style="max-height:160px;overflow:auto;white-space:pre-wrap;margin-top:2px"&gt;' + esc(a.close_notes || '') + '&lt;/div&gt;';
-            h += '&lt;/div&gt;';
+            h += '&amp;lt;div style=&amp;quot;margin:5px 0;font-size:13px&amp;quot;&amp;gt;';
+            h += '&amp;lt;div&amp;gt;&amp;lt;b&amp;gt;Close Code:&amp;lt;/b&amp;gt; &amp;lt;code&amp;gt;' + esc(a.close_code || 'Solved (Permanently)') + '&amp;lt;/code&amp;gt;&amp;lt;/div&amp;gt;';
+            h += '&amp;lt;div style=&amp;quot;margin-top:4px&amp;quot;&amp;gt;&amp;lt;b&amp;gt;Resolution Notes:&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;';
+            h += '&amp;lt;div class=&amp;quot;gmgai-diff&amp;quot; style=&amp;quot;max-height:160px;overflow:auto;white-space:pre-wrap;margin-top:2px&amp;quot;&amp;gt;' + esc(a.close_notes || '') + '&amp;lt;/div&amp;gt;';
+            h += '&amp;lt;/div&amp;gt;';
 
             if (a.instructions) {
-                h += '&lt;div style="background:#F0FDF4;border:1px solid #BBF7D0;color:#166534;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:12px"&gt;' + esc(a.instructions) + '&lt;/div&gt;';
+                h += '&amp;lt;div style=&amp;quot;background:#F0FDF4;border:1px solid #BBF7D0;color:#166534;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:12px&amp;quot;&amp;gt;' + esc(a.instructions) + '&amp;lt;/div&amp;gt;';
             }
 
-            if (a.can_accept &amp;&amp; a.status == 'pending') {
+            if (a.can_accept &amp;amp;&amp;amp; a.status == 'pending') {
                 var actId = a.pending_action_id || a.id;
-                h += '&lt;div class="gmgai-act" data-act="' + esc(actId) + '"&gt;&lt;button class="gmgai-ok" data-v="confirm"&gt;Accept Resolution&lt;/button&gt;&lt;button class="gmgai-no" data-v="reject"&gt;Reject&lt;/button&gt;&lt;/div&gt;';
+                h += '&amp;lt;div class=&amp;quot;gmgai-act&amp;quot; data-act=&amp;quot;' + esc(actId) + '&amp;quot;&amp;gt;&amp;lt;button class=&amp;quot;gmgai-ok&amp;quot; data-v=&amp;quot;confirm&amp;quot;&amp;gt;Accept Resolution&amp;lt;/button&amp;gt;&amp;lt;button class=&amp;quot;gmgai-no&amp;quot; data-v=&amp;quot;reject&amp;quot;&amp;gt;Reject&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;';
             } else if (a.close_notes) {
-                h += '&lt;div style="margin-top:6px;display:flex;gap:6px"&gt;';
-                h += '&lt;button class="gmgai-copy-btn" data-code="' + esc(encodeURIComponent(a.close_notes)) + '" style="background:#FFFFFF;border:1px solid #D1D5DB;border-radius:4px;padding:3px 10px;font-size:12px;cursor:pointer"&gt;Copy Resolution Notes&lt;/button&gt;';
-                h += '&lt;/div&gt;';
+                h += '&amp;lt;div style=&amp;quot;margin-top:6px;display:flex;gap:6px&amp;quot;&amp;gt;';
+                h += '&amp;lt;button class=&amp;quot;gmgai-copy-btn&amp;quot; data-code=&amp;quot;' + esc(encodeURIComponent(a.close_notes)) + '&amp;quot; style=&amp;quot;background:#FFFFFF;border:1px solid #D1D5DB;border-radius:4px;padding:3px 10px;font-size:12px;cursor:pointer&amp;quot;&amp;gt;Copy Resolution Notes&amp;lt;/button&amp;gt;';
+                h += '&amp;lt;/div&amp;gt;';
             }
-            return h + '&lt;/div&gt;';
+            return h + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'flow') {
-            h += '&lt;div class="meta"&gt;' + esc('Flow Designer \u00b7 scope ' + a.scope + ' \u00b7 created as Draft, inactive') + '&lt;/div&gt;';
-            h += '&lt;div class="gmgai-diff"&gt;' + esc(a.flow_summary || '') + '&lt;/div&gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;' + esc('Flow Designer \u00b7 scope ' + a.scope + ' \u00b7 created as Draft, inactive') + '&amp;lt;/div&amp;gt;';
+            h += '&amp;lt;div class=&amp;quot;gmgai-diff&amp;quot;&amp;gt;' + esc(a.flow_summary || '') + '&amp;lt;/div&amp;gt;';
             var ra = a.run_as == 'user' ? 'user' : 'system';
-            if (a.status == 'pending' &amp;&amp; !canAccept(a)) h += '';   // design review ruling (4): no Run As unless Accept is available
-            else if (a.status == 'pending' &amp;&amp; a.review_route == 'reviewer') h += '&lt;div class="meta"&gt;Run As: ' + (ra == 'user' ? 'User who initiates session' : 'System user') + '&lt;/div&gt;';   // ruling (b): the reviewed run_as is binding (no picker)
-            else if (a.status == 'pending') h += '&lt;div class="meta"&gt;Run As: &lt;select class="gmgai-runas" data-id="' + esc(a.id) + '"&gt;' +
-                '&lt;option value="system"' + (ra == 'system' ? ' selected' : '') + '&gt;System user&lt;/option&gt;' +
-                '&lt;option value="user"' + (ra == 'user' ? ' selected' : '') + '&gt;User who initiates session&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;';
-            else h += '&lt;div class="meta"&gt;Run As: ' + (ra == 'user' ? 'User who initiates session' : 'System user') + '&lt;/div&gt;';
-            return h + actionFooter(a, 'Open in Workflow Studio') + '&lt;/div&gt;';
+            if (a.status == 'pending' &amp;amp;&amp;amp; !canAccept(a)) h += '';   // design review ruling (4): no Run As unless Accept is available
+            else if (a.status == 'pending' &amp;amp;&amp;amp; a.review_route == 'reviewer') h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;Run As: ' + (ra == 'user' ? 'User who initiates session' : 'System user') + '&amp;lt;/div&amp;gt;';   // ruling (b): the reviewed run_as is binding (no picker)
+            else if (a.status == 'pending') h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;Run As: &amp;lt;select class=&amp;quot;gmgai-runas&amp;quot; data-id=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;system&amp;quot;' + (ra == 'system' ? ' selected' : '') + '&amp;gt;System user&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;user&amp;quot;' + (ra == 'user' ? ' selected' : '') + '&amp;gt;User who initiates session&amp;lt;/option&amp;gt;&amp;lt;/select&amp;gt;&amp;lt;/div&amp;gt;';
+            else h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;Run As: ' + (ra == 'user' ? 'User who initiates session' : 'System user') + '&amp;lt;/div&amp;gt;';
+            return h + actionFooter(a, 'Open in Workflow Studio') + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'dev_artifact') {
-            h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc(a.summary || (a.artifact_label + ': ' + a.name)) + '&lt;/h4&gt;';
-            h += '&lt;div class="meta"&gt;&lt;span class="gmgai-chip"&gt;' + esc(a.artifact_label || 'Artifact') + '&lt;/span&gt;' + (a.table ? ' Table: &lt;b&gt;' + esc(a.table) + '&lt;/b&gt; &amp;middot; ' : '') + 'Scope: &lt;b&gt;' + esc(a.scope || 'global') + '&lt;/b&gt;&lt;/div&gt;';
+            h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc(a.summary || (a.artifact_label + ': ' + a.name)) + '&amp;lt;/h4&amp;gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;gmgai-chip&amp;quot;&amp;gt;' + esc(a.artifact_label || 'Artifact') + '&amp;lt;/span&amp;gt;' + (a.table ? ' Table: &amp;lt;b&amp;gt;' + esc(a.table) + '&amp;lt;/b&amp;gt; &amp;amp;middot; ' : '') + 'Scope: &amp;lt;b&amp;gt;' + esc(a.scope || 'global') + '&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;';
 
             if (a.validation) {
                 var v = a.validation;
-                h += '&lt;div style="margin:6px 0;padding:6px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--border);font-size:13px"&gt;';
-                h += '&lt;b&gt;Static Analysis:&lt;/b&gt; ' + (v.ok ? '&lt;span style="color:#15803D;font-weight:600"&gt;\u2714 No Critical Issues&lt;/span&gt;' : '&lt;span style="color:#B91C1C;font-weight:600"&gt;\u26A0 Critical Issues Detected&lt;/span&gt;') + ' &amp;middot; ' + esc(v.summary || '');
-                if (v.findings &amp;&amp; v.findings.length) {
-                    h += '&lt;div style="margin-top:4px;max-height:140px;overflow-y:auto"&gt;';
+                h += '&amp;lt;div style=&amp;quot;margin:6px 0;padding:6px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--border);font-size:13px&amp;quot;&amp;gt;';
+                h += '&amp;lt;b&amp;gt;Static Analysis:&amp;lt;/b&amp;gt; ' + (v.ok ? '&amp;lt;span style=&amp;quot;color:#15803D;font-weight:600&amp;quot;&amp;gt;\u2714 No Critical Issues&amp;lt;/span&amp;gt;' : '&amp;lt;span style=&amp;quot;color:#B91C1C;font-weight:600&amp;quot;&amp;gt;\u26A0 Critical Issues Detected&amp;lt;/span&amp;gt;') + ' &amp;amp;middot; ' + esc(v.summary || '');
+                if (v.findings &amp;amp;&amp;amp; v.findings.length) {
+                    h += '&amp;lt;div style=&amp;quot;margin-top:4px;max-height:140px;overflow-y:auto&amp;quot;&amp;gt;';
                     v.findings.forEach(function(f) {
                         var col = f.severity == 'Critical' ? '#B91C1C' : f.severity == 'High' ? '#B45309' : f.severity == 'Medium' ? '#D97706' : '#4B5563';
                         var bg = f.severity == 'Critical' ? '#FEF2F2' : f.severity == 'High' ? '#FFFBEB' : '#F9FAFB';
-                        h += '&lt;div style="margin:3px 0;padding:3px 6px;border-radius:4px;background:' + bg + ';border-left:3px solid ' + col + '"&gt;';
-                        h += '&lt;span style="color:' + col + ';font-weight:600"&gt;[' + esc(f.severity) + ']&lt;/span&gt; ' + esc(f.message) + '&lt;/div&gt;';
+                        h += '&amp;lt;div style=&amp;quot;margin:3px 0;padding:3px 6px;border-radius:4px;background:' + bg + ';border-left:3px solid ' + col + '&amp;quot;&amp;gt;';
+                        h += '&amp;lt;span style=&amp;quot;color:' + col + ';font-weight:600&amp;quot;&amp;gt;[' + esc(f.severity) + ']&amp;lt;/span&amp;gt; ' + esc(f.message) + '&amp;lt;/div&amp;gt;';
                     });
-                    h += '&lt;/div&gt;';
+                    h += '&amp;lt;/div&amp;gt;';
                 }
-                h += '&lt;/div&gt;';
+                h += '&amp;lt;/div&amp;gt;';
             }
 
             if (a.code) {
-                h += '&lt;div class="gmgai-code-wrap" style="position:relative;margin:6px 0"&gt;';
-                h += '&lt;div style="display:flex;justify-content:space-between;align-items:center;background:#E5E7EB;padding:3px 8px;border-radius:6px 6px 0 0;font-size:12px;font-family:monospace"&gt;';
-                h += '&lt;span&gt;' + esc(a.name || a.artifact_label) + '&lt;/span&gt;';
-                h += '&lt;button class="gmgai-copy-btn" data-code="' + esc(encodeURIComponent(a.code)) + '" style="background:#FFFFFF;border:1px solid #D1D5DB;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer"&gt;Copy Code&lt;/button&gt;';
-                h += '&lt;/div&gt;';
-                h += '&lt;pre class="gmgai-diff" style="margin:0;border-radius:0 0 6px 6px;font-family:ui-monospace,Menlo,monospace;font-size:12px;max-height:220px;overflow:auto"&gt;&lt;code&gt;' + esc(a.code) + '&lt;/code&gt;&lt;/pre&gt;';
-                h += '&lt;/div&gt;';
+                h += '&amp;lt;div class=&amp;quot;gmgai-code-wrap&amp;quot; style=&amp;quot;position:relative;margin:6px 0&amp;quot;&amp;gt;';
+                h += '&amp;lt;div style=&amp;quot;display:flex;justify-content:space-between;align-items:center;background:#E5E7EB;padding:3px 8px;border-radius:6px 6px 0 0;font-size:12px;font-family:monospace&amp;quot;&amp;gt;';
+                h += '&amp;lt;span&amp;gt;' + esc(a.name || a.artifact_label) + '&amp;lt;/span&amp;gt;';
+                h += '&amp;lt;button class=&amp;quot;gmgai-copy-btn&amp;quot; data-code=&amp;quot;' + esc(encodeURIComponent(a.code)) + '&amp;quot; style=&amp;quot;background:#FFFFFF;border:1px solid #D1D5DB;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer&amp;quot;&amp;gt;Copy Code&amp;lt;/button&amp;gt;';
+                h += '&amp;lt;/div&amp;gt;';
+                h += '&amp;lt;pre class=&amp;quot;gmgai-diff&amp;quot; style=&amp;quot;margin:0;border-radius:0 0 6px 6px;font-family:ui-monospace,Menlo,monospace;font-size:12px;max-height:220px;overflow:auto&amp;quot;&amp;gt;&amp;lt;code&amp;gt;' + esc(a.code) + '&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;';
+                h += '&amp;lt;/div&amp;gt;';
             }
 
             if (a.instructions) {
                 var warnStyle = a.is_background ? 'background:#FEF2F2;border:1px solid #FCA5A5;color:#991B1B' : 'background:#FFFBEB;border:1px solid #FCD34D;color:#92400E';
-                h += '&lt;div style="' + warnStyle + ';border-radius:6px;padding:5px 7px;margin:4px 0;font-size:13px"&gt;' + esc(a.instructions) + '&lt;/div&gt;';
+                h += '&amp;lt;div style=&amp;quot;' + warnStyle + ';border-radius:6px;padding:5px 7px;margin:4px 0;font-size:13px&amp;quot;&amp;gt;' + esc(a.instructions) + '&amp;lt;/div&amp;gt;';
             }
 
-            if (a.can_accept &amp;&amp; a.status == 'pending') {
+            if (a.can_accept &amp;amp;&amp;amp; a.status == 'pending') {
                 var actId = a.pending_action_id || a.id;
-                h += '&lt;div class="meta" style="margin-top:6px;color:#15803D"&gt;Bound to open record ' + esc(a.bound_table) + ' ' + esc(a.bound_sys_id) + '. Click Accept to apply.&lt;/div&gt;';
-                h += '&lt;div class="gmgai-act" data-act="' + esc(actId) + '"&gt;&lt;button class="gmgai-ok" data-v="confirm"&gt;Accept&lt;/button&gt;&lt;button class="gmgai-no" data-v="reject"&gt;Reject&lt;/button&gt;&lt;/div&gt;';
+                h += '&amp;lt;div class=&amp;quot;meta&amp;quot; style=&amp;quot;margin-top:6px;color:#15803D&amp;quot;&amp;gt;Bound to open record ' + esc(a.bound_table) + ' ' + esc(a.bound_sys_id) + '. Click Accept to apply.&amp;lt;/div&amp;gt;';
+                h += '&amp;lt;div class=&amp;quot;gmgai-act&amp;quot; data-act=&amp;quot;' + esc(actId) + '&amp;quot;&amp;gt;&amp;lt;button class=&amp;quot;gmgai-ok&amp;quot; data-v=&amp;quot;confirm&amp;quot;&amp;gt;Accept&amp;lt;/button&amp;gt;&amp;lt;button class=&amp;quot;gmgai-no&amp;quot; data-v=&amp;quot;reject&amp;quot;&amp;gt;Reject&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;';
             }
-            return h + '&lt;/div&gt;';
+            return h + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'record') {
-            h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc(a.target || '') + '&lt;/h4&gt;';
-            h += '&lt;div class="meta"&gt;Record: &lt;a href="' + esc(a.record_link) + '" target="_blank"&gt;' + esc(a.record || '') + '&lt;/a&gt; (' + esc(a.table) + ')&lt;/div&gt;';
-            if (a.customer_visible) h += '&lt;div style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px"&gt;&lt;b&gt;' + WARN_ICO + ' Customer-visible.&lt;/b&gt; This goes into Additional comments and is shown to the caller / customer (and may notify them by email).&lt;/div&gt;';
-            if (a.state_change) h += '&lt;div style="background:#fffbeb;border:1px solid #fcd34d;color:#92400e;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px"&gt;&lt;b&gt;State change.&lt;/b&gt; ' + esc(a.state_change) + '&lt;/div&gt;';
-            if (a.rec == 'journal') h += '&lt;div class="meta"&gt;' + esc(a.field == 'comments' ? 'Additional comments' : 'Work notes (internal)') + ':&lt;/div&gt;&lt;div class="gmgai-diff" style="white-space:pre-wrap"&gt;' + esc(a.text || '') + '&lt;/div&gt;';
+            h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc(a.target || '') + '&amp;lt;/h4&amp;gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;Record: &amp;lt;a href=&amp;quot;' + esc(a.record_link) + '&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;' + esc(a.record || '') + '&amp;lt;/a&amp;gt; (' + esc(a.table) + ')&amp;lt;/div&amp;gt;';
+            if (a.customer_visible) h += '&amp;lt;div style=&amp;quot;background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px&amp;quot;&amp;gt;&amp;lt;b&amp;gt;' + WARN_ICO + ' Customer-visible.&amp;lt;/b&amp;gt; This goes into Additional comments and is shown to the caller / customer (and may notify them by email).&amp;lt;/div&amp;gt;';
+            if (a.state_change) h += '&amp;lt;div style=&amp;quot;background:#fffbeb;border:1px solid #fcd34d;color:#92400e;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px&amp;quot;&amp;gt;&amp;lt;b&amp;gt;State change.&amp;lt;/b&amp;gt; ' + esc(a.state_change) + '&amp;lt;/div&amp;gt;';
+            if (a.rec == 'journal') h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;' + esc(a.field == 'comments' ? 'Additional comments' : 'Work notes (internal)') + ':&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;quot;gmgai-diff&amp;quot; style=&amp;quot;white-space:pre-wrap&amp;quot;&amp;gt;' + esc(a.text || '') + '&amp;lt;/div&amp;gt;';
             else h += changeCard(a.diff_lines);
-            h += '&lt;div class="meta" style="color:#6b7280"&gt;' + esc(a.data_warning || '') + '&lt;/div&gt;';
-            return h + actionFooter(a, 'Open record') + '&lt;/div&gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot; style=&amp;quot;color:#6b7280&amp;quot;&amp;gt;' + esc(a.data_warning || '') + '&amp;lt;/div&amp;gt;';
+            return h + actionFooter(a, 'Open record') + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'atf') {
-            h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc(a.target || '') + '&lt;/h4&gt;&lt;div class="meta"&gt;' + esc(a.atf == 'runner' ? 'global \u00b7 needs admin' : 'global \u00b7 needs admin or atf_test_designer') + '&lt;/div&gt;';
-            if (a.update_set) h += '&lt;div class="meta"&gt;Update set: &lt;b&gt;' + esc(a.update_set) + '&lt;/b&gt;' + (a.atf == 'test' ? ' \u00b7 created inactive' : '') + '&lt;/div&gt;';
-            if (a.atf == 'run' &amp;&amp; a.inactive &amp;&amp; a.status == 'pending') h += '&lt;div class="meta"&gt;&lt;label&gt;&lt;input type="checkbox" class="gmgai-atfact" data-id="' + esc(a.id) + '"' + (a.activate ? ' checked' : '') + '&gt; Activate the test before running&lt;/label&gt;&lt;/div&gt;';
-            if (a.needs_ui &amp;&amp; a.atf == 'run' &amp;&amp; !a.client_runner_open) h += '&lt;div style="background:#fffbeb;border:1px solid #fcd34d;color:#92400e;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px"&gt;UI steps need an open Client Test Runner. Without one the run is refused; nothing is faked.&lt;/div&gt;';
+            h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc(a.target || '') + '&amp;lt;/h4&amp;gt;&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;' + esc(a.atf == 'runner' ? 'global \u00b7 needs admin' : 'global \u00b7 needs admin or atf_test_designer') + '&amp;lt;/div&amp;gt;';
+            if (a.update_set) h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;Update set: &amp;lt;b&amp;gt;' + esc(a.update_set) + '&amp;lt;/b&amp;gt;' + (a.atf == 'test' ? ' \u00b7 created inactive' : '') + '&amp;lt;/div&amp;gt;';
+            if (a.atf == 'run' &amp;amp;&amp;amp; a.inactive &amp;amp;&amp;amp; a.status == 'pending') h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;&amp;lt;label&amp;gt;&amp;lt;input type=&amp;quot;checkbox&amp;quot; class=&amp;quot;gmgai-atfact&amp;quot; data-id=&amp;quot;' + esc(a.id) + '&amp;quot;' + (a.activate ? ' checked' : '') + '&amp;gt; Activate the test before running&amp;lt;/label&amp;gt;&amp;lt;/div&amp;gt;';
+            if (a.needs_ui &amp;amp;&amp;amp; a.atf == 'run' &amp;amp;&amp;amp; !a.client_runner_open) h += '&amp;lt;div style=&amp;quot;background:#fffbeb;border:1px solid #fcd34d;color:#92400e;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px&amp;quot;&amp;gt;UI steps need an open Client Test Runner. Without one the run is refused; nothing is faked.&amp;lt;/div&amp;gt;';
             h += changeCard(a.diff_lines);
-            return h + actionFooter(a, 'Open') + '&lt;/div&gt;';
+            return h + actionFooter(a, 'Open') + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'meta') {
-            h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc(a.target || '') + '&lt;/h4&gt;&lt;div class="meta"&gt;' + esc('global \u00b7 needs ' + (a.roles || 'admin')) + '&lt;/div&gt;';
-            h += '&lt;div class="meta"&gt;Update set: &lt;b&gt;' + esc(a.update_set || '') + '&lt;/b&gt;' + (a.update_set_auto ? ' (continues your previous step)' : ' (new)') + '&lt;/div&gt;';
-            if (a.update_set_auto &amp;&amp; a.status == 'pending') h += '&lt;div class="meta"&gt;&lt;label&gt;&lt;input type="checkbox" class="gmgai-newus" data-id="' + esc(a.id) + '"&gt; Use a new update set instead&lt;/label&gt;&lt;/div&gt;';
-            if (a.warning) h += '&lt;div style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px"&gt;&lt;b&gt;' + WARN_ICO + ' Irreversible schema change.&lt;/b&gt; ' + esc(a.warning) + ' Backing out the update set may not be fully clean: out-of-box form sections can need "Keep Current" in the backout problems, and form elements can be left behind and need manual cleanup. Back Out only appears once your application scope is switched to Global.&lt;/div&gt;';
+            h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc(a.target || '') + '&amp;lt;/h4&amp;gt;&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;' + esc('global \u00b7 needs ' + (a.roles || 'admin')) + '&amp;lt;/div&amp;gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;Update set: &amp;lt;b&amp;gt;' + esc(a.update_set || '') + '&amp;lt;/b&amp;gt;' + (a.update_set_auto ? ' (continues your previous step)' : ' (new)') + '&amp;lt;/div&amp;gt;';
+            if (a.update_set_auto &amp;amp;&amp;amp; a.status == 'pending') h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;&amp;lt;label&amp;gt;&amp;lt;input type=&amp;quot;checkbox&amp;quot; class=&amp;quot;gmgai-newus&amp;quot; data-id=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt; Use a new update set instead&amp;lt;/label&amp;gt;&amp;lt;/div&amp;gt;';
+            if (a.warning) h += '&amp;lt;div style=&amp;quot;background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px&amp;quot;&amp;gt;&amp;lt;b&amp;gt;' + WARN_ICO + ' Irreversible schema change.&amp;lt;/b&amp;gt; ' + esc(a.warning) + ' Backing out the update set may not be fully clean: out-of-box form sections can need &amp;quot;Keep Current&amp;quot; in the backout problems, and form elements can be left behind and need manual cleanup. Back Out only appears once your application scope is switched to Global.&amp;lt;/div&amp;gt;';
             h += changeCard(a.diff_lines);
-            return h + actionFooter(a, 'Open') + '&lt;/div&gt;';
+            return h + actionFooter(a, 'Open') + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'catalog_item_edit') {
-            h = '&lt;div class="gmgai-card" data-act="' + esc(a.id) + '"&gt;&lt;h4&gt;' + esc('Edit catalog item: ' + (a.target || '')) + '&lt;/h4&gt;&lt;div class="meta"&gt;needs catalog_admin \u00b7 applied in a new update set&lt;/div&gt;';
+            h = '&amp;lt;div class=&amp;quot;gmgai-card&amp;quot; data-act=&amp;quot;' + esc(a.id) + '&amp;quot;&amp;gt;&amp;lt;h4&amp;gt;' + esc('Edit catalog item: ' + (a.target || '')) + '&amp;lt;/h4&amp;gt;&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;needs catalog_admin \u00b7 applied in a new update set&amp;lt;/div&amp;gt;';
             h += changeCard(a.diff_lines);
-            if (a.picture &amp;&amp; a.picture.url) h += '&lt;div class="meta" style="margin-top:4px"&gt;&lt;img src="' + esc(a.picture.url) + '" referrerpolicy="no-referrer" style="max-width:160px;max-height:110px;border:1px solid #e5e7eb;border-radius:6px;display:block;margin-bottom:2px" onerror="this.style.display=\'none\'"&gt;' +
-                'Image: &lt;a href="' + esc(a.picture.url) + '" target="_blank" rel="noopener"&gt;' + esc(a.picture.url.length &gt; 70 ? a.picture.url.substring(0, 70) + '\u2026' : a.picture.url) + '&lt;/a&gt;&lt;br&gt;Source: ' + esc(a.picture.source || a.picture.host || '') + '&lt;/div&gt;';
-            return h + actionFooter(a, 'Open catalog item') + '&lt;/div&gt;';
+            if (a.picture &amp;amp;&amp;amp; a.picture.url) h += '&amp;lt;div class=&amp;quot;meta&amp;quot; style=&amp;quot;margin-top:4px&amp;quot;&amp;gt;&amp;lt;img src=&amp;quot;' + esc(a.picture.url) + '&amp;quot; referrerpolicy=&amp;quot;no-referrer&amp;quot; style=&amp;quot;max-width:160px;max-height:110px;border:1px solid #e5e7eb;border-radius:6px;display:block;margin-bottom:2px&amp;quot; onerror=&amp;quot;this.style.display=\'none\'&amp;quot;&amp;gt;' +
+                'Image: &amp;lt;a href=&amp;quot;' + esc(a.picture.url) + '&amp;quot; target=&amp;quot;_blank&amp;quot; rel=&amp;quot;noopener&amp;quot;&amp;gt;' + esc(a.picture.url.length &amp;gt; 70 ? a.picture.url.substring(0, 70) + '\u2026' : a.picture.url) + '&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;Source: ' + esc(a.picture.source || a.picture.host || '') + '&amp;lt;/div&amp;gt;';
+            return h + actionFooter(a, 'Open catalog item') + '&amp;lt;/div&amp;gt;';
         }
         if (a.type == 'catalog_item') {
             var it = a.item || {};
-            h += '&lt;div class="meta"&gt;' + esc('Catalog ' + (it.catalog || '') + ' \u00b7 category ' + (it.category || '(none)') + ' \u00b7 created inactive \u00b7 needs catalog_admin') + '&lt;/div&gt;';
-            if (it.short_description) h += '&lt;div class="meta"&gt;' + esc(it.short_description) + '&lt;/div&gt;';
-            h += '&lt;table class="gmgai-vt"&gt;&lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Label&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Type&lt;/th&gt;&lt;th&gt;Req&lt;/th&gt;&lt;/tr&gt;' + (a.variables || []).map(function(x) {
-                return '&lt;tr&gt;&lt;td&gt;' + esc(x.order) + '&lt;/td&gt;&lt;td&gt;' + esc(x.label) + '&lt;/td&gt;&lt;td&gt;&lt;code&gt;' + esc(x.name) + '&lt;/code&gt;&lt;/td&gt;&lt;td&gt;' + esc(x.type + (x.reference ? ' \u2192 ' + x.reference : '')) + '&lt;/td&gt;&lt;td&gt;' + (x.mandatory ? '\u2714' : '') + '&lt;/td&gt;&lt;/tr&gt;' +
-                    ((x.choices || []).length ? '&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan="4" style="color:#6b7280"&gt;' + esc('Choices: ' + x.choices.map(function(c) { return c.text + ' (' + c.value + ')'; }).join(', ')) + '&lt;/td&gt;&lt;/tr&gt;' : '');
-            }).join('') + '&lt;/table&gt;';
-            return h + actionFooter(a, 'Open catalog item') + '&lt;/div&gt;';
+            h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;' + esc('Catalog ' + (it.catalog || '') + ' \u00b7 category ' + (it.category || '(none)') + ' \u00b7 created inactive \u00b7 needs catalog_admin') + '&amp;lt;/div&amp;gt;';
+            if (it.short_description) h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;' + esc(it.short_description) + '&amp;lt;/div&amp;gt;';
+            h += '&amp;lt;table class=&amp;quot;gmgai-vt&amp;quot;&amp;gt;&amp;lt;tr&amp;gt;&amp;lt;th&amp;gt;#&amp;lt;/th&amp;gt;&amp;lt;th&amp;gt;Label&amp;lt;/th&amp;gt;&amp;lt;th&amp;gt;Name&amp;lt;/th&amp;gt;&amp;lt;th&amp;gt;Type&amp;lt;/th&amp;gt;&amp;lt;th&amp;gt;Req&amp;lt;/th&amp;gt;&amp;lt;/tr&amp;gt;' + (a.variables || []).map(function(x) {
+                return '&amp;lt;tr&amp;gt;&amp;lt;td&amp;gt;' + esc(x.order) + '&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;' + esc(x.label) + '&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;&amp;lt;code&amp;gt;' + esc(x.name) + '&amp;lt;/code&amp;gt;&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;' + esc(x.type + (x.reference ? ' \u2192 ' + x.reference : '')) + '&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;' + (x.mandatory ? '\u2714' : '') + '&amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;' +
+                    ((x.choices || []).length ? '&amp;lt;tr&amp;gt;&amp;lt;td&amp;gt;&amp;lt;/td&amp;gt;&amp;lt;td colspan=&amp;quot;4&amp;quot; style=&amp;quot;color:#6b7280&amp;quot;&amp;gt;' + esc('Choices: ' + x.choices.map(function(c) { return c.text + ' (' + c.value + ')'; }).join(', ')) + '&amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;' : '');
+            }).join('') + '&amp;lt;/table&amp;gt;';
+            return h + actionFooter(a, 'Open catalog item') + '&amp;lt;/div&amp;gt;';
         }
         var f = a.fields || {}, meta = [];
         if (f.collection || f.table) meta.push('table ' + (f.collection || f.table));
@@ -1252,23 +1252,23 @@ GMGAIApplier.prototype = {
         if (f.condition) meta.push('condition: ' + f.condition);
         if (f.filter_condition) meta.push('filter: ' + f.filter_condition);
         if (a.scope) meta.push('scope ' + a.scope);   // 2026-10-19: no 'scope undefined' when a card carries no scope
-        if (a.operation == 'create' &amp;&amp; f.active == 'false') meta.push('created inactive');
-        h += '&lt;div class="meta"&gt;' + esc(meta.join(' \u00b7 ')) + '&lt;/div&gt;';
-        if (a.update_set) h += '&lt;div class="meta gmgai-us"&gt;Update set: &lt;b&gt;' + esc(a.update_set) + '&lt;/b&gt;' + (a.update_set_new ? ' (new; created when you Accept)' : '') + '&lt;/div&gt;';   // shown before Accept
-        var dl = a.diff_lines &amp;&amp; a.diff_lines.length ? a.diff_lines : a.diff ? String(a.diff).split('\n') : null;   // core artifact cards carry diff_lines (they showed no diff)
+        if (a.operation == 'create' &amp;amp;&amp;amp; f.active == 'false') meta.push('created inactive');
+        h += '&amp;lt;div class=&amp;quot;meta&amp;quot;&amp;gt;' + esc(meta.join(' \u00b7 ')) + '&amp;lt;/div&amp;gt;';
+        if (a.update_set) h += '&amp;lt;div class=&amp;quot;meta gmgai-us&amp;quot;&amp;gt;Update set: &amp;lt;b&amp;gt;' + esc(a.update_set) + '&amp;lt;/b&amp;gt;' + (a.update_set_new ? ' (new; created when you Accept)' : '') + '&amp;lt;/div&amp;gt;';   // shown before Accept
+        var dl = a.diff_lines &amp;amp;&amp;amp; a.diff_lines.length ? a.diff_lines : a.diff ? String(a.diff).split('\n') : null;   // core artifact cards carry diff_lines (they showed no diff)
         if (dl) h += changeCard(dl);
-        else if (a.status == 'pending') h += '&lt;div class="gmgai-cn"&gt;No change preview is available for this card.&lt;/div&gt;';
-        return h + actionFooter(a, 'Open record') + '&lt;/div&gt;';
+        else if (a.status == 'pending') h += '&amp;lt;div class=&amp;quot;gmgai-cn&amp;quot;&amp;gt;No change preview is available for this card.&amp;lt;/div&amp;gt;';
+        return h + actionFooter(a, 'Open record') + '&amp;lt;/div&amp;gt;';
     }
     /* design review final (2): Reviewer notes are plain text everywhere. Markdown emphasis/links/code markers are dropped (not rendered, not shown
      * as raw stars); line breaks kept. The result is still escaped / set as textContent by the caller. */
     function plainNotes(s) { return String(s == null ? '' : s)
-        .replace(/!?\[([^\]\n]*)\]\([^)\n]*\)/g, '$1')                       // [text](url) / ![alt](src) -&gt; text
+        .replace(/!?\[([^\]\n]*)\]\([^)\n]*\)/g, '$1')                       // [text](url) / ![alt](src) -&amp;gt; text
         .replace(/\*\*(?=\S)([\s\S]*?\S)\*\*/g, '$1').replace(/(^|[^\w])__(?=\S)([\s\S]*?\S)__(?!\w)/g, '$1$2') // **bold** / __bold__ (window.__x kept)
         .replace(/(^|[^\w*])\*(?=\S)([^*\n]*?\S)\*(?!\w)/g, '$1$2')           // *italic*
         .replace(/(^|[^\w])_(?=\S)([^\n]*?[^\s_])_(?!\w)/g, '$1$2')              // _italic_ (snake_case kept)
         .replace(/~~(?=\S)([^~\n]*?\S)~~/g, '$1').replace(/`+([^`\n]+)`+/g, '$1') // ~~strike~~, `code`
-        .replace(/^[ \t]{0,3}#{1,6}[ \t]+/gm, '').replace(/^[ \t]{0,3}&gt;[ \t]?/gm, '') // # headings, &gt; quotes
+        .replace(/^[ \t]{0,3}#{1,6}[ \t]+/gm, '').replace(/^[ \t]{0,3}&amp;gt;[ \t]?/gm, '') // # headings, &amp;gt; quotes
         .replace(/\*\*/g, ''); }                                              // leftover unpaired **
     /* Reviewer result on team proposals (fields come from the build's actions; absent on single-agent cards, so nothing changes there).
      * review_state: pending_review | passed | rejected; review_notes: Reviewer notes and findings (plain text, escaped). */
@@ -1277,20 +1277,20 @@ GMGAIApplier.prototype = {
         var st = {pending_review: ['Waiting for the Reviewer', '#6b7280', '#f3f4f6', false], passed: ['\u2714 Reviewer passed', '#15803d', '#f0fdf4', false],
                   rejected: ['Didn\u2019t pass after 2 tries', '#92400e', '#fef3c7', true]}[a.review_state] || [a.review_state, '#374151', '#f3f4f6', false];
         /* design review ruling (3): the not-passed reason uses the page's amber callout (3px bar var(--note-bar), var(--note-bg), 14px/600 head, 16px reason) */
-        if (a.review_state == 'rejected') return '&lt;div class="gmgai-review gmgai-rv-note" role="note"&gt;&lt;p class="gmgai-rv-head"&gt;' + esc(st[0]) + '&lt;/p&gt;' + (a.review_notes ? '&lt;p class="gmgai-rv-body"&gt;' + esc(plainNotes(a.review_notes)) + '&lt;/p&gt;' : '') + '&lt;/div&gt;';
-        return '&lt;div class="gmgai-review" style="font-size:14px;color:' + st[1] + ';background:' + st[2] + ';padding:4px 6px;border-radius:4px;margin-top:4px"&gt;' +
-            '&lt;b&gt;' + (st[3] ? WARN_ICO + ' ' : '') + esc(st[0]) + '&lt;/b&gt;' + (a.review_notes ? '&lt;div style="white-space:pre-wrap;margin-top:2px"&gt;' + esc(plainNotes(a.review_notes)) + '&lt;/div&gt;' : '') + '&lt;/div&gt;';
+        if (a.review_state == 'rejected') return '&amp;lt;div class=&amp;quot;gmgai-review gmgai-rv-note&amp;quot; role=&amp;quot;note&amp;quot;&amp;gt;&amp;lt;p class=&amp;quot;gmgai-rv-head&amp;quot;&amp;gt;' + esc(st[0]) + '&amp;lt;/p&amp;gt;' + (a.review_notes ? '&amp;lt;p class=&amp;quot;gmgai-rv-body&amp;quot;&amp;gt;' + esc(plainNotes(a.review_notes)) + '&amp;lt;/p&amp;gt;' : '') + '&amp;lt;/div&amp;gt;';
+        return '&amp;lt;div class=&amp;quot;gmgai-review&amp;quot; style=&amp;quot;font-size:14px;color:' + st[1] + ';background:' + st[2] + ';padding:4px 6px;border-radius:4px;margin-top:4px&amp;quot;&amp;gt;' +
+            '&amp;lt;b&amp;gt;' + (st[3] ? WARN_ICO + ' ' : '') + esc(st[0]) + '&amp;lt;/b&amp;gt;' + (a.review_notes ? '&amp;lt;div style=&amp;quot;white-space:pre-wrap;margin-top:2px&amp;quot;&amp;gt;' + esc(plainNotes(a.review_notes)) + '&amp;lt;/div&amp;gt;' : '') + '&amp;lt;/div&amp;gt;';
     }
     /* Applied-card links: a string path or nothing, never 'undefined'. A card without a server link may get one from a panel extension's
      * cardLink hook (same safeLink allowlist); otherwise it renders no link at all. */
     /* AC-R1.10 (+addendum 2: no dot segments / %2e; nav_to whole-string): only same-origin app links: no backslash, control char or encoded slash/backslash; ^/ not // or /\; allowlisted prefixes. */
-    function safeLink(u) { u = typeof u == 'string' ? u : ''; if (!(/^\/(?![\/\\])/.test(u) &amp;&amp; !/[\\\x00-\x1f\x7f\s"'&lt;&gt;]|%2f|%5c|undefined|null/i.test(u) &amp;&amp; !/\.\.|\/\.\/|\/\.$|%2e/i.test(u) &amp;&amp; (/^\/nav_to\.do\?/.test(u) ? /^\/nav_to\.do\?uri=x_gmg_ai_[a-z0-9_]+\.do(%3F[A-Za-z0-9_.%-]*)?$/.test(u) : /^\/sys_update_set\.do\?sys_id=[0-9a-f]{32}$/.test(u) || /^\/(?:now\/workflow-studio\/builder\?|x_gmg_ai_)/.test(u) || /^\/[a-z][a-z0-9_]{0,79}\.do\?sys_id=[0-9a-f]{32}$/.test(u)))) return ''; try { if (typeof location != 'undefined' &amp;&amp; location.origin &amp;&amp; new URL(u, location.origin).origin !== location.origin) return ''; } catch (e) { return ''; } return u; }   // the URL same-origin check is browser-only and runs after it
+    function safeLink(u) { u = typeof u == 'string' ? u : ''; if (!(/^\/(?![\/\\])/.test(u) &amp;amp;&amp;amp; !/[\\\x00-\x1f\x7f\s&amp;quot;'&amp;lt;&amp;gt;]|%2f|%5c|undefined|null/i.test(u) &amp;amp;&amp;amp; !/\.\.|\/\.\/|\/\.$|%2e/i.test(u) &amp;amp;&amp;amp; (/^\/nav_to\.do\?/.test(u) ? /^\/nav_to\.do\?uri=x_gmg_ai_[a-z0-9_]+\.do(%3F[A-Za-z0-9_.%-]*)?$/.test(u) : /^\/sys_update_set\.do\?sys_id=[0-9a-f]{32}$/.test(u) || /^\/(?:now\/workflow-studio\/builder\?|x_gmg_ai_)/.test(u) || /^\/[a-z][a-z0-9_]{0,79}\.do\?sys_id=[0-9a-f]{32}$/.test(u)))) return ''; try { if (typeof location != 'undefined' &amp;amp;&amp;amp; location.origin &amp;amp;&amp;amp; new URL(u, location.origin).origin !== location.origin) return ''; } catch (e) { return ''; } return u; }   // the URL same-origin check is browser-only and runs after it
     function openLink(a) {
         var l = safeLink(a.link); if (l) return l;
         var id = String(a.target_sys_id || a.sys_id || '');
         if (!SYSID_RE.test(id)) return '';
         var hl = hook('cardLink', [copy(a)]);   // os-cleanup: extension-supplied link (e.g. paid flow cards); still only an allowlisted same-origin path
-        for (var i = 0; i &lt; hl.length; i++) { var x = safeLink(hl[i]); if (x) return x; }
+        for (var i = 0; i &amp;lt; hl.length; i++) { var x = safeLink(hl[i]); if (x) return x; }
         return '';
     }
     /* a card that didn't pass review has no Accept button at all (ActionService.confirm also returns 409).
@@ -1299,13 +1299,13 @@ GMGAIApplier.prototype = {
         if (a.review_gate || a.out_of_date) return false;
         var rs = String(a.review_state || '');
         if (rs == 'rejected' || rs == 'pending_review') return false;
-        if (a.review_route == 'reviewer' &amp;&amp; rs != 'passed') return false;
+        if (a.review_route == 'reviewer' &amp;amp;&amp;amp; rs != 'passed') return false;
         return true;
     }
-    /* design review ruling (3): local time, e.g. 'Expires at 12:20 PM CT' (expires_ms from the server; generic zone name, CDT/CST -&gt; CT) */
+    /* design review ruling (3): local time, e.g. 'Expires at 12:20 PM CT' (expires_ms from the server; generic zone name, CDT/CST -&amp;gt; CT) */
     function expiresText(a) {
-        var ms = Number(a &amp;&amp; a.expires_ms);
-        if (!(ms &gt; 0)) return 'Expires ' + String((a &amp;&amp; a.expires) || 'in 30 min');
+        var ms = Number(a &amp;amp;&amp;amp; a.expires_ms);
+        if (!(ms &amp;gt; 0)) return 'Expires ' + String((a &amp;amp;&amp;amp; a.expires) || 'in 30 min');
         var d = new Date(ms), t;
         try { t = d.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit', timeZoneName: 'shortGeneric'}); }
         catch (e) { t = d.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit', timeZoneName: 'short'}).replace(/\b([A-Z])[DS]T\b/, '$1T'); }
@@ -1313,28 +1313,28 @@ GMGAIApplier.prototype = {
     }
     function actionFooter(a, openLabel) {
         var h = reviewBlock(a);
-        if (a.live_warning) h += '&lt;div class="gmgai-live" style="background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px"&gt;&lt;b&gt;Live change.&lt;/b&gt; ' + esc(a.live_warning) + '&lt;/div&gt;';   // step 8
+        if (a.live_warning) h += '&amp;lt;div class=&amp;quot;gmgai-live&amp;quot; style=&amp;quot;background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;border-radius:6px;padding:5px 7px;margin:4px 0;font-size:14px&amp;quot;&amp;gt;&amp;lt;b&amp;gt;Live change.&amp;lt;/b&amp;gt; ' + esc(a.live_warning) + '&amp;lt;/div&amp;gt;';   // step 8
         if (a.status == 'pending_review') return h;   // no Confirm until the Reviewer has passed it (ActionService also refuses non-pending)
-        if (a.status == 'superseded') return h + '&lt;div class="gmgai-st" style="color:#6b7280"&gt;Superseded by a revised proposal (kept, not deleted).&lt;/div&gt;';
-        if (a.status == 'pending' &amp;&amp; a.out_of_date) h += outOfDate(a);   // f25 design review: info, not red; Reject stays below
-        if (a.status == 'pending') h += '&lt;div class="gmgai-act"&gt;' + (canAccept(a) ? '&lt;button class="gmgai-ok" data-v="confirm"&gt;Accept&lt;/button&gt;' : '') + '&lt;button class="gmgai-no" data-v="reject"&gt;Reject&lt;/button&gt;' +
-            '&lt;span class="gmgai-exp" style="font-size:14px;align-self:center"&gt;' + esc(expiresText(a)) + '&lt;/span&gt;&lt;/div&gt;';
-        else if (a.status == 'working') h += '&lt;div class="gmgai-st"&gt;Applying\u2026&lt;/div&gt;';
+        if (a.status == 'superseded') return h + '&amp;lt;div class=&amp;quot;gmgai-st&amp;quot; style=&amp;quot;color:#6b7280&amp;quot;&amp;gt;Superseded by a revised proposal (kept, not deleted).&amp;lt;/div&amp;gt;';
+        if (a.status == 'pending' &amp;amp;&amp;amp; a.out_of_date) h += outOfDate(a);   // f25 design review: info, not red; Reject stays below
+        if (a.status == 'pending') h += '&amp;lt;div class=&amp;quot;gmgai-act&amp;quot;&amp;gt;' + (canAccept(a) ? '&amp;lt;button class=&amp;quot;gmgai-ok&amp;quot; data-v=&amp;quot;confirm&amp;quot;&amp;gt;Accept&amp;lt;/button&amp;gt;' : '') + '&amp;lt;button class=&amp;quot;gmgai-no&amp;quot; data-v=&amp;quot;reject&amp;quot;&amp;gt;Reject&amp;lt;/button&amp;gt;' +
+            '&amp;lt;span class=&amp;quot;gmgai-exp&amp;quot; style=&amp;quot;font-size:14px;align-self:center&amp;quot;&amp;gt;' + esc(expiresText(a)) + '&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;';
+        else if (a.status == 'working') h += '&amp;lt;div class=&amp;quot;gmgai-st&amp;quot;&amp;gt;Applying\u2026&amp;lt;/div&amp;gt;';
         else if (a.status == 'applied') { var ol = openLink(a), ul = safeLink(a.update_set_link);
-            h += '&lt;div class="gmgai-st" style="color:#15803d"&gt;\u2714 Applied.' + (ol ? ' &lt;a href="' + esc(ol) + '" target="_blank"&gt;' + esc(openLabel) + '&lt;/a&gt;' : '') +
-                (ul ? ' \u00b7 &lt;a href="' + esc(ul) + '" target="_blank"&gt;' + esc(a.update_set_name || 'Update set') + '&lt;/a&gt;' : /^record_/.test(String(a.type || '')) ? ' \u00b7 data write (no update set)' : '') + '&lt;/div&gt;'; }
-        else if (a.status == 'refused') h += '&lt;div class="gmgai-st" style="color:#92400e;background:#fef3c7;padding:4px 6px;border-radius:4px"&gt;' + STOP_SVG + 'Not allowed: ' + esc(a.error || 'you do not have permission to accept this change.') + '&lt;/div&gt;';
-        else h += '&lt;div class="gmgai-st" style="color:#991b1b"&gt;' + esc(a.status) + (a.error ? ': ' + a.error : '') + '&lt;/div&gt;';
+            h += '&amp;lt;div class=&amp;quot;gmgai-st&amp;quot; style=&amp;quot;color:#15803d&amp;quot;&amp;gt;\u2714 Applied.' + (ol ? ' &amp;lt;a href=&amp;quot;' + esc(ol) + '&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;' + esc(openLabel) + '&amp;lt;/a&amp;gt;' : '') +
+                (ul ? ' \u00b7 &amp;lt;a href=&amp;quot;' + esc(ul) + '&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;' + esc(a.update_set_name || 'Update set') + '&amp;lt;/a&amp;gt;' : /^record_/.test(String(a.type || '')) ? ' \u00b7 data write (no update set)' : '') + '&amp;lt;/div&amp;gt;'; }
+        else if (a.status == 'refused') h += '&amp;lt;div class=&amp;quot;gmgai-st&amp;quot; style=&amp;quot;color:#92400e;background:#fef3c7;padding:4px 6px;border-radius:4px&amp;quot;&amp;gt;' + STOP_SVG + 'Not allowed: ' + esc(a.error || 'you do not have permission to accept this change.') + '&amp;lt;/div&amp;gt;';
+        else h += '&amp;lt;div class=&amp;quot;gmgai-st&amp;quot; style=&amp;quot;color:#991b1b&amp;quot;&amp;gt;' + esc(a.status) + (a.error ? ': ' + a.error : '') + '&amp;lt;/div&amp;gt;';
         return h;
     }
     /* f25 (design review wording): a card whose stored hash predates the current canon. Still 409 on Accept; 14px secondary text + info icon;
      * 'Ask again' resends the request that produced the card when we still have it. */
     function askText(id) { var s = load(), t = ''; (s.messages || []).forEach(function(m, i) { if ((m.actions || []).some(function(a) { return a.id == id; }))
-        for (var k = i - 1; k &gt;= 0 &amp;&amp; !t; k--) if (s.messages[k].role == 'user') t = String(s.messages[k].content || ''); }); return t; }
-    function outOfDate(a) { return '&lt;div class="gmgai-st gmgai-ood" role="note" style="font-size:14px;color:var(--text-secondary)"&gt;' + INFO_SVG + esc(a.error || a.review_gate || '') +
-        (askText(a.id) ? ' &lt;button class="gmgai-ask" data-v="ask_again" style="font-size:14px;background:none;border:0;padding:0;color:var(--text-secondary);text-decoration:underline;cursor:pointer"&gt;Ask again&lt;/button&gt;' : '') + '&lt;/div&gt;'; }
+        for (var k = i - 1; k &amp;gt;= 0 &amp;amp;&amp;amp; !t; k--) if (s.messages[k].role == 'user') t = String(s.messages[k].content || ''); }); return t; }
+    function outOfDate(a) { return '&amp;lt;div class=&amp;quot;gmgai-st gmgai-ood&amp;quot; role=&amp;quot;note&amp;quot; style=&amp;quot;font-size:14px;color:var(--text-secondary)&amp;quot;&amp;gt;' + INFO_SVG + esc(a.error || a.review_gate || '') +
+        (askText(a.id) ? ' &amp;lt;button class=&amp;quot;gmgai-ask&amp;quot; data-v=&amp;quot;ask_again&amp;quot; style=&amp;quot;font-size:14px;background:none;border:0;padding:0;color:var(--text-secondary);text-decoration:underline;cursor:pointer&amp;quot;&amp;gt;Ask again&amp;lt;/button&amp;gt;' : '') + '&amp;lt;/div&amp;gt;'; }
     /* SCREEN-REVIEW #26: say a refusal once. A blocked answer whose card already shows the same refusal renders only the card. */
-    function repeatsCard(m) { var t = String(m.content || '').replace(/^(Refused|Error): /, ''); return !!(m.error &amp;&amp; t &amp;&amp; (m.actions || []).some(function(a) { return a.status == 'refused' &amp;&amp; String(a.error || '') == t; })); }
+    function repeatsCard(m) { var t = String(m.content || '').replace(/^(Refused|Error): /, ''); return !!(m.error &amp;amp;&amp;amp; t &amp;amp;&amp;amp; (m.actions || []).some(function(a) { return a.status == 'refused' &amp;amp;&amp;amp; String(a.error || '') == t; })); }
     function decide(id, verb) {
         var s = load(), act = null, msg = null;
         s.messages.forEach(function(m) { (m.actions || []).forEach(function(a) { if (a.id == id) { act = a; msg = m; } }); });
@@ -1343,16 +1343,16 @@ GMGAIApplier.prototype = {
         if (verb == 'ask_again') { var q = askText(id); if (q) send(q); return; }
         var body = '{}';
         if (act.type == 'flow') {
-            var sel = null; try { sel = top.document.querySelector('select.gmgai-runas[data-id="' + id + '"]') || document.querySelector('select.gmgai-runas[data-id="' + id + '"]'); } catch (e) {}
-            act.run_as = sel &amp;&amp; sel.value == 'user' ? 'user' : (sel ? 'system' : (act.run_as == 'user' ? 'user' : 'system'));
+            var sel = null; try { sel = top.document.querySelector('select.gmgai-runas[data-id=&amp;quot;' + id + '&amp;quot;]') || document.querySelector('select.gmgai-runas[data-id=&amp;quot;' + id + '&amp;quot;]'); } catch (e) {}
+            act.run_as = sel &amp;amp;&amp;amp; sel.value == 'user' ? 'user' : (sel ? 'system' : (act.run_as == 'user' ? 'user' : 'system'));
             body = JSON.stringify({run_as: act.run_as});
         }
-        if (act.type == 'meta' &amp;&amp; verb == 'confirm') {
-            var cb = null; try { cb = top.document.querySelector('input.gmgai-newus[data-id="' + id + '"]') || document.querySelector('input.gmgai-newus[data-id="' + id + '"]'); } catch (e) {}
-            if (cb &amp;&amp; cb.checked) { body = JSON.stringify({new_update_set: true}); act.update_set = act.new_update_set_name || ''; act.update_set_auto = false; }
+        if (act.type == 'meta' &amp;amp;&amp;amp; verb == 'confirm') {
+            var cb = null; try { cb = top.document.querySelector('input.gmgai-newus[data-id=&amp;quot;' + id + '&amp;quot;]') || document.querySelector('input.gmgai-newus[data-id=&amp;quot;' + id + '&amp;quot;]'); } catch (e) {}
+            if (cb &amp;amp;&amp;amp; cb.checked) { body = JSON.stringify({new_update_set: true}); act.update_set = act.new_update_set_name || ''; act.update_set_auto = false; }
         }
-        if (act.type == 'atf' &amp;&amp; act.atf == 'run' &amp;&amp; verb == 'confirm') {
-            var ab = null; try { ab = top.document.querySelector('input.gmgai-atfact[data-id="' + id + '"]') || document.querySelector('input.gmgai-atfact[data-id="' + id + '"]'); } catch (e) {}
+        if (act.type == 'atf' &amp;amp;&amp;amp; act.atf == 'run' &amp;amp;&amp;amp; verb == 'confirm') {
+            var ab = null; try { ab = top.document.querySelector('input.gmgai-atfact[data-id=&amp;quot;' + id + '&amp;quot;]') || document.querySelector('input.gmgai-atfact[data-id=&amp;quot;' + id + '&amp;quot;]'); } catch (e) {}
             if (ab) { act.activate = !!ab.checked; body = JSON.stringify({activate: act.activate}); }
         }
         act.status = 'working'; save(s); render();
@@ -1360,32 +1360,32 @@ GMGAIApplier.prototype = {
             headers: {'Accept': 'application/json', 'Content-Type': 'application/json', 'X-UserToken': top.__gmgaiToken || w.g_ck || ''}, body: body})
             .then(function(r) { return r.json(); }).then(function(j) {
                 var r = j.result || j, st = load();
-                if (verb == 'confirm' &amp;&amp; r.state_changed) {   // step 8: active changed since the card was made; nothing applied, card shown again with the current warning
+                if (verb == 'confirm' &amp;amp;&amp;amp; r.state_changed) {   // step 8: active changed since the card was made; nothing applied, card shown again with the current warning
                     var re = function(a) { if (a.id == id) { a.status = 'pending'; a.error = r.error; a.live_warning = r.live_warning || ''; a.data_warning = r.data_warning || ''; if (r.diff) a.diff_lines = r.diff; } };
                     st.messages.forEach(function(m) { (m.actions || []).forEach(re); }); (st.buildActions || []).forEach(re);
-                    save(st); top.__gmgaiRender &amp;&amp; top.__gmgaiRender(); return; }
-                if (verb == 'confirm' &amp;&amp; r.out_of_date) {   // f25: still refused; keep the card open so Reject stays available
+                    save(st); top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender(); return; }
+                if (verb == 'confirm' &amp;amp;&amp;amp; r.out_of_date) {   // f25: still refused; keep the card open so Reject stays available
                     var mark = function(a) { if (a.id == id) { a.status = 'pending'; a.out_of_date = true; a.error = r.error; } };
                     st.messages.forEach(function(m) { (m.actions || []).forEach(mark); }); (st.buildActions || []).forEach(mark);
-                    save(st); top.__gmgaiRender &amp;&amp; top.__gmgaiRender(); return; }
+                    save(st); top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender(); return; }
                 st.messages.forEach(function(m) { (m.actions || []).forEach(function(a) { if (a.id == id) {
                     a.status = r.status || (r.ok ? 'applied' : 'failed'); a.error = r.error; a.link = r.link; a.target_sys_id = r.sys_id || a.target_sys_id; a.update_set_link = r.update_set_link; a.update_set_name = r.update_set_name; } }); });
                 (st.buildActions || []).forEach(function(a) { if (a.id == id) { a.status = r.status || (r.ok ? 'applied' : 'failed'); a.error = r.error; a.link = r.link; a.target_sys_id = r.sys_id || a.target_sys_id; a.update_set_link = r.update_set_link; a.update_set_name = r.update_set_name; } });
-                if (!(verb == 'confirm' &amp;&amp; r.status == 'refused')) st.messages.push({role: 'assistant', content: verb == 'confirm'
-                    ? (r.ok ? 'Accepted and applied ' + (act.target || '') + ' (' + r.link + ')' + (r.update_set_name ? ' in update set "' + r.update_set_name + '"' : (r.data_write ? ' as a data write (no update set)' : ' (no update set)')) + '.' : (r.status == 'refused' ? 'Refused: ' : 'Apply failed: ') + (r.error || 'unknown error'))
+                if (!(verb == 'confirm' &amp;amp;&amp;amp; r.status == 'refused')) st.messages.push({role: 'assistant', content: verb == 'confirm'
+                    ? (r.ok ? 'Accepted and applied ' + (act.target || '') + ' (' + r.link + ')' + (r.update_set_name ? ' in update set &amp;quot;' + r.update_set_name + '&amp;quot;' : (r.data_write ? ' as a data write (no update set)' : ' (no update set)')) + '.' : (r.status == 'refused' ? 'Refused: ' : 'Apply failed: ') + (r.error || 'unknown error'))
                     : (r.ok ? 'Rejected proposal for ' + (act.target || '') + '. Nothing was changed.' : 'Reject failed: ' + r.error)});
-                save(st); top.__gmgaiRender &amp;&amp; top.__gmgaiRender();
+                save(st); top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender();
                 hook('onConfirmed', [id, r]);   // extension refresh (paid: build cards/strip from the server)
-            })['catch'](function(e) { var st = load(); st.messages.push({role: 'assistant', error: true, content: 'Error: ' + e}); save(st); top.__gmgaiRender &amp;&amp; top.__gmgaiRender(); });
+            })['catch'](function(e) { var st = load(); st.messages.push({role: 'assistant', error: true, content: 'Error: ' + e}); save(st); top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender(); });
     }
 
     /* design review: text-style warning + circle-slash stop (HTML paths). Escaped message content uses \u2715 fallback. */
-    var WARN_ICO = '&lt;span style="color:#B45309" aria-hidden="true"&gt;\u26a0\ufe0e&lt;/span&gt;';
-    var INFO_SVG = '&lt;svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display:inline-block;vertical-align:-2px;margin-right:3px"&gt;&lt;circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/&gt;&lt;line x1="7" y1="6.2" x2="7" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/&gt;&lt;circle cx="7" cy="4.2" r="0.9" fill="currentColor"/&gt;&lt;/svg&gt;';
-    var STOP_SVG = '&lt;svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display:inline-block;vertical-align:-2px;margin-right:3px"&gt;&lt;circle cx="7" cy="7" r="5.5" fill="none" stroke="#B91C1C" stroke-width="1.5"/&gt;&lt;line x1="3.2" y1="3.2" x2="10.8" y2="10.8" stroke="#B91C1C" stroke-width="1.5" stroke-linecap="round"/&gt;&lt;/svg&gt;';
+    var WARN_ICO = '&amp;lt;span style=&amp;quot;color:#B45309&amp;quot; aria-hidden=&amp;quot;true&amp;quot;&amp;gt;\u26a0\ufe0e&amp;lt;/span&amp;gt;';
+    var INFO_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; width=&amp;quot;14&amp;quot; height=&amp;quot;14&amp;quot; viewBox=&amp;quot;0 0 14 14&amp;quot; aria-hidden=&amp;quot;true&amp;quot; style=&amp;quot;display:inline-block;vertical-align:-2px;margin-right:3px&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;7&amp;quot; cy=&amp;quot;7&amp;quot; r=&amp;quot;5.5&amp;quot; fill=&amp;quot;none&amp;quot; stroke=&amp;quot;currentColor&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;7&amp;quot; y1=&amp;quot;6.2&amp;quot; x2=&amp;quot;7&amp;quot; y2=&amp;quot;10&amp;quot; stroke=&amp;quot;currentColor&amp;quot; stroke-width=&amp;quot;1.5&amp;quot; stroke-linecap=&amp;quot;round&amp;quot;/&amp;gt;&amp;lt;circle cx=&amp;quot;7&amp;quot; cy=&amp;quot;4.2&amp;quot; r=&amp;quot;0.9&amp;quot; fill=&amp;quot;currentColor&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
+    var STOP_SVG = '&amp;lt;svg xmlns=&amp;quot;http://www.w3.org/2000/svg&amp;quot; width=&amp;quot;14&amp;quot; height=&amp;quot;14&amp;quot; viewBox=&amp;quot;0 0 14 14&amp;quot; aria-hidden=&amp;quot;true&amp;quot; style=&amp;quot;display:inline-block;vertical-align:-2px;margin-right:3px&amp;quot;&amp;gt;&amp;lt;circle cx=&amp;quot;7&amp;quot; cy=&amp;quot;7&amp;quot; r=&amp;quot;5.5&amp;quot; fill=&amp;quot;none&amp;quot; stroke=&amp;quot;#B91C1C&amp;quot; stroke-width=&amp;quot;1.5&amp;quot;/&amp;gt;&amp;lt;line x1=&amp;quot;3.2&amp;quot; y1=&amp;quot;3.2&amp;quot; x2=&amp;quot;10.8&amp;quot; y2=&amp;quot;10.8&amp;quot; stroke=&amp;quot;#B91C1C&amp;quot; stroke-width=&amp;quot;1.5&amp;quot; stroke-linecap=&amp;quot;round&amp;quot;/&amp;gt;&amp;lt;/svg&amp;gt;';
     var CSS = '.gmgai-select{font-size:11px;padding:3px 6px;border:1px solid #303030;border-radius:6px;background:#181818;color:#F5F5F5;max-width:115px;cursor:pointer;outline:none;text-overflow:ellipsis;white-space:nowrap}' +
         '.gmgai-select:focus{border-color:#168B50}' +
-        '#gmgai-root{position:fixed;right:20px;bottom:20px;z-index:2147483000;font:13px/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}' +
+        '#gmgai-root{position:fixed;right:20px;bottom:20px;z-index:2147483000;font:13px/1.4 Inter,system-ui,-apple-system,&amp;quot;Segoe UI&amp;quot;,Roboto,&amp;quot;Helvetica Neue&amp;quot;,Arial,sans-serif;--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}' +
         '@media (prefers-color-scheme: dark){#gmgai-root{--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}}' +
         '#gmgai-btn{width:54px;height:54px;border-radius:50%;border:1.5px solid #168B50;background:#062617;box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 12px rgba(22,139,80,.4);cursor:pointer;display:grid;place-items:center;padding:0;overflow:hidden;transition:all .18s ease}' +
         '#gmgai-btn:hover{transform:translateY(-2px);border-color:#4ADE80;box-shadow:0 10px 24px rgba(0,0,0,.7),0 0 16px rgba(74,222,128,.5)}' +
@@ -1429,7 +1429,7 @@ GMGAIApplier.prototype = {
         '.gmgai-diff{background:#080808;color:#F5F5F5;border:1px solid #303030;font:11.5px/1.4 ui-monospace,Menlo,monospace;border-radius:6px;padding:6px 8px;max-height:200px;overflow:auto;white-space:pre-wrap}' +
         '.gmgai-chip-inactive{display:inline-block;font-size:11px;line-height:18px;padding:0 6px;border-radius:999px;border:1px solid #303030;color:#A3A3A3;font-weight:500;vertical-align:middle}' +
         '.gmgai-cr s,.gmgai-cr b{white-space:pre-wrap}' +
-        '.gmgai-chg{border:1px solid #303030;border-radius:6px;background:#151515;margin:5px 0;max-height:240px;overflow:auto}.gmgai-cr,.gmgai-cn{padding:5px 8px;border-top:1px solid #262626;font-size:12px;line-height:1.4;word-break:break-word;color:#F5F5F5}.gmgai-chg&gt;div:first-child{border-top:0}' +
+        '.gmgai-chg{border:1px solid #303030;border-radius:6px;background:#151515;margin:5px 0;max-height:240px;overflow:auto}.gmgai-cr,.gmgai-cn{padding:5px 8px;border-top:1px solid #262626;font-size:12px;line-height:1.4;word-break:break-word;color:#F5F5F5}.gmgai-chg&amp;gt;div:first-child{border-top:0}' +
         '.gmgai-cr .f{display:block;font:11px ui-monospace,Menlo,monospace;color:#A3A3A3;margin-bottom:2px}.gmgai-cr s{color:#FCA5A5;background:rgba(185,28,28,.2);border-radius:3px;padding:0 3px}.gmgai-cr b{color:#4ADE80;background:rgba(22,139,80,.2);border-radius:3px;padding:0 3px;font-weight:600}.gmgai-cr .ar{color:#A3A3A3}.gmgai-cr i{color:#A3A3A3}.gmgai-cn{color:#D1D5DB}' +
         '.gmgai-act{display:flex;gap:5px;margin-top:5px}.gmgai-act button{border:0;border-radius:5px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:600;transition:background .15s ease}' +
         '.gmgai-ok{background:#168B50;color:#fff}.gmgai-ok:hover{background:#117342}.gmgai-ok:active{background:#0D5D35}' +
@@ -1443,7 +1443,7 @@ GMGAIApplier.prototype = {
         '.gmgai-tw{overflow-x:auto;max-width:100%;margin:3px 0}.gmgai-mt{border-collapse:collapse;font-size:12px;line-height:1.35;white-space:normal}.gmgai-mt th,.gmgai-mt td{border:1px solid var(--border,#303030);padding:2px 5px;text-align:left;vertical-align:top}.gmgai-mt th{background:var(--surface,#151515);font-weight:600}' +
         '.gmgai-vt{border-collapse:collapse;width:100%;font-size:12px;margin-top:3px}.gmgai-vt th,.gmgai-vt td{border-bottom:1px solid #303030;padding:2px 4px;text-align:left;vertical-align:top}' +
         '.gmgai-m ul,.gmgai-m ol{margin:3px 0;padding-left:18px;white-space:normal}.gmgai-m code{font:11.5px ui-monospace,Menlo,monospace;background:#262626;border-radius:3px;padding:0 3px;color:#4ADE80}' +
-        '.gmgai-no-chip{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border:1px solid #F87171;border-radius:99px;color:#F87171;font-size:11px;font-weight:600}.gmgai-no-chip:before{content:"";width:6px;height:6px;border-radius:50%;background:#F87171}' +
+        '.gmgai-no-chip{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border:1px solid #F87171;border-radius:99px;color:#F87171;font-size:11px;font-weight:600}.gmgai-no-chip:before{content:&amp;quot;&amp;quot;;width:6px;height:6px;border-radius:50%;background:#F87171}' +
         '.gmgai-cost{display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid #303030;border-radius:99px;background:#151515;color:#A3A3A3;font-size:11px}';
     var PAPI = '/api/x_gmg_ai/agent/providers';
     /* Model picker: list comes from the server (safe fields only); the server validates whatever id we send. */
@@ -1452,49 +1452,49 @@ GMGAIApplier.prototype = {
         w.fetch(PAPI, {credentials: 'same-origin', headers: {'Accept': 'application/json', 'X-UserToken': top.__gmgaiToken || w.g_ck || ''}})
             .then(function(r) { return r.json(); })
             .then(function(j) {
-                var r = (j &amp;&amp; j.result) || j || {}, s = load();
+                var r = (j &amp;amp;&amp;amp; j.result) || j || {}, s = load();
                 top.__gmgaiProviders = r.providers || [];
                 var ok = top.__gmgaiProviders.some(function(p) { return p.sys_id == s.provider; });
                 if (!ok) s.provider = r.selected || '';
-                save(s); top.__gmgaiRender &amp;&amp; top.__gmgaiRender();
+                save(s); top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender();
             })['catch'](function() {})
             .then(function() { top.__gmgaiProvLoading = false; });
     }
 
-    /* Open-core split step 4: panel extensions. GMG Plan &amp; Create ships its own UI Script that does
+    /* Open-core split step 4: panel extensions. GMG Plan &amp;amp; Create ships its own UI Script that does
      *   (window.__gmgaiExtQ = window.__gmgaiExtQ || []).push(ext)   // ext = {id, feature, renderStrip, headerControls, bind, onSend, onConfirmed, onBoot, onOpen, onClear}
      * which works in either load order (register() drains the queue). Hooks run only when GET /health client.features lists ext.feature;
      * with no extension registered the panel makes no /health call and no build request. Every hook gets a read-only COPY of the panel
      * state plus the small action API below (the only way an extension changes state) and runs in try/catch (a throw is logged, skipped). */
     var EXTS = [], FEATURES = null, booted = false, HAPI = '/api/x_gmg_ai/agent/health';
     function copy(x) { return JSON.parse(JSON.stringify(x)); }
-    function extLog(m) { try { w.console &amp;&amp; w.console.warn &amp;&amp; w.console.warn('GMG AI: ' + m); } catch (e) {} }
+    function extLog(m) { try { w.console &amp;amp;&amp;amp; w.console.warn &amp;amp;&amp;amp; w.console.warn('GMG AI: ' + m); } catch (e) {} }
     var EXT_API = {
         state: function() { return copy(load()); },
         setBuild: function(b, cards) { var s = load(); s.build = b ? copy(b) : null; s.buildActions = cards ? copy(cards) : []; save(s); },
         setTeam: function(v) { var s = load(); s.team = !!v; save(s); },
         addMessage: function(m) { m = m || {}; var s = load(); s.messages.push({role: m.role == 'user' ? 'user' : 'assistant', content: String(m.content || ''), error: !!m.error}); save(s); },
-        done: function() { var s = load(); s.pending = false; save(s); top.__gmgaiRender &amp;&amp; top.__gmgaiRender(); },   // onSend === true: the extension calls this when its reply is in
+        done: function() { var s = load(); s.pending = false; save(s); top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender(); },   // onSend === true: the extension calls this when its reply is in
         open: function() { var s = load(); openedHere = true; s.open = true; save(s); },
-        render: function() { top.__gmgaiRender &amp;&amp; top.__gmgaiRender(); },
+        render: function() { top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender(); },
         headers: function() { return {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-UserToken': top.__gmgaiToken || w.g_ck || ''}; },
         esc: function(x) { return esc(x); }, cents: function(n) { return cents(n); }, param: function(n, q) { return param(n, q); },
         actionCard: function(a) { return actionCard(a); }
     };
-    function extOn(x) { return !!FEATURES &amp;&amp; FEATURES.indexOf(x.feature) &gt;= 0; }
+    function extOn(x) { return !!FEATURES &amp;amp;&amp;amp; FEATURES.indexOf(x.feature) &amp;gt;= 0; }
     function hook(name, args) {
         var out = [], i, x, r;
-        for (i = 0; i &lt; EXTS.length; i++) {
+        for (i = 0; i &amp;lt; EXTS.length; i++) {
             x = EXTS[i];
             if (!extOn(x) || typeof x[name] != 'function') continue;
-            try { r = x[name].apply(x, [copy(load()), EXT_API].concat(args || [])); if (r !== undefined &amp;&amp; r !== null) out.push(r); }
+            try { r = x[name].apply(x, [copy(load()), EXT_API].concat(args || [])); if (r !== undefined &amp;amp;&amp;amp; r !== null) out.push(r); }
             catch (e) { extLog('panel extension ' + x.id + '.' + name + ' threw: ' + e); }
         }
         return out;
     }
     function extBoot() {
         var i, x;
-        for (i = 0; i &lt; EXTS.length; i++) {
+        for (i = 0; i &amp;lt; EXTS.length; i++) {
             x = EXTS[i];
             if (x.__booted || !extOn(x)) continue;
             x.__booted = true;
@@ -1508,13 +1508,13 @@ GMGAIApplier.prototype = {
         w.__gmgaiFeatLoading = true;
         w.fetch(HAPI, {credentials: 'same-origin', headers: {'Accept': 'application/json', 'X-UserToken': top.__gmgaiToken || w.g_ck || ''}})
             .then(function(r) { return r.json(); })
-            .then(function(j) { var r = (j &amp;&amp; j.result) || j || {}; FEATURES = r.client &amp;&amp; r.client.features instanceof Array ? r.client.features : []; })
+            .then(function(j) { var r = (j &amp;amp;&amp;amp; j.result) || j || {}; FEATURES = r.client &amp;amp;&amp;amp; r.client.features instanceof Array ? r.client.features : []; })
             ['catch'](function() { FEATURES = []; })
             .then(function() { w.__gmgaiFeatLoading = false; if (FEATURES.length) { render(); extBoot(); } });
     }
     function register(x) {
         if (!x || typeof x.id != 'string' || typeof x.feature != 'string') return false;
-        for (var i = 0; i &lt; EXTS.length; i++) if (EXTS[i].id == x.id) return false;
+        for (var i = 0; i &amp;lt; EXTS.length; i++) if (EXTS[i].id == x.id) return false;
         EXTS.push(x); extStart(); return true;
     }
 
@@ -1523,21 +1523,21 @@ GMGAIApplier.prototype = {
     function shiftContent(open) { try { if (!/^\/x_gmg_ai_/.test(w.location.pathname)) return; var b = w.document.body; b.style.paddingRight = open ? PANEL_ROOM + 'px' : ''; b.style.boxSizing = 'border-box'; b.setAttribute('data-gmgai-panel', open ? 'open' : 'closed'); } catch (e) {} }
     function provSelectHtml(s) {
         var cur = s.provider || 'default';
-        var out = '&lt;select id="gmgai-prov-select" class="gmgai-select" title="Choose AI Model" aria-label="Choose AI Model"&gt;';
-        out += '&lt;option value="default"' + (cur == 'default' || !cur ? ' selected' : '') + '&gt;Default Model&lt;/option&gt;';
+        var out = '&amp;lt;select id=&amp;quot;gmgai-prov-select&amp;quot; class=&amp;quot;gmgai-select&amp;quot; title=&amp;quot;Choose AI Model&amp;quot; aria-label=&amp;quot;Choose AI Model&amp;quot;&amp;gt;';
+        out += '&amp;lt;option value=&amp;quot;default&amp;quot;' + (cur == 'default' || !cur ? ' selected' : '') + '&amp;gt;Default Model&amp;lt;/option&amp;gt;';
         (top.__gmgaiProviders || []).forEach(function(p) {
-            var pModels = (p.models &amp;&amp; p.models.length) ? p.models : [p.model];
-            if (pModels.length &lt;= 1) {
+            var pModels = (p.models &amp;amp;&amp;amp; p.models.length) ? p.models : [p.model];
+            if (pModels.length &amp;lt;= 1) {
                 var val = p.sys_id;
-                out += '&lt;option value="' + esc(val) + '"' + (cur == val ? ' selected' : '') + '&gt;' + esc(p.name + ' (' + p.model + ')') + '&lt;/option&gt;';
+                out += '&amp;lt;option value=&amp;quot;' + esc(val) + '&amp;quot;' + (cur == val ? ' selected' : '') + '&amp;gt;' + esc(p.name + ' (' + p.model + ')') + '&amp;lt;/option&amp;gt;';
             } else {
                 pModels.forEach(function(m) {
                     var val = p.sys_id + ':' + m;
-                    out += '&lt;option value="' + esc(val) + '"' + (cur == val ? ' selected' : '') + '&gt;' + esc(p.name + ': ' + m) + '&lt;/option&gt;';
+                    out += '&amp;lt;option value=&amp;quot;' + esc(val) + '&amp;quot;' + (cur == val ? ' selected' : '') + '&amp;gt;' + esc(p.name + ': ' + m) + '&amp;lt;/option&amp;gt;';
                 });
             }
         });
-        out += '&lt;/select&gt;';
+        out += '&amp;lt;/select&amp;gt;';
         return out;
     }
 
@@ -1551,133 +1551,133 @@ GMGAIApplier.prototype = {
         var root = tdoc.createElement('div'); root.id = 'gmgai-root';
         // live dcb843c: the open state is per browser session (sessionStorage), so after any ?panel=open page the panel stayed open on later
         // x_gmg_ai_*.do loads (81143ca only skipped the closed launcher). On our own pages the panel opens only when THIS URL asks for it.
-        var open = s.open &amp;&amp; (!ownAppPage() || openedHere);   // openedHere: this page load came with ?panel=open (linkedBuild strips it) or opened it itself
+        var open = s.open &amp;amp;&amp;amp; (!ownAppPage() || openedHere);   // openedHere: this page load came with ?panel=open (linkedBuild strips it) or opened it itself
         shiftContent(open);
         if (!open) {
             if (ownAppPage()) return;   // design review: no floating launcher on our own x_gmg_ai_*.do pages (the page is the agent); ?panel=open still opens the panel
-            root.innerHTML = '&lt;button id="gmgai-btn" title="Now Pilot for ServiceNow" aria-label="Open Now Pilot for ServiceNow"&gt;' + BTN_LOGO_SVG + '&lt;/button&gt;';
+            root.innerHTML = '&amp;lt;button id=&amp;quot;gmgai-btn&amp;quot; title=&amp;quot;Now Pilot for ServiceNow&amp;quot; aria-label=&amp;quot;Open Now Pilot for ServiceNow&amp;quot;&amp;gt;' + BTN_LOGO_SVG + '&amp;lt;/button&amp;gt;';
             tdoc.body.appendChild(root);
             tdoc.getElementById('gmgai-btn').onclick = function() { s.open = true; save(s); render(); hook('onOpen'); };
             return;
         }
-        var where = (c.table ? c.table + (c.kind ? ' ' + c.kind : '') : c.kind) + (c.fields &amp;&amp; c.fields.number ? ' · ' + c.fields.number : '');
+        var where = (c.table ? c.table + (c.kind ? ' ' + c.kind : '') : c.kind) + (c.fields &amp;amp;&amp;amp; c.fields.number ? ' · ' + c.fields.number : '');
         var isDevMode = (s.mode === 'dev');
         var isITSMMode = (s.mode === 'itsm');
         var isWorkflowMode = (s.mode === 'workflow');
-        var isChatMode = (!isDevMode &amp;&amp; !isITSMMode &amp;&amp; !isWorkflowMode);
-        var h = '&lt;div id="gmgai-panel"&gt;&lt;div id="gmgai-head"&gt;' +
-            '&lt;div class="gmgai-brand"&gt;' + LOGO_SVG + '&lt;div class="gmgai-title-wrap"&gt;&lt;div class="gmgai-title"&gt;Now Pilot&lt;/div&gt;&lt;small title="' + esc(where || c.url) + ' &amp;middot; Built by Kanam Ramu"&gt;' + esc(where || c.url) + ' &amp;middot; Built by Kanam Ramu&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;' +
-            '&lt;div class="gmgai-controls"&gt;' + (top.__gmgaiProviders &amp;&amp; top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '&lt;button id="gmgai-clear" title="Clear chat history"&gt;Clear&lt;/button&gt;&lt;button id="gmgai-close" title="Close Now Pilot"&gt;&amp;#10005;&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;' +
-            '&lt;div id="gmgai-mode-bar" style="display:flex;border-bottom:1px solid var(--border);background:var(--surface);font-size:12px"&gt;' +
-            '&lt;button id="gmgai-tab-chat" style="flex:1;padding:6px;border:0;background:' + (isChatMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isChatMode ? '600' : '400') + ';color:' + (isChatMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isChatMode ? '2px solid #168B50' : 'none') + '"&gt;Chat&lt;/button&gt;' +
-            '&lt;button id="gmgai-tab-itsm" style="flex:1;padding:6px;border:0;background:' + (isITSMMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isITSMMode ? '600' : '400') + ';color:' + (isITSMMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isITSMMode ? '2px solid #168B50' : 'none') + '"&gt;ITSM Intelligence&lt;/button&gt;' +
-            '&lt;button id="gmgai-tab-dev" style="flex:1;padding:6px;border:0;background:' + (isDevMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isDevMode ? '600' : '400') + ';color:' + (isDevMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isDevMode ? '2px solid #168B50' : 'none') + '"&gt;Dev Assistant&lt;/button&gt;' +
-            '&lt;button id="gmgai-tab-workflow" style="flex:1;padding:6px;border:0;background:' + (isWorkflowMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isWorkflowMode ? '600' : '400') + ';color:' + (isWorkflowMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isWorkflowMode ? '2px solid #168B50' : 'none') + '"&gt;Workflows&lt;/button&gt;' +
-            '&lt;/div&gt;&lt;div id="gmgai-msgs"&gt;';
+        var isChatMode = (!isDevMode &amp;amp;&amp;amp; !isITSMMode &amp;amp;&amp;amp; !isWorkflowMode);
+        var h = '&amp;lt;div id=&amp;quot;gmgai-panel&amp;quot;&amp;gt;&amp;lt;div id=&amp;quot;gmgai-head&amp;quot;&amp;gt;' +
+            '&amp;lt;div class=&amp;quot;gmgai-brand&amp;quot;&amp;gt;' + LOGO_SVG + '&amp;lt;div class=&amp;quot;gmgai-title-wrap&amp;quot;&amp;gt;&amp;lt;div class=&amp;quot;gmgai-title&amp;quot;&amp;gt;Now Pilot&amp;lt;/div&amp;gt;&amp;lt;small title=&amp;quot;' + esc(where || c.url) + ' &amp;amp;middot; Built by Kanam Ramu&amp;quot;&amp;gt;' + esc(where || c.url) + ' &amp;amp;middot; Built by Kanam Ramu&amp;lt;/small&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;' +
+            '&amp;lt;div class=&amp;quot;gmgai-controls&amp;quot;&amp;gt;' + (top.__gmgaiProviders &amp;amp;&amp;amp; top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '&amp;lt;button id=&amp;quot;gmgai-clear&amp;quot; title=&amp;quot;Clear chat history&amp;quot;&amp;gt;Clear&amp;lt;/button&amp;gt;&amp;lt;button id=&amp;quot;gmgai-close&amp;quot; title=&amp;quot;Close Now Pilot&amp;quot;&amp;gt;&amp;amp;#10005;&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;' +
+            '&amp;lt;div id=&amp;quot;gmgai-mode-bar&amp;quot; style=&amp;quot;display:flex;border-bottom:1px solid var(--border);background:var(--surface);font-size:12px&amp;quot;&amp;gt;' +
+            '&amp;lt;button id=&amp;quot;gmgai-tab-chat&amp;quot; style=&amp;quot;flex:1;padding:6px;border:0;background:' + (isChatMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isChatMode ? '600' : '400') + ';color:' + (isChatMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isChatMode ? '2px solid #168B50' : 'none') + '&amp;quot;&amp;gt;Chat&amp;lt;/button&amp;gt;' +
+            '&amp;lt;button id=&amp;quot;gmgai-tab-itsm&amp;quot; style=&amp;quot;flex:1;padding:6px;border:0;background:' + (isITSMMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isITSMMode ? '600' : '400') + ';color:' + (isITSMMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isITSMMode ? '2px solid #168B50' : 'none') + '&amp;quot;&amp;gt;ITSM Intelligence&amp;lt;/button&amp;gt;' +
+            '&amp;lt;button id=&amp;quot;gmgai-tab-dev&amp;quot; style=&amp;quot;flex:1;padding:6px;border:0;background:' + (isDevMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isDevMode ? '600' : '400') + ';color:' + (isDevMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isDevMode ? '2px solid #168B50' : 'none') + '&amp;quot;&amp;gt;Dev Assistant&amp;lt;/button&amp;gt;' +
+            '&amp;lt;button id=&amp;quot;gmgai-tab-workflow&amp;quot; style=&amp;quot;flex:1;padding:6px;border:0;background:' + (isWorkflowMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isWorkflowMode ? '600' : '400') + ';color:' + (isWorkflowMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isWorkflowMode ? '2px solid #168B50' : 'none') + '&amp;quot;&amp;gt;Workflows&amp;lt;/button&amp;gt;' +
+            '&amp;lt;/div&amp;gt;&amp;lt;div id=&amp;quot;gmgai-msgs&amp;quot;&amp;gt;';
         h += hook('renderStrip').join('');   // extension strip + its cards (open source alone: nothing)
         if (!s.messages.length) {
-            h += '&lt;div style="color:#6b7280;margin-bottom:6px"&gt;Ask me about this page or anything in ServiceNow.&lt;/div&gt;';
-            suggestions(c).forEach(function(x) { h += '&lt;button class="gmgai-sug"&gt;' + esc(x) + '&lt;/button&gt;'; });
+            h += '&amp;lt;div style=&amp;quot;color:#6b7280;margin-bottom:6px&amp;quot;&amp;gt;Ask me about this page or anything in ServiceNow.&amp;lt;/div&amp;gt;';
+            suggestions(c).forEach(function(x) { h += '&amp;lt;button class=&amp;quot;gmgai-sug&amp;quot;&amp;gt;' + esc(x) + '&amp;lt;/button&amp;gt;'; });
         }
         s.messages.forEach(function(m) {
             var cls = m.role == 'user' ? 'gmgai-u' : (m.error ? 'gmgai-e' : 'gmgai-a');
-            var chips = (m.tools || []).map(function(t) { return '&lt;span class="gmgai-chip"&gt;' + esc(t) + '&lt;/span&gt;'; }).join('');
-            h += '&lt;div class="gmgai-m ' + cls + '"' + (m.actions &amp;&amp; m.actions.length ? ' style="max-width:100%"' : '') + '&gt;' + (chips ? chips + '&lt;br&gt;' : '') +
-                (m.error &amp;&amp; m.blocked ? '&lt;span class="gmgai-no-chip"&gt;Not allowed&lt;/span&gt; ' : '') + (repeatsCard(m) ? '' : (m.role == 'user' ? esc(m.content) : md(m.content)));
+            var chips = (m.tools || []).map(function(t) { return '&amp;lt;span class=&amp;quot;gmgai-chip&amp;quot;&amp;gt;' + esc(t) + '&amp;lt;/span&amp;gt;'; }).join('');
+            h += '&amp;lt;div class=&amp;quot;gmgai-m ' + cls + '&amp;quot;' + (m.actions &amp;amp;&amp;amp; m.actions.length ? ' style=&amp;quot;max-width:100%&amp;quot;' : '') + '&amp;gt;' + (chips ? chips + '&amp;lt;br&amp;gt;' : '') +
+                (m.error &amp;amp;&amp;amp; m.blocked ? '&amp;lt;span class=&amp;quot;gmgai-no-chip&amp;quot;&amp;gt;Not allowed&amp;lt;/span&amp;gt; ' : '') + (repeatsCard(m) ? '' : (m.role == 'user' ? esc(m.content) : md(m.content)));
             if (m.workflow) h += workflowCard(m.workflow);
             (m.actions || []).forEach(function(a) { h += actionCard(a); });
-            if (m.citation_warning) h += '&lt;div class="gmgai-warn" style="background:#FEF2F2;border-color:#FCA5A5;color:#991B1B"&gt;&lt;b&gt;' + WARN_ICO + ' Citation Notice:&lt;/b&gt; ' + esc(m.citation_warning) + '&lt;/div&gt;';
-            if (m.warning) h += '&lt;div class="gmgai-warn"&gt;' + esc(m.warning) + '&lt;/div&gt;';
-            if (m.error &amp;&amp; (m.correlation_id || m.error_code)) {
-                h += '&lt;div class="gmgai-err-diag" style="font-size:11px;color:#991B1B;margin-top:4px;padding:2px 4px;background:#FEE2E2;border-radius:4px"&gt;' +
-                     (m.correlation_id ? '&lt;b&gt;ID:&lt;/b&gt; &lt;code&gt;' + esc(m.correlation_id) + '&lt;/code&gt;' : '') +
-                     (m.correlation_id &amp;&amp; m.error_code ? ' &amp;middot; ' : '') +
-                     (m.error_code ? '&lt;b&gt;Code:&lt;/b&gt; &lt;code&gt;' + esc(m.error_code) + '&lt;/code&gt;' : '') +
-                     '&lt;/div&gt;';
+            if (m.citation_warning) h += '&amp;lt;div class=&amp;quot;gmgai-warn&amp;quot; style=&amp;quot;background:#FEF2F2;border-color:#FCA5A5;color:#991B1B&amp;quot;&amp;gt;&amp;lt;b&amp;gt;' + WARN_ICO + ' Citation Notice:&amp;lt;/b&amp;gt; ' + esc(m.citation_warning) + '&amp;lt;/div&amp;gt;';
+            if (m.warning) h += '&amp;lt;div class=&amp;quot;gmgai-warn&amp;quot;&amp;gt;' + esc(m.warning) + '&amp;lt;/div&amp;gt;';
+            if (m.error &amp;amp;&amp;amp; (m.correlation_id || m.error_code)) {
+                h += '&amp;lt;div class=&amp;quot;gmgai-err-diag&amp;quot; style=&amp;quot;font-size:11px;color:#991B1B;margin-top:4px;padding:2px 4px;background:#FEE2E2;border-radius:4px&amp;quot;&amp;gt;' +
+                     (m.correlation_id ? '&amp;lt;b&amp;gt;ID:&amp;lt;/b&amp;gt; &amp;lt;code&amp;gt;' + esc(m.correlation_id) + '&amp;lt;/code&amp;gt;' : '') +
+                     (m.correlation_id &amp;amp;&amp;amp; m.error_code ? ' &amp;amp;middot; ' : '') +
+                     (m.error_code ? '&amp;lt;b&amp;gt;Code:&amp;lt;/b&amp;gt; &amp;lt;code&amp;gt;' + esc(m.error_code) + '&amp;lt;/code&amp;gt;' : '') +
+                     '&amp;lt;/div&amp;gt;';
             }
-            if (m.role == 'assistant' &amp;&amp; (m.cost != null || m.month != null)) h += '&lt;div class="gmgai-foot"&gt;' + footer(m) + '&lt;/div&gt;';
-            h += '&lt;/div&gt;';
+            if (m.role == 'assistant' &amp;amp;&amp;amp; (m.cost != null || m.month != null)) h += '&amp;lt;div class=&amp;quot;gmgai-foot&amp;quot;&amp;gt;' + footer(m) + '&amp;lt;/div&amp;gt;';
+            h += '&amp;lt;/div&amp;gt;';
         });
-        if (s.pending) h += '&lt;div class="gmgai-m gmgai-a" style="color:#6b7280"&gt;Working…&lt;/div&gt;';
+        if (s.pending) h += '&amp;lt;div class=&amp;quot;gmgai-m gmgai-a&amp;quot; style=&amp;quot;color:#6b7280&amp;quot;&amp;gt;Working…&amp;lt;/div&amp;gt;';
         var devPane = '';
         if (isDevMode) {
-            devPane = '&lt;div id="gmgai-dev-bar" style="padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px"&gt;' +
-                '&lt;div style="display:flex;gap:4px;align-items:center"&gt;' +
-                '&lt;label style="font-weight:600;min-width:45px"&gt;Artifact:&lt;/label&gt;' +
-                '&lt;select id="gmgai-dev-artifact" class="gmgai-select" style="flex:1" aria-label="Artifact Type"&gt;' +
-                '&lt;option value="business_rule"' + (s.dev_artifact == 'business_rule' ? ' selected' : '') + '&gt;Business Rule&lt;/option&gt;' +
-                '&lt;option value="script_include"' + (s.dev_artifact == 'script_include' ? ' selected' : '') + '&gt;Script Include&lt;/option&gt;' +
-                '&lt;option value="client_script"' + (s.dev_artifact == 'client_script' ? ' selected' : '') + '&gt;Client Script&lt;/option&gt;' +
-                '&lt;option value="ui_policy"' + (s.dev_artifact == 'ui_policy' ? ' selected' : '') + '&gt;UI Policy &amp; Actions&lt;/option&gt;' +
-                '&lt;option value="ui_action"' + (s.dev_artifact == 'ui_action' ? ' selected' : '') + '&gt;UI Action&lt;/option&gt;' +
-                '&lt;option value="background_script"' + (s.dev_artifact == 'background_script' ? ' selected' : '') + '&gt;Background Script&lt;/option&gt;' +
-                '&lt;option value="scripted_rest"' + (s.dev_artifact == 'scripted_rest' ? ' selected' : '') + '&gt;Scripted REST API&lt;/option&gt;' +
-                '&lt;option value="flow_designer"' + (s.dev_artifact == 'flow_designer' ? ' selected' : '') + '&gt;Flow Designer Guidance&lt;/option&gt;' +
-                '&lt;option value="service_portal_widget"' + (s.dev_artifact == 'service_portal_widget' ? ' selected' : '') + '&gt;Service Portal Widget&lt;/option&gt;' +
-                '&lt;option value="atf_test"' + (s.dev_artifact == 'atf_test' ? ' selected' : '') + '&gt;ATF Test Plan &amp; Script&lt;/option&gt;' +
-                '&lt;/select&gt;' +
-                '&lt;label style="font-weight:600;margin-left:4px"&gt;Action:&lt;/label&gt;' +
-                '&lt;select id="gmgai-dev-action" class="gmgai-select" style="width:90px" aria-label="Dev Action"&gt;' +
-                '&lt;option value="generate"' + (s.dev_action == 'generate' ? ' selected' : '') + '&gt;Generate&lt;/option&gt;' +
-                '&lt;option value="review"' + (s.dev_action == 'review' ? ' selected' : '') + '&gt;Review&lt;/option&gt;' +
-                '&lt;option value="explain"' + (s.dev_action == 'explain' ? ' selected' : '') + '&gt;Explain&lt;/option&gt;' +
-                '&lt;option value="debug"' + (s.dev_action == 'debug' ? ' selected' : '') + '&gt;Debug&lt;/option&gt;' +
-                '&lt;/select&gt;&lt;/div&gt;' +
-                '&lt;div style="display:flex;gap:4px;align-items:center"&gt;' +
-                '&lt;label style="font-weight:600;min-width:45px"&gt;Table:&lt;/label&gt;' +
-                '&lt;input id="gmgai-dev-table" type="text" placeholder="e.g. incident" value="' + esc(s.dev_table !== undefined ? s.dev_table : (c.table || '')) + '" style="flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px" aria-label="Table Name"&gt;' +
-                '&lt;button id="gmgai-dev-code-toggle" style="background:#f3f4f6;border:1px solid #d1d5db;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px" aria-label="Toggle Code Input"&gt;' + (s.dev_show_code ? '- Code' : '+ Code') + '&lt;/button&gt;' +
-                '&lt;/div&gt;' +
-                '&lt;textarea id="gmgai-dev-code" placeholder="Paste existing script here for Review / Debug / Explain..." style="display:' + (s.dev_show_code ? 'block' : 'none') + ';width:100%;height:70px;box-sizing:border-box;font-family:monospace;font-size:11px;border:1px solid #d1d5db;border-radius:4px;padding:4px;resize:vertical" aria-label="Existing Script Code"&gt;' + esc(s.dev_code || '') + '&lt;/textarea&gt;' +
-                '&lt;/div&gt;';
+            devPane = '&amp;lt;div id=&amp;quot;gmgai-dev-bar&amp;quot; style=&amp;quot;padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px&amp;quot;&amp;gt;' +
+                '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
+                '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Artifact:&amp;lt;/label&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-dev-artifact&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1&amp;quot; aria-label=&amp;quot;Artifact Type&amp;quot;&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;business_rule&amp;quot;' + (s.dev_artifact == 'business_rule' ? ' selected' : '') + '&amp;gt;Business Rule&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;script_include&amp;quot;' + (s.dev_artifact == 'script_include' ? ' selected' : '') + '&amp;gt;Script Include&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;client_script&amp;quot;' + (s.dev_artifact == 'client_script' ? ' selected' : '') + '&amp;gt;Client Script&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;ui_policy&amp;quot;' + (s.dev_artifact == 'ui_policy' ? ' selected' : '') + '&amp;gt;UI Policy &amp;amp; Actions&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;ui_action&amp;quot;' + (s.dev_artifact == 'ui_action' ? ' selected' : '') + '&amp;gt;UI Action&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;background_script&amp;quot;' + (s.dev_artifact == 'background_script' ? ' selected' : '') + '&amp;gt;Background Script&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;scripted_rest&amp;quot;' + (s.dev_artifact == 'scripted_rest' ? ' selected' : '') + '&amp;gt;Scripted REST API&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;flow_designer&amp;quot;' + (s.dev_artifact == 'flow_designer' ? ' selected' : '') + '&amp;gt;Flow Designer Guidance&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;service_portal_widget&amp;quot;' + (s.dev_artifact == 'service_portal_widget' ? ' selected' : '') + '&amp;gt;Service Portal Widget&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;atf_test&amp;quot;' + (s.dev_artifact == 'atf_test' ? ' selected' : '') + '&amp;gt;ATF Test Plan &amp;amp; Script&amp;lt;/option&amp;gt;' +
+                '&amp;lt;/select&amp;gt;' +
+                '&amp;lt;label style=&amp;quot;font-weight:600;margin-left:4px&amp;quot;&amp;gt;Action:&amp;lt;/label&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-dev-action&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;width:90px&amp;quot; aria-label=&amp;quot;Dev Action&amp;quot;&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;generate&amp;quot;' + (s.dev_action == 'generate' ? ' selected' : '') + '&amp;gt;Generate&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;review&amp;quot;' + (s.dev_action == 'review' ? ' selected' : '') + '&amp;gt;Review&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;explain&amp;quot;' + (s.dev_action == 'explain' ? ' selected' : '') + '&amp;gt;Explain&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;debug&amp;quot;' + (s.dev_action == 'debug' ? ' selected' : '') + '&amp;gt;Debug&amp;lt;/option&amp;gt;' +
+                '&amp;lt;/select&amp;gt;&amp;lt;/div&amp;gt;' +
+                '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
+                '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Table:&amp;lt;/label&amp;gt;' +
+                '&amp;lt;input id=&amp;quot;gmgai-dev-table&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. incident&amp;quot; value=&amp;quot;' + esc(s.dev_table !== undefined ? s.dev_table : (c.table || '')) + '&amp;quot; style=&amp;quot;flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px&amp;quot; aria-label=&amp;quot;Table Name&amp;quot;&amp;gt;' +
+                '&amp;lt;button id=&amp;quot;gmgai-dev-code-toggle&amp;quot; style=&amp;quot;background:#f3f4f6;border:1px solid #d1d5db;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px&amp;quot; aria-label=&amp;quot;Toggle Code Input&amp;quot;&amp;gt;' + (s.dev_show_code ? '- Code' : '+ Code') + '&amp;lt;/button&amp;gt;' +
+                '&amp;lt;/div&amp;gt;' +
+                '&amp;lt;textarea id=&amp;quot;gmgai-dev-code&amp;quot; placeholder=&amp;quot;Paste existing script here for Review / Debug / Explain...&amp;quot; style=&amp;quot;display:' + (s.dev_show_code ? 'block' : 'none') + ';width:100%;height:70px;box-sizing:border-box;font-family:monospace;font-size:11px;border:1px solid #d1d5db;border-radius:4px;padding:4px;resize:vertical&amp;quot; aria-label=&amp;quot;Existing Script Code&amp;quot;&amp;gt;' + esc(s.dev_code || '') + '&amp;lt;/textarea&amp;gt;' +
+                '&amp;lt;/div&amp;gt;';
         }
         var itsmPane = '';
         if (isITSMMode) {
-            var boundInc = (c.table == 'incident' ? (c.fields &amp;&amp; c.fields.number ? c.fields.number : (c.sys_id || '')) : '');
-            itsmPane = '&lt;div id="gmgai-itsm-bar" style="padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px"&gt;' +
-                '&lt;div style="display:flex;gap:4px;align-items:center"&gt;' +
-                '&lt;label style="font-weight:600;min-width:45px"&gt;Action:&lt;/label&gt;' +
-                '&lt;select id="gmgai-itsm-action" class="gmgai-select" style="flex:1" aria-label="ITSM Action"&gt;' +
-                '&lt;option value="recommend_resolution"' + (s.itsm_action == 'recommend_resolution' || !s.itsm_action ? ' selected' : '') + '&gt;Recommend Resolution&lt;/option&gt;' +
-                '&lt;option value="similar_incidents"' + (s.itsm_action == 'similar_incidents' ? ' selected' : '') + '&gt;Find Similar Incidents&lt;/option&gt;' +
-                '&lt;option value="search_knowledge"' + (s.itsm_action == 'search_knowledge' ? ' selected' : '') + '&gt;Search Knowledge Articles&lt;/option&gt;' +
-                '&lt;option value="summarize"' + (s.itsm_action == 'summarize' ? ' selected' : '') + '&gt;Summarize Incident&lt;/option&gt;' +
-                '&lt;option value="draft_knowledge"' + (s.itsm_action == 'draft_knowledge' ? ' selected' : '') + '&gt;Draft Knowledge Article&lt;/option&gt;' +
-                '&lt;/select&gt;' +
-                '&lt;/div&gt;' +
-                '&lt;div style="display:flex;gap:4px;align-items:center"&gt;' +
-                '&lt;label style="font-weight:600;min-width:45px"&gt;Incident:&lt;/label&gt;' +
-                '&lt;input id="gmgai-itsm-incident" type="text" placeholder="e.g. INC0000060 or sys_id" value="' + esc(s.itsm_incident !== undefined ? s.itsm_incident : boundInc) + '" style="flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px" aria-label="Incident Identifier"&gt;' +
-                '&lt;/div&gt;' +
-                '&lt;/div&gt;';
+            var boundInc = (c.table == 'incident' ? (c.fields &amp;amp;&amp;amp; c.fields.number ? c.fields.number : (c.sys_id || '')) : '');
+            itsmPane = '&amp;lt;div id=&amp;quot;gmgai-itsm-bar&amp;quot; style=&amp;quot;padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px&amp;quot;&amp;gt;' +
+                '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
+                '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Action:&amp;lt;/label&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-itsm-action&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1&amp;quot; aria-label=&amp;quot;ITSM Action&amp;quot;&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;recommend_resolution&amp;quot;' + (s.itsm_action == 'recommend_resolution' || !s.itsm_action ? ' selected' : '') + '&amp;gt;Recommend Resolution&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;similar_incidents&amp;quot;' + (s.itsm_action == 'similar_incidents' ? ' selected' : '') + '&amp;gt;Find Similar Incidents&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;search_knowledge&amp;quot;' + (s.itsm_action == 'search_knowledge' ? ' selected' : '') + '&amp;gt;Search Knowledge Articles&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;summarize&amp;quot;' + (s.itsm_action == 'summarize' ? ' selected' : '') + '&amp;gt;Summarize Incident&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;draft_knowledge&amp;quot;' + (s.itsm_action == 'draft_knowledge' ? ' selected' : '') + '&amp;gt;Draft Knowledge Article&amp;lt;/option&amp;gt;' +
+                '&amp;lt;/select&amp;gt;' +
+                '&amp;lt;/div&amp;gt;' +
+                '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
+                '&amp;lt;label style=&amp;quot;font-weight:600;min-width:45px&amp;quot;&amp;gt;Incident:&amp;lt;/label&amp;gt;' +
+                '&amp;lt;input id=&amp;quot;gmgai-itsm-incident&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. INC0000060 or sys_id&amp;quot; value=&amp;quot;' + esc(s.itsm_incident !== undefined ? s.itsm_incident : boundInc) + '&amp;quot; style=&amp;quot;flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px&amp;quot; aria-label=&amp;quot;Incident Identifier&amp;quot;&amp;gt;' +
+                '&amp;lt;/div&amp;gt;' +
+                '&amp;lt;/div&amp;gt;';
         }
         var workflowPane = '';
         if (isWorkflowMode) {
-            var boundTarget = (c.table == 'incident' ? (c.fields &amp;&amp; c.fields.number ? c.fields.number : (c.sys_id || '')) : (c.bound &amp;&amp; c.bound.sys_id ? c.bound.sys_id : ''));
-            workflowPane = '&lt;div id="gmgai-wf-bar" style="padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px"&gt;' +
-                '&lt;div style="display:flex;gap:4px;align-items:center"&gt;' +
-                '&lt;label style="font-weight:600;min-width:55px"&gt;Workflow:&lt;/label&gt;' +
-                '&lt;select id="gmgai-wf-type" class="gmgai-select" style="flex:1" aria-label="Workflow Template"&gt;' +
-                '&lt;option value="incident_investigation"' + (s.wf_type == 'incident_investigation' || !s.wf_type ? ' selected' : '') + '&gt;A: Incident Investigation&lt;/option&gt;' +
-                '&lt;option value="knowledge_preparation"' + (s.wf_type == 'knowledge_preparation' ? ' selected' : '') + '&gt;B: Knowledge Preparation&lt;/option&gt;' +
-                '&lt;option value="development_review"' + (s.wf_type == 'development_review' ? ' selected' : '') + '&gt;C: Development Review&lt;/option&gt;' +
-                '&lt;/select&gt;' +
-                '&lt;/div&gt;' +
-                '&lt;div style="display:flex;gap:4px;align-items:center"&gt;' +
-                '&lt;label style="font-weight:600;min-width:55px"&gt;Target/Ref:&lt;/label&gt;' +
-                '&lt;input id="gmgai-wf-target" type="text" placeholder="e.g. INC0000060 or script" value="' + esc(s.wf_target !== undefined ? s.wf_target : boundTarget) + '" style="flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px" aria-label="Workflow Target"&gt;' +
-                '&lt;/div&gt;' +
-                '&lt;/div&gt;';
+            var boundTarget = (c.table == 'incident' ? (c.fields &amp;amp;&amp;amp; c.fields.number ? c.fields.number : (c.sys_id || '')) : (c.bound &amp;amp;&amp;amp; c.bound.sys_id ? c.bound.sys_id : ''));
+            workflowPane = '&amp;lt;div id=&amp;quot;gmgai-wf-bar&amp;quot; style=&amp;quot;padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px&amp;quot;&amp;gt;' +
+                '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
+                '&amp;lt;label style=&amp;quot;font-weight:600;min-width:55px&amp;quot;&amp;gt;Workflow:&amp;lt;/label&amp;gt;' +
+                '&amp;lt;select id=&amp;quot;gmgai-wf-type&amp;quot; class=&amp;quot;gmgai-select&amp;quot; style=&amp;quot;flex:1&amp;quot; aria-label=&amp;quot;Workflow Template&amp;quot;&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;incident_investigation&amp;quot;' + (s.wf_type == 'incident_investigation' || !s.wf_type ? ' selected' : '') + '&amp;gt;A: Incident Investigation&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;knowledge_preparation&amp;quot;' + (s.wf_type == 'knowledge_preparation' ? ' selected' : '') + '&amp;gt;B: Knowledge Preparation&amp;lt;/option&amp;gt;' +
+                '&amp;lt;option value=&amp;quot;development_review&amp;quot;' + (s.wf_type == 'development_review' ? ' selected' : '') + '&amp;gt;C: Development Review&amp;lt;/option&amp;gt;' +
+                '&amp;lt;/select&amp;gt;' +
+                '&amp;lt;/div&amp;gt;' +
+                '&amp;lt;div style=&amp;quot;display:flex;gap:4px;align-items:center&amp;quot;&amp;gt;' +
+                '&amp;lt;label style=&amp;quot;font-weight:600;min-width:55px&amp;quot;&amp;gt;Target/Ref:&amp;lt;/label&amp;gt;' +
+                '&amp;lt;input id=&amp;quot;gmgai-wf-target&amp;quot; type=&amp;quot;text&amp;quot; placeholder=&amp;quot;e.g. INC0000060 or script&amp;quot; value=&amp;quot;' + esc(s.wf_target !== undefined ? s.wf_target : boundTarget) + '&amp;quot; style=&amp;quot;flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px&amp;quot; aria-label=&amp;quot;Workflow Target&amp;quot;&amp;gt;' +
+                '&amp;lt;/div&amp;gt;' +
+                '&amp;lt;/div&amp;gt;';
         }
         var inputPlaceholder = isDevMode ? 'Enter requirement, acceptance criteria, or questions…'
             : isITSMMode ? 'Enter symptoms, query, or prompt for ITSM analysis…'
             : isWorkflowMode ? 'Enter workflow goal, acceptance criteria, or instruction…'
             : 'Ask anything…';
         var actionBtnLabel = isDevMode ? 'Run' : (isITSMMode ? 'Analyze' : (isWorkflowMode ? 'Start Workflow' : 'Send'));
-        var disabledAttr = s.pending ? ' disabled style="opacity:0.6;cursor:not-allowed"' : '';
-        h += '&lt;/div&gt;' + devPane + itsmPane + workflowPane + '&lt;div id="gmgai-in"&gt;&lt;textarea placeholder="' + inputPlaceholder + '" aria-label="Message Input"' + (s.pending ? ' disabled style="opacity:0.7"' : '') + '&gt;&lt;/textarea&gt;' +
+        var disabledAttr = s.pending ? ' disabled style=&amp;quot;opacity:0.6;cursor:not-allowed&amp;quot;' : '';
+        h += '&amp;lt;/div&amp;gt;' + devPane + itsmPane + workflowPane + '&amp;lt;div id=&amp;quot;gmgai-in&amp;quot;&amp;gt;&amp;lt;textarea placeholder=&amp;quot;' + inputPlaceholder + '&amp;quot; aria-label=&amp;quot;Message Input&amp;quot;' + (s.pending ? ' disabled style=&amp;quot;opacity:0.7&amp;quot;' : '') + '&amp;gt;&amp;lt;/textarea&amp;gt;' +
             hook('headerControls').join('') +
-            '&lt;button aria-label="Send Message"' + disabledAttr + '&gt;' + actionBtnLabel + '&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;';
+            '&amp;lt;button aria-label=&amp;quot;Send Message&amp;quot;' + disabledAttr + '&amp;gt;' + actionBtnLabel + '&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;';
         root.innerHTML = h;
         tdoc.body.appendChild(root);
         var box = tdoc.getElementById('gmgai-msgs'); box.scrollTop = box.scrollHeight;
@@ -1704,7 +1704,7 @@ GMGAIApplier.prototype = {
         Array.prototype.forEach.call(root.querySelectorAll('.gmgai-copy-btn'), function(b) {
             b.onclick = function() {
                 var rawCode = decodeURIComponent(b.getAttribute('data-code') || '');
-                if (top.navigator &amp;&amp; top.navigator.clipboard &amp;&amp; top.navigator.clipboard.writeText) {
+                if (top.navigator &amp;amp;&amp;amp; top.navigator.clipboard &amp;amp;&amp;amp; top.navigator.clipboard.writeText) {
                     top.navigator.clipboard.writeText(rawCode).then(function() {
                         var oldText = b.textContent;
                         b.textContent = 'Copied!';
@@ -1781,24 +1781,24 @@ GMGAIApplier.prototype = {
         if (!top.__gmgaiProviders) loadProviders();
         hook('bind', [root]);
         root.querySelector('#gmgai-in button').onclick = function() { send(ta.value); };
-        ta.onkeydown = function(e) { if (e.key == 'Enter' &amp;&amp; !e.shiftKey) { e.preventDefault(); send(ta.value); } };
+        ta.onkeydown = function(e) { if (e.key == 'Enter' &amp;amp;&amp;amp; !e.shiftKey) { e.preventDefault(); send(ta.value); } };
         if (!s.pending) ta.focus();
     }
 
     /* one conversation id per browser session (sessionStorage), sent with every chat call; scopes update-set auto-join */
     /* provider field sent to the server: the sys_id only for an explicit pick, else 'default' (routing may apply) */
-    function isDefault(id) { return (top.__gmgaiProviders || []).some(function(p) { return p.sys_id == id &amp;&amp; p.is_default; }); }
+    function isDefault(id) { return (top.__gmgaiProviders || []).some(function(p) { return p.sys_id == id &amp;amp;&amp;amp; p.is_default; }); }
     function providerParam(s) {
-        var ex = s.explicit === undefined ? !!(s.provider &amp;&amp; top.__gmgaiProviders &amp;&amp; !isDefault(s.provider)) : !!s.explicit;
-        return ex &amp;&amp; s.provider ? s.provider : 'default';
+        var ex = s.explicit === undefined ? !!(s.provider &amp;amp;&amp;amp; top.__gmgaiProviders &amp;amp;&amp;amp; !isDefault(s.provider)) : !!s.explicit;
+        return ex &amp;amp;&amp;amp; s.provider ? s.provider : 'default';
     }
     function convId() {
         ensureUser();
         var k = CONV_KEY, v = UID ? null : MEM_CONV;
         if (UID) { try { v = top.sessionStorage.getItem(k); } catch (e) {} }
         if (!v || !/^[A-Za-z0-9-]{8,64}$/.test(v)) {
-            try { v = top.crypto &amp;&amp; top.crypto.randomUUID ? top.crypto.randomUUID() : null; } catch (e2) {}
-            if (!v) v = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0; return (c == 'x' ? r : (r &amp; 3 | 8)).toString(16); });
+            try { v = top.crypto &amp;amp;&amp;amp; top.crypto.randomUUID ? top.crypto.randomUUID() : null; } catch (e2) {}
+            if (!v) v = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) { var r = Math.random() * 16 | 0; return (c == 'x' ? r : (r &amp;amp; 3 | 8)).toString(16); });
             if (UID) { try { top.sessionStorage.setItem(k, v); } catch (e3) {} } else MEM_CONV = v;
         }
         return v;
@@ -1815,7 +1815,7 @@ GMGAIApplier.prototype = {
         if (hook('onSend', [text]).some(function(r) { return r === true; })) return;
         var token = top.__gmgaiToken || w.g_ck || '';
         var provVal = providerParam(s), pId = provVal, reqModel = null;
-        if (provVal &amp;&amp; provVal.indexOf(':') &gt; 0) {
+        if (provVal &amp;amp;&amp;amp; provVal.indexOf(':') &amp;gt; 0) {
             var parts = provVal.split(':');
             pId = parts[0];
             reqModel = parts[1];
@@ -1870,24 +1870,24 @@ GMGAIApplier.prototype = {
             body: JSON.stringify(sendPayload)
         }).then(function(r) { return r.json().then(function(j) { return {status: r.status, j: j}; }); })
           .then(function(x) {
-              var r = (x.j &amp;&amp; x.j.result) || x.j || {};
+              var r = (x.j &amp;amp;&amp;amp; x.j.result) || x.j || {};
               var st = load(); st.pending = false;
-              var u = r.usage || {}, meta = {cost: r.cost, month: r.spend &amp;&amp; r.spend.month, monthly_budget: r.spend &amp;&amp; r.spend.monthly_budget,
+              var u = r.usage || {}, meta = {cost: r.cost, month: r.spend &amp;amp;&amp;amp; r.spend.month, monthly_budget: r.spend &amp;amp;&amp;amp; r.spend.monthly_budget,
                   warning: r.warning, citation_warning: r.citation_warning, correlation_id: r.correlation_id, error_code: r.error_code};   // AC16: model and token counts are never kept or shown in the panel
               if (r.workflow) meta.workflow = r.workflow;
               if (r.rejected) { top.__gmgaiProviders = null; st.provider = ''; }
               if (r.response) st.messages.push(Object.assign({role: 'assistant', content: r.response, tools: r.tools_used, actions: r.pending_actions || []}, meta));
               else st.messages.push(Object.assign({role: 'assistant', error: true, blocked: !!r.blocked,
-                  content: (r.blocked ? '' : 'Error: ') + (r.error || (x.j &amp;&amp; x.j.error &amp;&amp; x.j.error.message) || ('HTTP ' + x.status)),
+                  content: (r.blocked ? '' : 'Error: ') + (r.error || (x.j &amp;amp;&amp;amp; x.j.error &amp;amp;&amp;amp; x.j.error.message) || ('HTTP ' + x.status)),
                   actions: r.pending_actions || []}, meta));  /* blocked: content is esc()'d — stop mark is \u2715 in #B91C1C at render (not SVG) */
-              save(st); top.__gmgaiRender &amp;&amp; top.__gmgaiRender();
+              save(st); top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender();
           })['catch'](function(e) {
               var st = load(); st.pending = false; st.messages.push({role: 'assistant', error: true, content: 'Error: ' + e}); save(st);
-              top.__gmgaiRender &amp;&amp; top.__gmgaiRender();
+              top.__gmgaiRender &amp;amp;&amp;amp; top.__gmgaiRender();
           });
     }
 
-    /* form UI action "Ask GMG AI Agent" calls top.__gmgaiOpen(table, sys_id). Opens the panel and pins that record as context.
+    /* form UI action &amp;quot;Ask GMG AI Agent&amp;quot; calls top.__gmgaiOpen(table, sys_id). Opens the panel and pins that record as context.
      * Client-only: nothing is written; any change still goes through the agent's proposal + Confirm. Role-gated like the panel. */
     var TABLE_RE = /^[a-z0-9_]{1,80}$/, SYSID_RE = /^[0-9a-f]{32}$/;
     function openWith(table, sysId) {
@@ -1899,7 +1899,7 @@ GMGAIApplier.prototype = {
     }
     function pinned(ctx, s) {
         ctx = ctx || {};
-        if (s &amp;&amp; s.pin &amp;&amp; !ctx.sys_id) { ctx.table = s.pin.table; ctx.sys_id = s.pin.sys_id; ctx.kind = 'form'; ctx.pinned = true; }
+        if (s &amp;amp;&amp;amp; s.pin &amp;amp;&amp;amp; !ctx.sys_id) { ctx.table = s.pin.table; ctx.sys_id = s.pin.sys_id; ctx.kind = 'form'; ctx.pinned = true; }
         return ctx;
     }
     var openedHere = false;   // per page load (live dcb843c)
@@ -1907,10 +1907,10 @@ GMGAIApplier.prototype = {
     function boot() {
         if (isShellOnly() || !hasRole() || !tdoc.body) return;
         /* Ignore tiny helper iframes (e.g. hidden frames, dialogs) */
-        if (w !== top &amp;&amp; (w.innerWidth &lt; 300 || w.innerHeight &lt; 200)) return;
+        if (w !== top &amp;amp;&amp;amp; (w.innerWidth &amp;lt; 300 || w.innerHeight &amp;lt; 200)) return;
         accessThen(bootAllowed);   // x_gmg_ai.panel_access: no launcher until the server says this user may use the agent
     }
-    /* Panel access: ask the server once per top window (GET /health?access=1 -&gt; {panel_access: true|false}). Anything but an explicit
+    /* Panel access: ask the server once per top window (GET /health?access=1 -&amp;gt; {panel_access: true|false}). Anything but an explicit
      * true (403, error, bad JSON) = no launcher. The REST operations refuse on their own, so this only hides the UI. */
     function accessThen(fn) {
         if (top.__gmgaiAccess === true) { fn(); return; }
@@ -1920,11 +1920,11 @@ GMGAIApplier.prototype = {
         top.__gmgaiAccessLoading = true;
         w.fetch(HAPI + '?access=1', {credentials: 'same-origin', headers: {'Accept': 'application/json', 'X-UserToken': w.g_ck || ''}})
             .then(function(r) { return r.status == 200 ? r.json() : null; })
-            .then(function(j) { var r = (j &amp;&amp; j.result) || j || {}; top.__gmgaiAccess = r.panel_access === true; })
+            .then(function(j) { var r = (j &amp;amp;&amp;amp; j.result) || j || {}; top.__gmgaiAccess = r.panel_access === true; })
             ['catch'](function() { top.__gmgaiAccess = false; })
             .then(function() {
                 var q = top.__gmgaiAccessQ || [], i; top.__gmgaiAccessQ = []; top.__gmgaiAccessLoading = false;
-                if (top.__gmgaiAccess === true) for (i = 0; i &lt; q.length; i++) { try { q[i](); } catch (e) { extLog('boot threw: ' + e); } }
+                if (top.__gmgaiAccess === true) for (i = 0; i &amp;lt; q.length; i++) { try { q[i](); } catch (e) { extLog('boot threw: ' + e); } }
             });
     }
     function bootAllowed() {
@@ -1933,14 +1933,14 @@ GMGAIApplier.prototype = {
         top.__gmgaiToken = w.g_ck;
         top.__gmgaiRender = render;
         top.__gmgaiOpen = openWith;
-        var s = load(); if (s.pending &amp;&amp; !s.pendingSince) { s.pendingSince = Date.now(); save(s); }
-        if (s.pending &amp;&amp; s.pendingSince &amp;&amp; Date.now() - s.pendingSince &gt; 120000) { s.pending = false; delete s.pendingSince; save(s); }
+        var s = load(); if (s.pending &amp;amp;&amp;amp; !s.pendingSince) { s.pendingSince = Date.now(); save(s); }
+        if (s.pending &amp;amp;&amp;amp; s.pendingSince &amp;amp;&amp;amp; Date.now() - s.pendingSince &amp;gt; 120000) { s.pending = false; delete s.pendingSince; save(s); }
         render();
         booted = true; extStart();   // extensions (if any registered) boot after /health says their feature is on
     }
 
     var q0 = w.__gmgaiExtQ; w.__gmgaiExtQ = {push: register};   // either load order: drain what an earlier extension script queued
-    if (q0 &amp;&amp; q0.length) for (var qi = 0; qi &lt; q0.length; qi++) register(q0[qi]);
+    if (q0 &amp;amp;&amp;amp; q0.length) for (var qi = 0; qi &amp;lt; q0.length; qi++) register(q0[qi]);
     if (document.readyState == 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
 &lt;/script&gt;&lt;script_name&gt;gmg_ai_agent_panel&lt;/script_name&gt;&lt;sys_class_name&gt;sys_ui_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2026-10-19 01:21:10&lt;/sys_created_on&gt;&lt;sys_id&gt;deb9431593cc53102f53fd985d03d6ed&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;gmg_ai_agent_panel&lt;/sys_name&gt;&lt;sys_package display_value="Global" source="global"&gt;global&lt;/sys_package&gt;&lt;sys_policy /&gt;&lt;sys_scope display_value="Global"&gt;global&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_script_deb9431593cc53102f53fd985d03d6ed&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;admin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2026-10-19 01:21:10&lt;/sys_updated_on&gt;&lt;ui_type&gt;0&lt;/ui_type&gt;&lt;use_scoped_format&gt;false&lt;/use_scoped_format&gt;&lt;/sys_ui_script&gt;&lt;/record_update&gt;</payload><sys_created_on>2026-10-19 01:21:11</sys_created_on><action>INSERT_OR_UPDATE</action><sys_created_by>admin</sys_created_by><table /><comments /><sys_mod_count>0</sys_mod_count><replace_on_upgrade>false</replace_on_upgrade><sys_tags /><sys_recorded_at>1a151bf91a80000001</sys_recorded_at><update_guid>8b4a8ff748db1fc685491fc3bf2818ed</update_guid><application>global</application><name>sys_ui_script_deb9431593cc53102f53fd985d03d6ed</name><remote_update_set>fea636812f8c1710fe5019aa6fa4e3d5</remote_update_set><update_domain>global</update_domain><payload_hash>0eb5cf58f5e7e62171f0a7f426c0bfd7</payload_hash><category>customer</category></sys_update_xml></unload>
