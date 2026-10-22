@@ -26,10 +26,7 @@
   <a href="LICENSE">License</a>
 </p>
 
-<p align="center">
- <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/f961dce5-2400-4e0f-9064-467ac6e46605" />
 
-</p>
 
 </div>
 
@@ -66,34 +63,10 @@ ServiceNow instances run mission-critical enterprise workloads—incident respon
 | **Zero Offline Visibility**: Closed SaaS solutions cannot be tested, simulated, or integrated into local CI/CD pipelines. | **Local Interactive Simulator**: Run the full mock environment offline with `node local_runner.js` and 184 automated tests. |
 
 ---
+<p align="center">
+ <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/f961dce5-2400-4e0f-9064-467ac6e46605" />
 
-## Comparison: Now Pilot vs. Now Assist
-
-```
-  DIMENSION               NOW PILOT (v1.5.0)                      SERVICENOW NOW ASSIST
-┌───────────────────────┬───────────────────────────────────────┬──────────────────────────────────────┐
-│ Model Independence    │ ★ Multi-Gateway (OmniRoute, Claude,   │ Closed (ServiceNow / Azure OpenAI    │
-│                       │   OpenAI, Grok, Local Ollama/vLLM)    │   managed tenant only)               │
-├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
-│ Pricing Model         │ 100% Free Open-Source Core + Wholesale│ $$$$$ / User / Month (Pro Plus SKU)  │
-│                       │ Token Cost (e.g., $0.0001 / summary) │ + Assist Consumption Units (ACUs)    │
-├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
-│ Safety & Governance   │ Cryptographic GMGSeal (HMAC-SHA256)   │ Standard ServiceNow approval flows;  │
-│                       │ with Visual Field Diffs               │ no cryptographic tamper sealing      │
-├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
-│ Code Linting (AST)    │ DevValidator blocks `current.update()`,│ None; generates generic code snippets │
-│                       │ infinite loops, and unescaped queries │ without platform AST linting         │
-├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
-│ PII & Redaction       │ Automatic Outbound PII Redaction      │ ServiceNow Cloud Data Fabric masking │
-│                       │ (Emails, Phone, SSN, Credit Cards)   │ (enterprise setup required)          │
-├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
-│ SSRF & Cloud Defense  │ Blocks AWS/Azure metadata IPs         │ Handled by ServiceNow backend        │
-│                       │ (169.254.169.254) & private subnets   │ infrastructure                       │
-├───────────────────────┼───────────────────────────────────────┼──────────────────────────────────────┤
-│ Offline Simulator     │ Standalone simulator + 184 tests      │ None; requires live cloud instance   │
-└───────────────────────┴───────────────────────────────────────┴──────────────────────────────────────┘
-```
-
+</p>
 ---
 
 ## Core Capabilities
