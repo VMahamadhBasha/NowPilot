@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#002B3B"/>
+      <stop offset="100%" stop-color="#001822"/>
+    </linearGradient>
+    <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#63E052"/>
+      <stop offset="100%" stop-color="#4CCB3B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Circle -->
+  <circle cx="16" cy="16" r="15" fill="url(#bgGrad)" stroke="#63E052" stroke-width="1.5"/>
+  <!-- Supersonic Takeoff Plane Mark (Left Facet) -->
+  <path d="M7 16 L25 8 L14 17 Z" fill="#63E052"/>
+  <!-- Supersonic Takeoff Plane Mark (Right Under-Facet) -->
+  <path d="M7 16 L14 17 L18 24 Z" fill="#38A827"/>
+  <!-- Center Fold Crease -->
+  <path d="M14 17 L25 8" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
+</svg>

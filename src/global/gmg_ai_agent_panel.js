@@ -8,8 +8,8 @@
  */
 (function() {
     var ROLE = 'x_gmg_ai.user', API = '/api/x_gmg_ai/agent/chat', KEY_BASE = 'gmgai_state_v1', CONV_BASE = 'gmgai_conv_id';
-    var LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28" style="flex-shrink:0;vertical-align:middle;border-radius:50%;background:#FFFFFF;border:2px solid #168B50;box-shadow:0 0 8px rgba(255,255,255,0.9)"><circle cx="16" cy="16" r="14" fill="#FFFFFF"/><path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#168B50"/><path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.3"/></svg>';
-    var BTN_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="38" height="38" style="vertical-align:middle;display:block"><circle cx="16" cy="16" r="14" fill="#FFFFFF" stroke="#168B50" stroke-width="2.5"/><path d="M7 16 L25 8 L18 24 L14 17 Z" fill="#168B50"/><path d="M14 17 L25 8" stroke="#041B12" stroke-width="1.5"/></svg>';
+    var LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="28" height="28" style="flex-shrink:0;vertical-align:middle;border-radius:50%;background:#FFFFFF;border:1.5px solid #002B3B;box-shadow:0 1px 4px rgba(0,0,0,0.08)"><circle cx="16" cy="16" r="14.5" fill="#FFFFFF"/><path d="M7 16 L25 8 L14 17 Z" fill="#63E052"/><path d="M7 16 L14 17 L18 24 Z" fill="#38A827"/><path d="M14 17 L25 8" stroke="#002B3B" stroke-width="1.3" stroke-linecap="round"/></svg>';
+    var BTN_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36" height="36" style="vertical-align:middle;display:block"><circle cx="16" cy="16" r="14.5" fill="#FFFFFF" stroke="#002B3B" stroke-width="1.8"/><path d="M7 16 L25 8 L14 17 Z" fill="#63E052"/><path d="M7 16 L14 17 L18 24 Z" fill="#38A827"/><path d="M14 17 L25 8" stroke="#002B3B" stroke-width="1.5" stroke-linecap="round"/></svg>';
     var w = window, top;
     try { top = window.top; void top.document.body; } catch (e) { top = window; }
     var tdoc = top.document;
@@ -529,68 +529,91 @@
     var WARN_ICO = '<span style="color:#B45309" aria-hidden="true">\u26a0\ufe0e</span>';
     var INFO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display:inline-block;vertical-align:-2px;margin-right:3px"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="6.2" x2="7" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="4.2" r="0.9" fill="currentColor"/></svg>';
     var STOP_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display:inline-block;vertical-align:-2px;margin-right:3px"><circle cx="7" cy="7" r="5.5" fill="none" stroke="#B91C1C" stroke-width="1.5"/><line x1="3.2" y1="3.2" x2="10.8" y2="10.8" stroke="#B91C1C" stroke-width="1.5" stroke-linecap="round"/></svg>';
-    var CSS = '.gmgai-select{font-size:11px;padding:3px 6px;border:1px solid #303030;border-radius:6px;background:#181818;color:#F5F5F5;max-width:115px;cursor:pointer;outline:none;text-overflow:ellipsis;white-space:nowrap}' +
-        '.gmgai-select:focus{border-color:#168B50}' +
-        '#gmgai-root{position:fixed;right:20px;bottom:20px;z-index:2147483000;font:13px/1.4 Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}' +
-        '@media (prefers-color-scheme: dark){#gmgai-root{--card:#080808;--surface:#151515;--border:#303030;--border-strong:#168B50;--text-primary:#F5F5F5;--text-secondary:#A3A3A3;--danger:#F87171;--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.12);--primary-accent:#168B50}}' +
-        '#gmgai-btn{width:56px;height:56px;border-radius:50%;border:2.5px solid #168B50;background:#FFFFFF !important;box-shadow:0 6px 20px rgba(0,0,0,.6),0 0 15px rgba(255,255,255,.9);cursor:pointer;display:grid;place-items:center;padding:0;overflow:hidden;transition:all .18s ease;z-index:2147483000}' +
-        '#gmgai-btn:hover{transform:translateY(-2px);border-color:#4ADE80;box-shadow:0 10px 24px rgba(0,0,0,.7),0 0 16px rgba(74,222,128,.5)}' +
-        '#gmgai-btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(0,0,0,.3)}' +
+    var CSS = '#gmgai-root{' +
+        'position:fixed;right:20px;bottom:20px;z-index:2147483000;' +
+        'font:13px/1.45 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;' +
+        '--np-background:#EEECE8;--np-surface:#FFFFFF;--np-surface-muted:#F5F4F1;--np-navy:#002B3B;--np-green:#63E052;' +
+        '--np-green-hover:#4CCB3B;--np-text:#111111;--np-text-secondary:#626262;--np-border:#DEDCD7;--np-danger:#D92D20;' +
+        '--np-shadow:0 8px 28px rgba(0,0,0,0.12);' +
+        '--card:var(--np-surface);--surface:var(--np-surface-muted);--border:var(--np-border);--border-strong:var(--np-green);' +
+        '--text-primary:var(--np-text);--text-secondary:var(--np-text-secondary);--danger:var(--np-danger);' +
+        '--note-bar:#F59E0B;--note-bg:rgba(245,158,11,.1);--primary-accent:var(--np-green);' +
+        'color:var(--np-text);-webkit-font-smoothing:antialiased}' +
+        '.gmgai-select{font-family:inherit;font-size:11.5px;font-weight:500;padding:4px 8px;border:1px solid var(--np-border);' +
+        'border-radius:6px;background:var(--np-surface);color:var(--np-navy);max-width:125px;cursor:pointer;outline:none;' +
+        'text-overflow:ellipsis;white-space:nowrap;box-sizing:border-box;transition:border-color .15s ease}' +
+        '.gmgai-select:focus{border-color:var(--np-green);box-shadow:0 0 0 2px rgba(99,224,82,0.2)}' +
+        '#gmgai-btn{width:56px;height:56px;border-radius:50%;border:2px solid var(--np-navy);background:#FFFFFF !important;' +
+        'box-shadow:0 6px 20px rgba(0,0,0,0.15),0 0 12px rgba(99,224,82,0.2);cursor:pointer;display:grid;place-items:center;' +
+        'padding:0;overflow:hidden;transition:all .18s ease;z-index:2147483000;box-sizing:border-box}' +
+        '#gmgai-btn:hover{transform:translateY(-2px);border-color:var(--np-green);box-shadow:0 10px 24px rgba(0,0,0,0.2),0 0 16px rgba(99,224,82,0.45)}' +
+        '#gmgai-btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(0,0,0,0.15)}' +
         '#gmgai-btn svg{display:block}' +
-        '#gmgai-btn:focus-visible,#gmgai-root :focus-visible{outline:2px solid #168B50;outline-offset:2px}' +
-        '@media (prefers-color-scheme: dark){#gmgai-btn{background:#062617;border-color:#168B50}#gmgai-btn:hover{border-color:#4ADE80}}' +
-        '#gmgai-panel{position:fixed;right:16px;bottom:16px;width:450px;height:680px;max-height:85vh;background:#080808;border:1px solid #303030;border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.7);display:flex;flex-direction:column;overflow:hidden;color:#F5F5F5}' +
-        '#gmgai-head{padding:8px 10px;background:#080808;color:#F5F5F5;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #303030;border-top:3px solid #168B50;gap:6px;box-sizing:border-box}' +
-        '#gmgai-head .gmgai-brand{display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 auto;overflow:hidden}' +
-        '#gmgai-head .gmgai-title-wrap{min-width:0;overflow:hidden}' +
-        '#gmgai-head .gmgai-title{font-size:13.5px;font-weight:700;color:#F5F5F5;line-height:1.2;white-space:nowrap}' +
-        '#gmgai-head small{display:block;color:#A3A3A3;font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px;line-height:1.2}' +
-        '#gmgai-head .gmgai-controls{display:flex;align-items:center;gap:4px;flex-shrink:0}' +
-        '#gmgai-head button{background:#1E1E1E;border:1px solid #333333;color:#D1D5DB;cursor:pointer;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:500;transition:all .15s ease;flex-shrink:0}' +
-        '#gmgai-head button:hover{background:#2E2E2E;color:#FFF;border-color:#168B50}' +
-        '#gmgai-head #gmgai-close{background:#DC2626 !important;color:#FFFFFF !important;border:1px solid #EF4444 !important;font-size:11px !important;font-weight:700 !important;padding:3px 8px !important;border-radius:5px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;cursor:pointer !important;gap:3px !important;flex-shrink:0 !important;box-shadow:0 1px 3px rgba(0,0,0,0.3) !important}' +
-        '#gmgai-head #gmgai-close:hover{background:#DC2626;color:#FFF;border-color:#EF4444}' +
-        '@media (prefers-color-scheme: dark){#gmgai-head{background:#080808;color:#F5F5F5;border-bottom-color:#303030;border-top-color:#168B50}#gmgai-head small{color:#A3A3A3}}' +
-        '#gmgai-msgs{flex:1;overflow-y:auto;padding:8px 10px;background:#080808;color:#F5F5F5}' +
-        '.gmgai-m{margin:5px 0;padding:6px 9px;border-radius:8px;font-size:12.5px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word;max-width:88%}' +
-        '.gmgai-u{background:#168B50;color:#FFF;margin-left:auto}' +
-        '.gmgai-a{background:#151515;border:1px solid #303030;color:#F5F5F5}' +
-        '.gmgai-e{background:rgba(185,28,28,.15);border:1px solid rgba(185,28,28,.4);color:#FCA5A5}' +
-        '.gmgai-chip{display:inline-block;font:11px ui-monospace,Menlo,monospace;background:#151515;color:#4ADE80;border:1px solid rgba(22,139,80,.4);border-radius:4px;padding:0 5px;margin:0 2px 2px 0}' +
-        '.gmgai-sug{display:block;width:100%;text-align:left;margin:3px 0;padding:6px 8px;border:1px solid #303030;border-radius:6px;background:#151515;cursor:pointer;color:#F5F5F5;font-size:11.5px;transition:border-color .15s ease,background .15s ease}' +
-        '.gmgai-sug:hover{border-color:#168B50;background:rgba(22,139,80,.12);color:#F5F5F5}' +
-        '@media (prefers-color-scheme: dark){.gmgai-sug{background:#151515;border-color:#303030;color:#F5F5F5}.gmgai-sug:hover{border-color:#168B50;background:rgba(22,139,80,.12);color:#F5F5F5}}' +
-        '#gmgai-in{display:flex;gap:5px;padding:6px 8px;border-top:1px solid #303030;background:#080808}' +
-        '#gmgai-in textarea{flex:1;resize:none;height:34px;border:1px solid #303030;border-radius:6px;padding:6px 8px;font:inherit;font-size:12.5px;background:#151515;color:#F5F5F5}' +
-        '#gmgai-in textarea:focus{border-color:#168B50;outline:none}' +
-        '@media (prefers-color-scheme: dark){#gmgai-in textarea{background:#151515;border-color:#303030;color:#F5F5F5}#gmgai-in textarea:focus{border-color:#168B50}}' +
-        '#gmgai-in button{border:0;border-radius:6px;background:#168B50;color:#fff;font-weight:600;font-size:12px;padding:0 12px;cursor:pointer;transition:background .15s ease,transform .1s ease}' +
-        '#gmgai-in button:hover:not(:disabled){background:#117342}' +
-        '#gmgai-in button:active:not(:disabled){background:#0D5D35;transform:scale(0.98)}' +
-        '#gmgai-in button:disabled{opacity:0.55;cursor:not-allowed}' +
-        '.gmgai-foot{font-size:11px;color:#A3A3A3;margin-top:3px;border-top:1px dashed #303030;padding-top:2px}' +
-        '.gmgai-warn{background:rgba(245,158,11,.10);border:1px solid #F59E0B;color:#FCD34D;border-radius:5px;padding:3px 5px;margin-top:3px;font-size:11.5px}' +
-        '.gmgai-card{border:1px solid #303030;background:#151515;border-radius:8px;padding:7px;margin:5px 0;max-width:100%;color:#F5F5F5;font-size:12px}' +
-        '.gmgai-card h4{margin:0 0 3px;font-size:12.5px;color:#F5F5F5}.gmgai-card .meta{font-size:11px;color:#A3A3A3;margin-bottom:3px}' +
-        '.gmgai-diff{background:#080808;color:#F5F5F5;border:1px solid #303030;font:11.5px/1.4 ui-monospace,Menlo,monospace;border-radius:6px;padding:6px 8px;max-height:200px;overflow:auto;white-space:pre-wrap}' +
-        '.gmgai-chip-inactive{display:inline-block;font-size:11px;line-height:18px;padding:0 6px;border-radius:999px;border:1px solid #303030;color:#A3A3A3;font-weight:500;vertical-align:middle}' +
+        '#gmgai-btn:focus-visible,#gmgai-root :focus-visible{outline:2px solid var(--np-green);outline-offset:2px}' +
+        '#gmgai-panel{position:fixed;right:16px;bottom:16px;width:450px;height:670px;max-height:85vh;max-width:calc(100vw - 32px);' +
+        'background:var(--np-background);border:1px solid var(--np-border);border-radius:16px;box-shadow:var(--np-shadow);' +
+        'display:flex;flex-direction:column;overflow:hidden;color:var(--np-text);box-sizing:border-box}' +
+        '#gmgai-head{padding:10px 14px;background:var(--np-surface);color:var(--np-text);display:flex;' +
+        'justify-content:space-between;align-items:center;border-bottom:1px solid var(--np-border);gap:8px;box-sizing:border-box;flex-shrink:0}' +
+        '#gmgai-head .gmgai-brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto;overflow:hidden}' +
+        '#gmgai-head .gmgai-title-wrap{min-width:0;overflow:hidden;display:flex;flex-direction:column}' +
+        '#gmgai-head .gmgai-title{font-size:15px;font-weight:600;color:var(--np-navy);line-height:1.2;white-space:nowrap;letter-spacing:-0.2px}' +
+        '#gmgai-head small{display:block;color:var(--np-text-secondary);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;line-height:1.3;font-weight:400;margin-top:1px}' +
+        '#gmgai-head .gmgai-controls{display:flex;align-items:center;gap:6px;flex-shrink:0}' +
+        '#gmgai-head button{background:var(--np-surface-muted);border:1px solid var(--np-border);color:var(--np-text-secondary);cursor:pointer;padding:4px 9px;border-radius:6px;font-size:11.5px;font-weight:500;transition:all .15s ease;flex-shrink:0;font-family:inherit}' +
+        '#gmgai-head button:hover{background:var(--np-background);color:var(--np-text);border-color:#C5C3BD}' +
+        '#gmgai-head #gmgai-close{background:var(--np-surface-muted);color:var(--np-text);border:1px solid var(--np-border);font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;gap:4px;flex-shrink:0;transition:all .15s ease}' +
+        '#gmgai-head #gmgai-close:hover{background:#FEE2E2;color:var(--np-danger);border-color:#FCA5A5}' +
+        '#gmgai-head #gmgai-close:focus-visible{outline:2px solid var(--np-danger);outline-offset:1px}' +
+        '#gmgai-mode-bar{display:flex;border-bottom:1px solid var(--np-border);background:var(--np-surface-muted);box-sizing:border-box;flex-shrink:0}' +
+        '#gmgai-mode-bar button{flex:1;padding:8px 6px;border:0;background:transparent;font-size:12px;font-weight:500;color:var(--np-text-secondary);cursor:pointer;text-align:center;white-space:nowrap;transition:all .15s ease;font-family:inherit;border-bottom:2.5px solid transparent}' +
+        '#gmgai-mode-bar button:hover{color:var(--np-text);background:rgba(0,0,0,0.03)}' +
+        '#gmgai-mode-bar button.gmgai-tab-active{color:var(--np-navy);font-weight:600;background:var(--np-surface);border-bottom-color:var(--np-green)}' +
+        '#gmgai-msgs{flex:1;overflow-y:auto;padding:12px 14px;background:var(--np-background);color:var(--np-text);box-sizing:border-box}' +
+        '.gmgai-m{margin:5px 0;padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-wrap:break-word;max-width:88%;box-sizing:border-box}' +
+        '.gmgai-u{background:var(--np-navy);color:#FFFFFF;margin-left:auto;border-bottom-right-radius:2px;box-shadow:0 1px 4px rgba(0,43,59,0.15)}' +
+        '.gmgai-a{background:var(--np-surface);border:1px solid var(--np-border);color:var(--np-text);border-bottom-left-radius:2px;box-shadow:0 1px 4px rgba(0,0,0,0.04);max-width:92%}' +
+        '.gmgai-e{background:#FEF2F2;border:1px solid #FCA5A5;color:var(--np-danger)}' +
+        '.gmgai-chip{display:inline-block;font:11px ui-monospace,Menlo,monospace;background:var(--np-surface-muted);color:var(--np-navy);border:1px solid var(--np-border);border-radius:4px;padding:1px 6px;margin:0 3px 3px 0;font-weight:500}' +
+        '.gmgai-sug{display:block;width:100%;text-align:left;margin:4px 0;padding:8px 12px;border:1px solid var(--np-border);border-radius:8px;background:var(--np-surface);cursor:pointer;color:var(--np-text);font-size:12px;font-weight:500;transition:all .15s ease;box-shadow:0 1px 3px rgba(0,0,0,0.03);box-sizing:border-box;font-family:inherit}' +
+        '.gmgai-sug:hover{border-color:var(--np-green);background:#F5FDF4;color:var(--np-navy);transform:translateX(2px)}' +
+        '#gmgai-in{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--np-border);background:var(--np-surface);box-sizing:border-box;flex-shrink:0;align-items:flex-end}' +
+        '#gmgai-in textarea{flex:1;resize:none;height:38px;border:1px solid var(--np-border);border-radius:8px;padding:8px 10px;font:inherit;font-size:13px;line-height:1.4;background:var(--np-surface-muted);color:var(--np-text);box-sizing:border-box;transition:border-color .15s ease,background .15s ease}' +
+        '#gmgai-in textarea:focus{background:#FFFFFF;border-color:var(--np-green);outline:none;box-shadow:0 0 0 2px rgba(99,224,82,0.2)}' +
+        '#gmgai-in button{border:0;border-radius:8px;background:var(--np-green);color:var(--np-navy);font-weight:600;font-size:13px;padding:0 16px;height:38px;cursor:pointer;transition:all .15s ease;flex-shrink:0;box-shadow:0 2px 6px rgba(99,224,82,0.25);font-family:inherit}' +
+        '#gmgai-in button:hover:not(:disabled){background:var(--np-green-hover)}' +
+        '#gmgai-in button:active:not(:disabled){transform:scale(0.98)}' +
+        '#gmgai-in button:disabled{opacity:0.55;cursor:not-allowed;box-shadow:none}' +
+        '.gmgai-foot{font-size:11px;color:var(--np-text-secondary);margin-top:6px;border-top:1px solid var(--np-border);padding-top:4px}' +
+        '.gmgai-warn{background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;border-radius:6px;padding:5px 8px;margin-top:5px;font-size:12px}' +
+        '.gmgai-card{border:1px solid var(--np-border);background:var(--np-surface);border-radius:10px;padding:10px 12px;margin:6px 0;max-width:100%;color:var(--np-text);font-size:12.5px;box-shadow:0 1px 4px rgba(0,0,0,0.03);box-sizing:border-box}' +
+        '.gmgai-card h4{margin:0 0 4px;font-size:13px;font-weight:600;color:var(--np-navy)}' +
+        '.gmgai-card .meta{font-size:11px;color:var(--np-text-secondary);margin-bottom:4px}' +
+        '.gmgai-diff{background:var(--np-surface-muted);color:var(--np-text);border:1px solid var(--np-border);font:11.5px/1.45 ui-monospace,Menlo,monospace;border-radius:6px;padding:6px 8px;max-height:200px;overflow:auto;white-space:pre-wrap}' +
+        '.gmgai-chip-inactive{display:inline-block;font-size:11px;line-height:18px;padding:0 6px;border-radius:999px;border:1px solid var(--np-border);color:var(--np-text-secondary);font-weight:500;vertical-align:middle}' +
         '.gmgai-cr s,.gmgai-cr b{white-space:pre-wrap}' +
-        '.gmgai-chg{border:1px solid #303030;border-radius:6px;background:#151515;margin:5px 0;max-height:240px;overflow:auto}.gmgai-cr,.gmgai-cn{padding:5px 8px;border-top:1px solid #262626;font-size:12px;line-height:1.4;word-break:break-word;color:#F5F5F5}.gmgai-chg>div:first-child{border-top:0}' +
-        '.gmgai-cr .f{display:block;font:11px ui-monospace,Menlo,monospace;color:#A3A3A3;margin-bottom:2px}.gmgai-cr s{color:#FCA5A5;background:rgba(185,28,28,.2);border-radius:3px;padding:0 3px}.gmgai-cr b{color:#4ADE80;background:rgba(22,139,80,.2);border-radius:3px;padding:0 3px;font-weight:600}.gmgai-cr .ar{color:#A3A3A3}.gmgai-cr i{color:#A3A3A3}.gmgai-cn{color:#D1D5DB}' +
-        '.gmgai-act{display:flex;gap:5px;margin-top:5px}.gmgai-act button{border:0;border-radius:5px;padding:4px 10px;cursor:pointer;font-size:11px;font-weight:600;transition:background .15s ease}' +
-        '.gmgai-ok{background:#168B50;color:#fff}.gmgai-ok:hover{background:#117342}.gmgai-ok:active{background:#0D5D35}' +
-        '.gmgai-no{background:transparent;color:var(--danger);border:1px solid var(--border) !important}.gmgai-act button.gmgai-no:hover{border-color:var(--border-strong) !important}' +
-        '#gmgai-panel{background:var(--card);border-color:var(--border)}#gmgai-msgs{background:var(--surface)}' +
-        '.gmgai-card{background:var(--surface) !important;border-color:var(--border) !important;color:var(--text-primary)}.gmgai-card h4{color:var(--text-primary) !important}.gmgai-card .meta,.gmgai-card .gmgai-exp{color:var(--text-secondary) !important}' +
-        '.gmgai-card .gmgai-diff,.gmgai-card .gmgai-chg{background:var(--card);color:var(--text-primary);border-color:var(--border)}.gmgai-card select{background:var(--card);color:var(--text-primary);border:1px solid var(--border);font-size:11px}' +
-        '.gmgai-rv-note{border-left:3px solid var(--note-bar);background:var(--note-bg);border-radius:6px;padding:8px 12px;margin:8px 0 3px}' +
-        '.gmgai-rv-head{font-size:12px;font-weight:600;line-height:16px;color:var(--text-primary);margin:0 0 3px}.gmgai-rv-body{font-size:13px;line-height:18px;color:var(--text-primary);white-space:pre-wrap;overflow-wrap:anywhere;margin:0}' +
-        '.gmgai-st{font-size:12px;margin-top:4px;font-weight:600}.gmgai-st a{color:#168B50;text-decoration:none}.gmgai-st a:hover{text-decoration:underline}' +
-        '.gmgai-tw{overflow-x:auto;max-width:100%;margin:3px 0}.gmgai-mt{border-collapse:collapse;font-size:12px;line-height:1.35;white-space:normal}.gmgai-mt th,.gmgai-mt td{border:1px solid var(--border,#303030);padding:2px 5px;text-align:left;vertical-align:top}.gmgai-mt th{background:var(--surface,#151515);font-weight:600}' +
-        '.gmgai-vt{border-collapse:collapse;width:100%;font-size:12px;margin-top:3px}.gmgai-vt th,.gmgai-vt td{border-bottom:1px solid #303030;padding:2px 4px;text-align:left;vertical-align:top}' +
-        '.gmgai-m ul,.gmgai-m ol{margin:3px 0;padding-left:18px;white-space:normal}.gmgai-m code{font:11.5px ui-monospace,Menlo,monospace;background:#262626;border-radius:3px;padding:0 3px;color:#4ADE80}' +
-        '.gmgai-no-chip{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border:1px solid #F87171;border-radius:99px;color:#F87171;font-size:11px;font-weight:600}.gmgai-no-chip:before{content:"";width:6px;height:6px;border-radius:50%;background:#F87171}' +
-        '.gmgai-cost{display:inline-flex;align-items:center;height:24px;padding:0 8px;border:1px solid #303030;border-radius:99px;background:#151515;color:#A3A3A3;font-size:11px}';
+        '.gmgai-chg{border:1px solid var(--np-border);border-radius:6px;background:var(--np-surface-muted);margin:5px 0;max-height:240px;overflow:auto}' +
+        '.gmgai-cr,.gmgai-cn{padding:5px 8px;border-top:1px solid var(--np-border);font-size:12px;line-height:1.4;word-break:break-word;color:var(--np-text)}.gmgai-chg>div:first-child{border-top:0}' +
+        '.gmgai-cr .f{display:block;font:11px ui-monospace,Menlo,monospace;color:var(--np-text-secondary);margin-bottom:2px}' +
+        '.gmgai-cr s{color:#B91C1C;background:rgba(217,45,32,0.1);border-radius:3px;padding:0 3px}' +
+        '.gmgai-cr b{color:#15803D;background:rgba(99,224,82,0.18);border-radius:3px;padding:0 3px;font-weight:600}' +
+        '.gmgai-cr .ar{color:var(--np-text-secondary)}' +
+        '.gmgai-cr i{color:var(--np-text-secondary)}' +
+        '.gmgai-cn{color:var(--np-text)}' +
+        '.gmgai-act{display:flex;gap:6px;margin-top:6px}' +
+        '.gmgai-act button{border:0;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:11.5px;font-weight:600;transition:background .15s ease;font-family:inherit}' +
+        '.gmgai-ok{background:var(--np-green);color:var(--np-navy)}.gmgai-ok:hover{background:var(--np-green-hover)}' +
+        '.gmgai-no{background:var(--np-surface);color:var(--np-danger);border:1px solid var(--np-border) !important}.gmgai-act button.gmgai-no:hover{border-color:var(--np-danger) !important;background:#FEE2E2}' +
+        '.gmgai-rv-note{border-left:3px solid var(--note-bar);background:var(--note-bg);border-radius:6px;padding:8px 12px;margin:8px 0 4px}' +
+        '.gmgai-rv-head{font-size:12px;font-weight:600;line-height:16px;color:var(--np-text);margin:0 0 3px}.gmgai-rv-body{font-size:13px;line-height:18px;color:var(--np-text);white-space:pre-wrap;overflow-wrap:anywhere;margin:0}' +
+        '.gmgai-st{font-size:12px;margin-top:4px;font-weight:600}.gmgai-st a{color:var(--np-navy);text-decoration:underline}' +
+        '.gmgai-tw{overflow-x:auto;max-width:100%;margin:4px 0}.gmgai-mt{border-collapse:collapse;font-size:12px;line-height:1.4;white-space:normal;width:100%}' +
+        '.gmgai-mt th,.gmgai-mt td{border:1px solid var(--np-border);padding:4px 6px;text-align:left;vertical-align:top}' +
+        '.gmgai-mt th{background:var(--np-surface-muted);font-weight:600;color:var(--np-navy)}' +
+        '.gmgai-vt{border-collapse:collapse;width:100%;font-size:12px;margin-top:4px}.gmgai-vt th,.gmgai-vt td{border-bottom:1px solid var(--np-border);padding:4px 6px;text-align:left;vertical-align:top}' +
+        '.gmgai-m ul,.gmgai-m ol{margin:4px 0;padding-left:20px;white-space:normal}.gmgai-m code{font:11.5px ui-monospace,Menlo,monospace;background:var(--np-surface-muted);border:1px solid var(--np-border);border-radius:3px;padding:1px 4px;color:var(--np-navy)}' +
+        '.gmgai-no-chip{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border:1px solid var(--np-danger);border-radius:99px;color:var(--np-danger);font-size:11px;font-weight:600}.gmgai-no-chip:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--np-danger)}' +
+        '.gmgai-cost{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid var(--np-border);border-radius:99px;background:var(--np-surface);color:var(--np-text-secondary);font-size:11px}';
     var PAPI = '/api/x_gmg_ai/agent/providers';
     /* Model picker: list comes from the server (safe fields only); the server validates whatever id we send. */
     function loadProviders() {
@@ -695,25 +718,32 @@
             var st = tdoc.createElement('style'); st.id = 'gmgai-css'; st.textContent = CSS; tdoc.head.appendChild(st);
         }
         var root = tdoc.createElement('div'); root.id = 'gmgai-root';
-        // live dcb843c: the open state is per browser session (sessionStorage), so after any ?panel=open page the panel stayed open on later
-        // x_gmg_ai_*.do loads (81143ca only skipped the closed launcher). On our own pages the panel opens only when THIS URL asks for it.
-        var open = s.open && (!ownAppPage() || openedHere);   // openedHere: this page load came with ?panel=open (linkedBuild strips it) or opened it itself
+        var open = s.open && (!ownAppPage() || openedHere);
         shiftContent(open);
         if (!open) {
-            if (ownAppPage()) return;   // design review: no floating launcher on our own x_gmg_ai_*.do pages (the page is the agent); ?panel=open still opens the panel
+            // Clean up outside-click listener when widget is closed
+            if (top.__gmgaiDocClick) {
+                tdoc.removeEventListener('click', top.__gmgaiDocClick, true);
+                top.__gmgaiDocClick = null;
+            }
+            if (top.__gmgaiDocKeydown) {
+                tdoc.removeEventListener('keydown', top.__gmgaiDocKeydown);
+                top.__gmgaiDocKeydown = null;
+            }
+            if (ownAppPage()) return;
             root.innerHTML = '<button id="gmgai-btn" title="Now Pilot for ServiceNow" aria-label="Open Now Pilot for ServiceNow">' + BTN_LOGO_SVG + '</button>';
             tdoc.body.appendChild(root);
-        tdoc.addEventListener('keydown', function(ev) {
-            if (ev.key === 'Escape' || ev.keyCode === 27) {
-                var curr = load();
-                if (curr.open) {
-                    curr.open = false;
-                    save(curr);
+            var btnEl = tdoc.getElementById('gmgai-btn');
+            if (btnEl) {
+                btnEl.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    s.open = true;
+                    save(s);
                     render();
-                }
+                    hook('onOpen');
+                };
             }
-        });
-            tdoc.getElementById('gmgai-btn').onclick = function() { s.open = true; save(s); render(); hook('onOpen'); };
             return;
         }
         var where = (c.table ? c.table + (c.kind ? ' ' + c.kind : '') : c.kind) + (c.fields && c.fields.number ? ' · ' + c.fields.number : '');
@@ -722,17 +752,17 @@
         var isWorkflowMode = (s.mode === 'workflow');
         var isChatMode = (!isDevMode && !isITSMMode && !isWorkflowMode);
         var h = '<div id="gmgai-panel"><div id="gmgai-head">' +
-            '<div class="gmgai-brand">' + LOGO_SVG + '<div class="gmgai-title-wrap"><div class="gmgai-title">Now Pilot</div><small title="' + esc(where || c.url) + ' &middot; Built by Kanam Ramu">' + esc(where || c.url) + ' &middot; Built by Kanam Ramu</small></div></div>' +
-            '<div class="gmgai-controls">' + (top.__gmgaiProviders && top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '<button id="gmgai-clear" title="Clear chat history">Clear</button><button id="gmgai-close" title="Close Now Pilot (Esc)" aria-label="Close Now Pilot">&#10005; Close</button></div></div>' +
-            '<div id="gmgai-mode-bar" style="display:flex;border-bottom:1px solid var(--border);background:var(--surface);font-size:12px">' +
-            '<button id="gmgai-tab-chat" style="flex:1;padding:6px;border:0;background:' + (isChatMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isChatMode ? '600' : '400') + ';color:' + (isChatMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isChatMode ? '2px solid #168B50' : 'none') + '">Chat</button>' +
-            '<button id="gmgai-tab-itsm" style="flex:1;padding:6px;border:0;background:' + (isITSMMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isITSMMode ? '600' : '400') + ';color:' + (isITSMMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isITSMMode ? '2px solid #168B50' : 'none') + '">ITSM Intelligence</button>' +
-            '<button id="gmgai-tab-dev" style="flex:1;padding:6px;border:0;background:' + (isDevMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isDevMode ? '600' : '400') + ';color:' + (isDevMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isDevMode ? '2px solid #168B50' : 'none') + '">Dev Assistant</button>' +
-            '<button id="gmgai-tab-workflow" style="flex:1;padding:6px;border:0;background:' + (isWorkflowMode ? 'var(--card)' : 'transparent') + ';font-weight:' + (isWorkflowMode ? '600' : '400') + ';color:' + (isWorkflowMode ? 'var(--text-primary)' : 'var(--text-secondary)') + ';cursor:pointer;border-bottom:' + (isWorkflowMode ? '2px solid #168B50' : 'none') + '">Workflows</button>' +
+            '<div class="gmgai-brand">' + LOGO_SVG + '<div class="gmgai-title-wrap"><div class="gmgai-title">Now Pilot</div><small title="AI-powered ServiceNow assistant &middot; Built by Kanam Ramu">AI-powered ServiceNow assistant &middot; Built by Kanam Ramu</small></div></div>' +
+            '<div class="gmgai-controls">' + (top.__gmgaiProviders && top.__gmgaiProviders.length ? provSelectHtml(s) : '') + '<button id="gmgai-clear" title="Clear chat history">Clear</button><button id="gmgai-close" title="Close Now Pilot" aria-label="Close Now Pilot" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:-1px"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg> <span>Close</span></button></div></div>' +
+            '<div id="gmgai-mode-bar">' +
+            '<button id="gmgai-tab-chat" class="' + (isChatMode ? 'gmgai-tab-active' : '') + '">Chat</button>' +
+            '<button id="gmgai-tab-itsm" class="' + (isITSMMode ? 'gmgai-tab-active' : '') + '">ITSM Intelligence</button>' +
+            '<button id="gmgai-tab-dev" class="' + (isDevMode ? 'gmgai-tab-active' : '') + '">Dev Assistant</button>' +
+            '<button id="gmgai-tab-workflow" class="' + (isWorkflowMode ? 'gmgai-tab-active' : '') + '">Workflows</button>' +
             '</div><div id="gmgai-msgs">';
-        h += hook('renderStrip').join('');   // extension strip + its cards (open source alone: nothing)
+        h += hook('renderStrip').join('');
         if (!s.messages.length) {
-            h += '<div style="color:#6b7280;margin-bottom:6px">Ask me about this page or anything in ServiceNow.</div>';
+            h += '<div style="color:var(--np-text-secondary);font-size:13px;margin-bottom:8px">Ask me about this page or anything in ServiceNow.</div>';
             suggestions(c).forEach(function(x) { h += '<button class="gmgai-sug">' + esc(x) + '</button>'; });
         }
         s.messages.forEach(function(m) {
@@ -745,7 +775,7 @@
             if (m.citation_warning) h += '<div class="gmgai-warn" style="background:#FEF2F2;border-color:#FCA5A5;color:#991B1B"><b>' + WARN_ICO + ' Citation Notice:</b> ' + esc(m.citation_warning) + '</div>';
             if (m.warning) h += '<div class="gmgai-warn">' + esc(m.warning) + '</div>';
             if (m.error && (m.correlation_id || m.error_code)) {
-                h += '<div class="gmgai-err-diag" style="font-size:11px;color:#991B1B;margin-top:4px;padding:2px 4px;background:#FEE2E2;border-radius:4px">' +
+                h += '<div class="gmgai-err-diag" style="font-size:11px;color:#991B1B;margin-top:4px;padding:3px 6px;background:#FEE2E2;border-radius:4px;border:1px solid #FCA5A5">' +
                      (m.correlation_id ? '<b>ID:</b> <code>' + esc(m.correlation_id) + '</code>' : '') +
                      (m.correlation_id && m.error_code ? ' &middot; ' : '') +
                      (m.error_code ? '<b>Code:</b> <code>' + esc(m.error_code) + '</code>' : '') +
@@ -754,10 +784,10 @@
             if (m.role == 'assistant' && (m.cost != null || m.month != null)) h += '<div class="gmgai-foot">' + footer(m) + '</div>';
             h += '</div>';
         });
-        if (s.pending) h += '<div class="gmgai-m gmgai-a" style="color:#6b7280">Working…</div>';
+        if (s.pending) h += '<div class="gmgai-m gmgai-a" style="color:var(--np-text-secondary)">Working…</div>';
         var devPane = '';
         if (isDevMode) {
-            devPane = '<div id="gmgai-dev-bar" style="padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px">' +
+            devPane = '<div id="gmgai-dev-bar" style="padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px">' +
                 '<div style="display:flex;gap:4px;align-items:center">' +
                 '<label style="font-weight:600;min-width:45px">Artifact:</label>' +
                 '<select id="gmgai-dev-artifact" class="gmgai-select" style="flex:1" aria-label="Artifact Type">' +
@@ -781,16 +811,16 @@
                 '</select></div>' +
                 '<div style="display:flex;gap:4px;align-items:center">' +
                 '<label style="font-weight:600;min-width:45px">Table:</label>' +
-                '<input id="gmgai-dev-table" type="text" placeholder="e.g. incident" value="' + esc(s.dev_table !== undefined ? s.dev_table : (c.table || '')) + '" style="flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px" aria-label="Table Name">' +
-                '<button id="gmgai-dev-code-toggle" style="background:#f3f4f6;border:1px solid #d1d5db;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:11px" aria-label="Toggle Code Input">' + (s.dev_show_code ? '- Code' : '+ Code') + '</button>' +
+                '<input id="gmgai-dev-table" type="text" placeholder="e.g. incident" value="' + esc(s.dev_table !== undefined ? s.dev_table : (c.table || '')) + '" style="flex:1;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)" aria-label="Table Name">' +
+                '<button id="gmgai-dev-code-toggle" style="background:var(--np-surface);border:1px solid var(--np-border);border-radius:6px;padding:3px 8px;cursor:pointer;font-size:11.5px;font-weight:500" aria-label="Toggle Code Input">' + (s.dev_show_code ? '- Code' : '+ Code') + '</button>' +
                 '</div>' +
-                '<textarea id="gmgai-dev-code" placeholder="Paste existing script here for Review / Debug / Explain..." style="display:' + (s.dev_show_code ? 'block' : 'none') + ';width:100%;height:70px;box-sizing:border-box;font-family:monospace;font-size:11px;border:1px solid #d1d5db;border-radius:4px;padding:4px;resize:vertical" aria-label="Existing Script Code">' + esc(s.dev_code || '') + '</textarea>' +
+                '<textarea id="gmgai-dev-code" placeholder="Paste existing script here for Review / Debug / Explain..." style="display:' + (s.dev_show_code ? 'block' : 'none') + ';width:100%;height:75px;box-sizing:border-box;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;border:1px solid var(--np-border);border-radius:6px;padding:6px;resize:vertical;background:var(--np-surface);color:var(--np-text)" aria-label="Existing Script Code">' + esc(s.dev_code || '') + '</textarea>' +
                 '</div>';
         }
         var itsmPane = '';
         if (isITSMMode) {
             var boundInc = (c.table == 'incident' ? (c.fields && c.fields.number ? c.fields.number : (c.sys_id || '')) : '');
-            itsmPane = '<div id="gmgai-itsm-bar" style="padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px">' +
+            itsmPane = '<div id="gmgai-itsm-bar" style="padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px">' +
                 '<div style="display:flex;gap:4px;align-items:center">' +
                 '<label style="font-weight:600;min-width:45px">Action:</label>' +
                 '<select id="gmgai-itsm-action" class="gmgai-select" style="flex:1" aria-label="ITSM Action">' +
@@ -803,14 +833,14 @@
                 '</div>' +
                 '<div style="display:flex;gap:4px;align-items:center">' +
                 '<label style="font-weight:600;min-width:45px">Incident:</label>' +
-                '<input id="gmgai-itsm-incident" type="text" placeholder="e.g. INC0000060 or sys_id" value="' + esc(s.itsm_incident !== undefined ? s.itsm_incident : boundInc) + '" style="flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px" aria-label="Incident Identifier">' +
+                '<input id="gmgai-itsm-incident" type="text" placeholder="e.g. INC0000060 or sys_id" value="' + esc(s.itsm_incident !== undefined ? s.itsm_incident : boundInc) + '" style="flex:1;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)" aria-label="Incident Identifier">' +
                 '</div>' +
                 '</div>';
         }
         var workflowPane = '';
         if (isWorkflowMode) {
             var boundTarget = (c.table == 'incident' ? (c.fields && c.fields.number ? c.fields.number : (c.sys_id || '')) : (c.bound && c.bound.sys_id ? c.bound.sys_id : ''));
-            workflowPane = '<div id="gmgai-wf-bar" style="padding:6px 10px;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:12px">' +
+            workflowPane = '<div id="gmgai-wf-bar" style="padding:8px 12px;background:var(--np-surface-muted);border-top:1px solid var(--np-border);display:flex;flex-direction:column;gap:6px;font-size:12px">' +
                 '<div style="display:flex;gap:4px;align-items:center">' +
                 '<label style="font-weight:600;min-width:55px">Workflow:</label>' +
                 '<select id="gmgai-wf-type" class="gmgai-select" style="flex:1" aria-label="Workflow Template">' +
@@ -821,7 +851,7 @@
                 '</div>' +
                 '<div style="display:flex;gap:4px;align-items:center">' +
                 '<label style="font-weight:600;min-width:55px">Target/Ref:</label>' +
-                '<input id="gmgai-wf-target" type="text" placeholder="e.g. INC0000060 or script" value="' + esc(s.wf_target !== undefined ? s.wf_target : boundTarget) + '" style="flex:1;padding:2px 6px;border:1px solid #d1d5db;border-radius:4px;font:inherit;font-size:12px" aria-label="Workflow Target">' +
+                '<input id="gmgai-wf-target" type="text" placeholder="e.g. INC0000060 or script" value="' + esc(s.wf_target !== undefined ? s.wf_target : boundTarget) + '" style="flex:1;padding:4px 8px;border:1px solid var(--np-border);border-radius:6px;font:inherit;font-size:12px;background:var(--np-surface);color:var(--np-text)" aria-label="Workflow Target">' +
                 '</div>' +
                 '</div>';
         }
@@ -838,7 +868,86 @@
         tdoc.body.appendChild(root);
         var box = tdoc.getElementById('gmgai-msgs'); box.scrollTop = box.scrollHeight;
         var ta = root.querySelector('textarea');
-        var closeBtn = tdoc.getElementById('gmgai-close') || root.querySelector('#gmgai-close'); if (closeBtn) closeBtn.onclick = function() { s.open = false; save(s); render(); };   // an extension poller stops on its next tick (panel not visible)
+
+        // Internal click containment:
+        // Clicks inside the panel must NEVER close the chatbot
+        var panelEl = tdoc.getElementById('gmgai-panel') || root.querySelector('#gmgai-panel');
+        if (panelEl) {
+            panelEl.onclick = function(e) {
+                e.stopPropagation();
+            };
+        }
+
+        // Explicit Close button in the header
+        var closeBtn = tdoc.getElementById('gmgai-close') || root.querySelector('#gmgai-close');
+        if (closeBtn) {
+            closeBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var curr = load();
+                curr.open = false;
+                save(curr);
+                render();
+            };
+        }
+
+        // Document click handler (Click-outside to close):
+        // Clean up any previously attached listener to prevent duplicate registration
+        if (top.__gmgaiDocClick) {
+            tdoc.removeEventListener('click', top.__gmgaiDocClick, true);
+            top.__gmgaiDocClick = null;
+        }
+        top.__gmgaiDocClick = function(e) {
+            var curr = load();
+            if (!curr.open) return;
+            var pEl = tdoc.getElementById('gmgai-panel');
+            var bEl = tdoc.getElementById('gmgai-btn');
+            if (!pEl) return;
+
+            // Support Shadow DOM and deep composed elements
+            var path = e.composedPath ? e.composedPath() : [];
+            var inside = false;
+            if (path && path.length) {
+                for (var i = 0; i < path.length; i++) {
+                    if (path[i] === pEl || path[i] === bEl) {
+                        inside = true;
+                        break;
+                    }
+                }
+            } else {
+                inside = pEl.contains(e.target) || (bEl && bEl.contains(e.target));
+            }
+
+            // If outside and not selecting text, close panel
+            if (!inside) {
+                try {
+                    var sel = (top.getSelection && top.getSelection()) || (w.getSelection && w.getSelection());
+                    if (sel && String(sel).length > 0) return;
+                } catch (eSel) {}
+                curr.open = false;
+                save(curr);
+                render();
+            }
+        };
+        tdoc.addEventListener('click', top.__gmgaiDocClick, true);
+
+        // Escape key listener on document
+        if (top.__gmgaiDocKeydown) {
+            tdoc.removeEventListener('keydown', top.__gmgaiDocKeydown);
+            top.__gmgaiDocKeydown = null;
+        }
+        top.__gmgaiDocKeydown = function(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                var curr = load();
+                if (curr.open) {
+                    curr.open = false;
+                    save(curr);
+                    render();
+                }
+            }
+        };
+        tdoc.addEventListener('keydown', top.__gmgaiDocKeydown);
+
         var selProv = root.querySelector('#gmgai-prov-select');
         if (selProv) {
             selProv.onchange = function() {
@@ -848,17 +957,41 @@
                 save(st);
             };
         }
-        var clearBtn = tdoc.getElementById('gmgai-clear') || root.querySelector('#gmgai-clear'); if (clearBtn) clearBtn.onclick = function() { s.messages = []; s.pending = false; s.explicit = false; s.provider = ''; save(s); hook('onClear'); MEM_CONV = null; if (ensureUser()) { try { top.sessionStorage.removeItem(CONV_KEY); } catch (e) {} } render(); };   // Clear = new server-side conversation
-        Array.prototype.forEach.call(root.querySelectorAll('.gmgai-sug'), function(b) { b.onclick = function() { ta.value = b.textContent; ta.focus(); }; });
+        var clearBtn = tdoc.getElementById('gmgai-clear') || root.querySelector('#gmgai-clear');
+        if (clearBtn) {
+            clearBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var st = load();
+                st.messages = [];
+                st.pending = false;
+                st.explicit = false;
+                st.provider = '';
+                save(st);
+                hook('onClear');
+                MEM_CONV = null;
+                if (ensureUser()) { try { top.sessionStorage.removeItem(CONV_KEY); } catch (err) {} }
+                render();
+            };
+        }
+        Array.prototype.forEach.call(root.querySelectorAll('.gmgai-sug'), function(b) {
+            b.onclick = function(e) {
+                e.stopPropagation();
+                ta.value = b.textContent;
+                ta.focus();
+            };
+        });
         Array.prototype.forEach.call(root.querySelectorAll('.gmgai-card button'), function(b) {
             if (b.classList.contains('gmgai-copy-btn')) return;
-            b.onclick = function() {
+            b.onclick = function(e) {
+                e.stopPropagation();
                 var actNode = b.parentNode.getAttribute('data-act') ? b.parentNode : b.parentNode.parentNode;
                 decide(actNode.getAttribute('data-act'), b.getAttribute('data-v'));
             };
         });
         Array.prototype.forEach.call(root.querySelectorAll('.gmgai-copy-btn'), function(b) {
-            b.onclick = function() {
+            b.onclick = function(e) {
+                e.stopPropagation();
                 var rawCode = decodeURIComponent(b.getAttribute('data-code') || '');
                 if (top.navigator && top.navigator.clipboard && top.navigator.clipboard.writeText) {
                     top.navigator.clipboard.writeText(rawCode).then(function() {
@@ -881,19 +1014,19 @@
         });
         var tabChat = tdoc.getElementById('gmgai-tab-chat');
         if (tabChat) {
-            tabChat.onclick = function() { var st = load(); st.mode = 'chat'; save(st); render(); };
+            tabChat.onclick = function(e) { e.stopPropagation(); var st = load(); st.mode = 'chat'; save(st); render(); };
         }
         var tabITSM = tdoc.getElementById('gmgai-tab-itsm');
         if (tabITSM) {
-            tabITSM.onclick = function() { var st = load(); st.mode = 'itsm'; save(st); render(); };
+            tabITSM.onclick = function(e) { e.stopPropagation(); var st = load(); st.mode = 'itsm'; save(st); render(); };
         }
         var tabDev = tdoc.getElementById('gmgai-tab-dev');
         if (tabDev) {
-            tabDev.onclick = function() { var st = load(); st.mode = 'dev'; save(st); render(); };
+            tabDev.onclick = function(e) { e.stopPropagation(); var st = load(); st.mode = 'dev'; save(st); render(); };
         }
         var tabWorkflow = tdoc.getElementById('gmgai-tab-workflow');
         if (tabWorkflow) {
-            tabWorkflow.onclick = function() { var st = load(); st.mode = 'workflow'; save(st); render(); };
+            tabWorkflow.onclick = function(e) { e.stopPropagation(); var st = load(); st.mode = 'workflow'; save(st); render(); };
         }
         var selWfType = tdoc.getElementById('gmgai-wf-type');
         if (selWfType) {
@@ -913,7 +1046,8 @@
         }
         var devCodeToggle = tdoc.getElementById('gmgai-dev-code-toggle');
         if (devCodeToggle) {
-            devCodeToggle.onclick = function() {
+            devCodeToggle.onclick = function(e) {
+                e.stopPropagation();
                 var st = load();
                 st.dev_show_code = !st.dev_show_code;
                 var codeArea = tdoc.getElementById('gmgai-dev-code');
@@ -936,8 +1070,8 @@
         }
         if (!top.__gmgaiProviders) loadProviders();
         hook('bind', [root]);
-        root.querySelector('#gmgai-in button').onclick = function() { send(ta.value); };
-        ta.onkeydown = function(e) { if (e.key == 'Enter' && !e.shiftKey) { e.preventDefault(); send(ta.value); } };
+        root.querySelector('#gmgai-in button').onclick = function(e) { e.stopPropagation(); send(ta.value); };
+        ta.onkeydown = function(e) { if (e.key == 'Enter' && !e.shiftKey) { e.preventDefault(); e.stopPropagation(); send(ta.value); } };
         if (!s.pending) ta.focus();
     }
 

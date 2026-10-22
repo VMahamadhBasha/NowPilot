@@ -331,7 +331,7 @@ const server = http.createServer((req, res) => {
         return res.end();
     }
 
-    // 0. Serve Logo Asset
+    // 0. Serve Logo & Favicon Assets
     if (pathname === '/assets/now_pilot_logo.png' || pathname === '/now_pilot_logo.png' || pathname === '/src/assets/now_pilot_logo.png' ||
         pathname === '/assets/takeoff_logo.png' || pathname === '/takeoff_logo.png' || pathname === '/src/assets/takeoff_logo.png') {
         const logoPath = fs.existsSync(path.resolve(__dirname, 'src/assets/now_pilot_logo.png'))
@@ -340,6 +340,34 @@ const server = http.createServer((req, res) => {
         if (fs.existsSync(logoPath)) {
             res.writeHead(200, { 'Content-Type': 'image/png' });
             return res.end(fs.readFileSync(logoPath));
+        }
+    }
+    if (pathname === '/favicon.ico' || pathname === '/assets/favicon.ico' || pathname === '/src/assets/favicon.ico') {
+        const icoPath = path.resolve(__dirname, 'src/assets/favicon.ico');
+        if (fs.existsSync(icoPath)) {
+            res.writeHead(200, { 'Content-Type': 'image/x-icon' });
+            return res.end(fs.readFileSync(icoPath));
+        }
+    }
+    if (pathname === '/favicon.svg' || pathname === '/assets/favicon.svg' || pathname === '/src/assets/favicon.svg') {
+        const svgPath = path.resolve(__dirname, 'src/assets/favicon.svg');
+        if (fs.existsSync(svgPath)) {
+            res.writeHead(200, { 'Content-Type': 'image/svg+xml' });
+            return res.end(fs.readFileSync(svgPath));
+        }
+    }
+    if (pathname === '/assets/favicon-32x32.png' || pathname === '/favicon-32x32.png') {
+        const p32 = path.resolve(__dirname, 'src/assets/favicon-32x32.png');
+        if (fs.existsSync(p32)) {
+            res.writeHead(200, { 'Content-Type': 'image/png' });
+            return res.end(fs.readFileSync(p32));
+        }
+    }
+    if (pathname === '/assets/favicon-16x16.png' || pathname === '/favicon-16x16.png') {
+        const p16 = path.resolve(__dirname, 'src/assets/favicon-16x16.png');
+        if (fs.existsSync(p16)) {
+            res.writeHead(200, { 'Content-Type': 'image/png' });
+            return res.end(fs.readFileSync(p16));
         }
     }
 
@@ -420,6 +448,10 @@ const server = http.createServer((req, res) => {
 <head>
     <meta charset="UTF-8">
     <title>ServiceNow - Incident ${inc.number} | Now Pilot Simulator</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="alternate icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
     <style>
         :root {
             --sn-primary: #1F2937;
