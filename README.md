@@ -73,12 +73,12 @@ ServiceNow instances run mission-critical enterprise workloads—incident respon
 
 Now Pilot features four dedicated operational modes accessible via the top mode switcher:
 
-```
+
 <img width="1357" height="607" alt="image" src="https://github.com/user-attachments/assets/f70d0826-f45f-4010-beed-9fcfd7c042a7" />
 <img width="1356" height="603" alt="image" src="https://github.com/user-attachments/assets/38b8cca6-41b8-43ed-8e2f-87dc2a41507e" />
 
 
-```
+
 
 ### 1. 💬 Context-Aware Chat
 - **Follows You Across Frames**: The lightweight floating panel rendered in the top-level window follows you across forms, list views, and Next Experience iframe navigations.
