@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src/assets/now_pilot_logo.png" alt="Now Pilot for ServiceNow Logo" width="128" height="122" />
+<img src="src/assets/favicon.svg" alt="Now Pilot for ServiceNow Logo" width="128" height="128" />
 
 # Now Pilot for ServiceNow
 
@@ -29,10 +29,6 @@
 
 
 </div>
-
----
-
-> **Disclaimer &amp; Attribution Notice:** **Now Pilot for ServiceNow** is an independent open-source project **developed and extended by Kanam Ramu**, based on the GMG AI Agent open-source foundation originally released by GMG Technology LLC under the Apache License 2.0. **GMG Technology LLC is not involved in the development, maintenance, sponsorship, or endorsement of Now Pilot.** ServiceNow, Now Platform, Next Experience, and Polaris are registered trademarks of ServiceNow, Inc. Anthropic and Claude are trademarks of Anthropic PBC. OpenAI is a trademark of OpenAI, Inc. This project has no commercial affiliation with ServiceNow, Inc. or GMG Technology LLC.
 
 ---
 
@@ -368,6 +364,10 @@ nowpilot-servicenow/
     ├── gmg_ai_agent_global.xml    # Global update set (alias)
     └── gmg_ai_agent_scoped.xml    # Scoped application update set (alias)
 ```
+
+---
+
+> **Disclaimer &amp; Attribution Notice:** **Now Pilot for ServiceNow** is an independent open-source project **developed and extended by Kanam Ramu**, based on the GMG AI Agent open-source foundation originally released by GMG Technology LLC under the Apache License 2.0. **GMG Technology LLC is not involved in the development, maintenance, sponsorship, or endorsement of Now Pilot.** ServiceNow, Now Platform, Next Experience, and Polaris are registered trademarks of ServiceNow, Inc. Anthropic and Claude are trademarks of Anthropic PBC. OpenAI is a trademark of OpenAI, Inc. This project has no commercial affiliation with ServiceNow, Inc. or GMG Technology LLC.
 
 ---
 
